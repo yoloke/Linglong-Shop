@@ -1,0 +1,196 @@
+/* 通用的 Flexbox 基础类 */
+%flx {
+  display: flex;
+}
+
+%flx-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flx-center {
+  @extend %flx;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.flx-justify-between {
+  @extend %flx;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flx-justify-around {
+  @extend %flx;
+  
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flx-align-center {
+  @extend %flx;
+
+  align-items: center;
+}
+
+.flx-align-baseline {
+  @extend %flx;
+
+  align-items: center;
+}
+
+.flx-center-baseline {
+  @extend %flx;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.flx-column {
+  @extend %flx-column;
+}
+
+/* 垂直方向两端对齐 */
+.flx-column-between {
+  @extend %flx-column;
+
+  justify-content: space-between;
+}
+
+.flx-column-align-center {
+  @extend %flx-column;
+
+  align-items: center;
+}
+
+/* 垂直居中且两端对齐 */
+.flx-column-center-center {
+  @extend %flx-column;
+
+  align-items: center;
+  justify-content: center;
+}
+
+/* 公共类，将元素推到容器的右边 */
+.float-right {
+  float: right;
+}
+
+/* clearfix */
+.clearfix::after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+}
+
+/* 文字单行省略号 */
+.sle {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* 文字多行省略号 */
+.mle {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* 文字多了自动換行 */
+.break-word {
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+/* fade-transform */
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all 0.2s;
+}
+
+.fade-transform-enter-from {
+  opacity: 0;
+  transition: all 0.2s;
+  transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transition: all 0.2s;
+  transform: translateX(30px);
+}
+
+/* breadcrumb-transform */
+.breadcrumb-enter-active {
+  transition: all 0.2s;
+}
+
+.breadcrumb-enter-from,
+.breadcrumb-leave-active {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+/* scroll bar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background-color: var(--el-border-color-darker);
+}
+
+/* nprogress */
+#nprogress .bar {
+  background: var(--el-color-primary) !important;
+}
+
+#nprogress .spinner-icon {
+  border-top-color: var(--el-color-primary) !important;
+  border-left-color: var(--el-color-primary) !important;
+}
+
+#nprogress .peg {
+  box-shadow:
+    0 0 10px var(--el-color-primary),
+    0 0 5px var(--el-color-primary) !important;
+}
+
+// /* 外边距、内边距全局样式 */
+// @for $i from 0 through 100 {
+//   .mt#{$i} {
+//     margin-top: #{$i}px !important;
+//   }
+//   .mr#{$i} {
+//     margin-right: #{$i}px !important;
+//   }
+//   .mb#{$i} {
+//     margin-bottom: #{$i}px !important;
+//   }
+//   .ml#{$i} {
+//     margin-left: #{$i}px !important;
+//   }
+//   .pt#{$i} {
+//     padding-top: #{$i}px !important;
+//   }
+//   .pr#{$i} {
+//     padding-right: #{$i}px !important;
+//   }
+//   .pb#{$i} {
+//     padding-bottom: #{$i}px !important;
+//   }
+//   .pl#{$i} {
+//     padding-left: #{$i}px !important;
+//   }
+// }
+.default-icon {
+  width: 28px;
+  height: 28px;
+}

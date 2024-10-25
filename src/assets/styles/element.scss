@@ -1,0 +1,9 @@
+.el-icon {
+  vertical-align: middle; // 垂直对齐方式
+}
+
+.el-card.is-always-shadow,
+.el-card.is-hover-shadow:focus,
+.el-card.is-hover-shadow:hover {
+  box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
+}

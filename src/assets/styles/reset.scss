@@ -1,0 +1,215 @@
+/* reset.scss */
+
+/* Reset the box model to 'border-box' for all elements */
+*,
+*::before,
+*::after {
+	margin: 0;
+	border: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* Remove default margin and padding */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+	margin: 0;
+	border: 0;
+	padding: 0;
+	font: inherit;
+	font-size: 100%;
+	vertical-align: baseline;
+}
+
+/* Ensure consistent 'block' layout for all elements */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
+
+/* Set base body styles */
+body {
+	line-height: 1;
+}
+
+/* Reset lists to remove bullets and indents */
+ol,
+ul {
+	list-style: none;
+}
+
+/* Set default quotes and blockquotes */
+blockquote,
+q {
+	quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+	content: '';
+	content: none;
+}
+
+/* Set table layouts to be border-collapse for consistency */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Ensure media elements scale responsively */
+img,
+embed,
+object,
+video {
+	height: auto;
+	max-width: 100%;
+}
+
+/* Inherit font family for form elements */
+button,
+input,
+select,
+textarea {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+/* Remove button and input border and background by default */
+button,
+input,
+select,
+textarea {
+	margin: 0;
+	border: none;
+	padding: 0;
+	background: none;
+	color: inherit;
+}
+
+/* Reset hyperlinks */
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+/* Remove default button and input appearance */
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+	appearance: none;
+}
+
+/* Remove focus outline for form elements */
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+	outline: none;
+}
+
+html,
+body,
+#app,
+#watermark {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+}
+
+/* 解决 h1 标签在 webkit 内核浏览器中文字大小失效问题 */
+:-webkit-any(article, aside, nav, section) h1 {
+	font-size: 2em;
+}

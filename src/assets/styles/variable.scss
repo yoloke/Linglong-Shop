@@ -1,0 +1,21 @@
+:root {
+  --container-margin: 60px; // 默认值
+}
+
+@media screen and (width <= 1250px) {
+  :root {
+    --container-margin: 40px; // 屏幕宽度小于等于 1250px 时的值
+  }
+  .container {
+    gap: 0 0 !important;
+  }
+}
+
+@media screen and (width <= 600px) {
+  :root {
+    --container-margin: 30px; // 屏幕宽度小于等于 600px 时的值
+  }
+  .container {
+    gap: 0 0 !important;
+  }
+}

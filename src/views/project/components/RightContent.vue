@@ -9,23 +9,25 @@
     </div>
     <div class="app-list">
       <div v-for="app in apps" :key="app.appId" class="app-item">
-        <div class="flx-align-center">
+        <div class="app-item-main">
           <img :src="app.icon || defaultIcon" alt="App Icon" />
-
-          <div class="flx-column">
-            <span class="app-item-name">{{ app.zhName || app.name }}</span>
+          <div class="app-item-text">
+            <div class="app-item-title">
+              <el-text class="app-item-name" truncated>{{ app.zhName || app.name }}</el-text>
+              <div class="app-item-category">{{ app.categoryName }}</div>
+            </div>
             <el-tooltip effect="light" placement="top">
               <template #content>
                 <div style="max-width: 200px">{{ app.description }}</div>
               </template>
-              <span class="app-item-description">
+              <el-text class="app-item-description" line-clamp="2">
                 {{ app.description }}
-              </span>
+              </el-text>
             </el-tooltip>
           </div>
         </div>
         <div class="app-item-footer">
-          <span>{{ app.categoryName }}</span>
+          <span class="app-item-version">v{{ app.version }}</span>
           <el-button type="primary" plain size="mini" @click="onInstall(app)">安装</el-button>
         </div>
       </div>
@@ -92,32 +94,55 @@ const onInstall = async (app: App) => {
     .app-item {
       border-radius: 8px;
       padding: 16px;
-      height: 140px !important;
+      height: 150px !important;
       font-size: 14px;
       background-color: #fff;
       color: #808080;
       box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
 
-      img {
-        margin-right: 12px;
-        width: 60px;
-      }
+      .app-item-main {
+        display: flex;
+        height: 70px;
+        align-items: start;
 
-      .app-item-name {
-        margin-bottom: 8px;
-        max-width: 150px;
-        font-size: 18px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: #383838;
-        overflow: hidden;
-      }
+        img {
+          margin-right: 12px;
+          width: 60px;
+          height: 60px;
+          flex: 0 0 60px;
+        }
 
-      .app-item-description {
-        max-width: 150px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
+        .app-item-text {
+          flex: 1;
+          max-width: calc(100% - 72px);
+
+          .app-item-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+
+            .app-item-name {
+              flex: 1;
+              font-size: 18px;
+              line-height: 24px;
+              color: #383838;
+            }
+
+            .app-item-category {
+              text-align: right;
+              flex: 0 0 80px;
+              font-size: 12px;
+              color: #575757;
+            }
+          }
+
+          .app-item-description {
+            line-height: 18px;
+            font-size: 12px;
+            color: #808080;
+          }
+        }
       }
 
       .app-item-footer {
@@ -125,6 +150,9 @@ const onInstall = async (app: App) => {
         margin-top: 10px;
         justify-content: space-between;
         align-items: end;
+        .app-item-version {
+          font-size: 12px;
+        }
       }
     }
   }

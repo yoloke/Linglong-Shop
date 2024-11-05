@@ -27,6 +27,7 @@ export interface App {
   icon?: string;
   description?: string;
   categoryName?: string;
+  version?: string;
 }
 
 // 应用分类

@@ -10,7 +10,7 @@
     <div class="app-list">
       <div v-for="app in apps" :key="app.appId" class="app-item">
         <div class="app-item-main">
-          <img :src="app.icon || defaultIcon" alt="App Icon" />
+          <img :src="app.icon || defaultIcon" @error="(event) => formatSVG(event, app.icon)" alt="App Icon" />
           <div class="app-item-text">
             <div class="app-item-title">
               <el-text class="app-item-name" truncated>{{ app.zhName || app.name }}</el-text>
@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { App, Category } from "@/api/interface/index";
 import defaultIcon from "@/assets/images/default.svg";
-import { installApp } from "@/api/modules/project";
+import { installApp, svgUrl2Base64 } from "@/api/modules/project";
 import { ElNotification } from "element-plus";
 defineProps<{
   apps: App[];
@@ -67,6 +67,24 @@ const onInstall = async (app: App) => {
   const { code } = await installApp(app);
   console.log(code);
 };
+
+const formatSVG = async (event: Event, url: string | undefined) => {
+  if (url) {
+    const response = await svgUrl2Base64({url: url});
+    if (response.code == "200" && response.data) {
+      // 设置 src 为 Base64 数据图片
+      const target = event.target as HTMLImageElement; // 强制类型转换为 HTMLImageElement
+      if (target) {
+        target.src = response.data as unknown as string; // 设置为 Base64 数据
+        return;
+      }
+    }
+  }
+  const target = event.target as HTMLImageElement; // 强制类型转换为 HTMLImageElement
+  if (target) {
+    target.src = defaultIcon;
+  }
+}
 </script>
 <style scoped lang="scss">
 .right {

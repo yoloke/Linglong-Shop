@@ -66,7 +66,7 @@ const onInstall = async () => {
   background-repeat: no-repeat;
 
   .title {
-    margin-top: 80px;
+    margin-top: 100px;
     margin-bottom: 10px;
     font-size: 38px;
     font-weight: 700;

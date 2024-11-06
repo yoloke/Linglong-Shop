@@ -93,7 +93,7 @@ const fetchAppsByCategory = async (category: Category) => {
     const { data: appsData } = await getApp({
       pageNo: currentPage.value,
       pageSize: 40,
-      sort: "installCount",
+      sort: "createTime",
       categoryId: category.categoryId,
       name: searchQuery.value
     });
@@ -117,7 +117,7 @@ const handleSearch = async (query: string) => {
     const { data: appsData } = await getApp({
       pageNo: currentPage.value,
       pageSize: 40,
-      sort: "installCount",
+      sort: "createTime",
       name: query // 传递搜索条件
     });
 

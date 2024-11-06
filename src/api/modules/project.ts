@@ -6,6 +6,11 @@ export const addSuggest = (params: any) => {
   return http.post<ResultData>("/web/suggest", params, { loading: false });
 };
 
+// 答疑问题列表
+export const getQuestionList = () => {
+  return http.post<ResultData>("/web/questions");
+};
+
 // 新增登录
 export const getLogin = (params: any) => {
   return http.post<ResultData>("/web/addLogin", params, { loading: false });

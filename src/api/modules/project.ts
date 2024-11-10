@@ -7,8 +7,8 @@ export const addSuggest = (params: any) => {
 };
 
 // 答疑问题列表
-export const getQuestionList = () => {
-  return http.post<ResultData>("/web/questions");
+export const getQuestionList = (params: any) => {
+  return http.post<ResultData>("/web/questions",params, { loading: false });
 };
 
 // 新增登录

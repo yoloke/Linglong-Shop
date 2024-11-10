@@ -7,13 +7,25 @@
   </div>
 
   <el-dialog class="question-board" v-model="questionDialogVisible" title="答疑看板" width="500">
-    <el-collapse>
-      <el-collapse-item v-for="(question,index) in questionList" :title="`问题：${question?.question}`" :name="index">
-        <div>
-          解答：{{ question?.reply }}
-        </div>
-      </el-collapse-item>
-    </el-collapse>
+    <el-input class="question-search" placeholder="输入关键词检索问题" :suffix-icon="Search" v-model="questionSearchInput"
+              @change="searchQuestionList"/>
+
+    <div class="question-list" v-infinite-scroll="moreQuestionList" :infinite-scroll-disabled="loadQuestionDisable"
+         infinite-scroll-distance="10">
+      <el-collapse>
+        <el-collapse-item v-for="(question,index) in questionList" :title="`问题：${question?.question}`" :name="index">
+          <div>
+            解答：{{ question?.reply }}
+          </div>
+        </el-collapse-item>
+      </el-collapse>
+
+      <p class="loading-tip" v-show="questionLoading" v-loading="questionLoading" element-loading-text></p>
+      <el-divider class="no-more-tip" v-if="noMoreQuestion">
+        数据已全部加载完成
+      </el-divider>
+    </div>
+
 
     <template #footer>
       <div class="feedback-tip">
@@ -23,7 +35,7 @@
     </template>
   </el-dialog>
 
-  <el-dialog v-model="centerDialogVisible" title="意见反馈" width="549">
+  <el-dialog v-model="centerDialogVisible" title="意见反馈" width="549" style="margin-top: 30vh">
     <div style="margin-bottom: 12px">您的建议是我改进的动力!</div>
 
     <el-input v-model="message" :rows="4" type="textarea" placeholder="请输入意见反馈"/>
@@ -38,15 +50,70 @@
 <script setup lang="ts">
 import {ref, h, onMounted} from "vue";
 import {ElMessage} from "element-plus";
-import {CircleClose} from "@element-plus/icons-vue"; // 引入自定义图标
+import {CircleClose, Search} from "@element-plus/icons-vue"; // 引入自定义图标
 import {addSuggest, getQuestionList} from "@/api/modules/project";
 
-const questionDialogVisible = ref(true);
 const centerDialogVisible = ref(false);
 const message = ref("");
 
 // 答疑面板问题列表
+const questionDialogVisible = ref(true);
 const questionList = ref([])
+const questionLoading = ref(false)
+const loadQuestionDisable = ref(false)
+const questionSearchInput = ref('')
+const questionPageNo = ref(1)
+const questionPageSize = ref(10)
+const noMoreQuestion = ref(false)
+
+const queryQuestionList = async () => {
+  const {data: questions} = await getQuestionList({
+    questionKeyWord: questionSearchInput.value,
+    pageNo: questionPageNo.value,
+    pageSize: questionPageSize.value,
+  })
+
+  if (questions && questions?.length === questionPageSize.value) {
+    questionPageNo.value += 1
+  } else {
+    noMoreQuestion.value = true
+  }
+
+  return questions
+}
+
+const searchQuestionList = async () => {
+  questionPageNo.value = 1
+  questionList.value = []
+  questionLoading.value = true
+  loadQuestionDisable.value = true
+  noMoreQuestion.value = false
+
+  try {
+    const questions = await queryQuestionList()
+    questionList.value = [...questions]
+  } finally {
+    questionLoading.value = false
+    loadQuestionDisable.value = false
+  }
+}
+
+const moreQuestionList = async () => {
+  if (noMoreQuestion.value) {
+    return
+  }
+
+  questionLoading.value = true
+  loadQuestionDisable.value = true
+
+  try {
+    const questions = await queryQuestionList()
+    questionList.value.push(...questions)
+  } finally {
+    questionLoading.value = false
+    loadQuestionDisable.value = false
+  }
+}
 
 // 打开面板
 const openBoard = () => {
@@ -84,20 +151,6 @@ const handleSubmit = async () => {
     alert("提交时出现错误，请稍后重试");
   }
 };
-
-const init = async () => {
-  try {
-    const {data: questions} = await getQuestionList()
-    questionList.value = [...questions]
-  } finally {
-
-  }
-}
-
-onMounted(async () => {
-  await init()
-
-})
 
 </script>
 <style scoped lang="scss">
@@ -171,4 +224,22 @@ onMounted(async () => {
   line-height: 20px;
 }
 
+.question-list {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+::v-deep .el-divider__text {
+  font-size: 10px;
+  color: grey;
+}
+
+::v-deep .el-loading-mask {
+  top: 5px;
+  bottom: auto;
+}
+
+.loading-tip {
+  height: 50px;
+}
 </style>

@@ -6,24 +6,32 @@
     </el-icon>
   </div>
 
-  <el-dialog class="question-board" v-model="questionDialogVisible" title="答疑看板" width="500">
+  <el-dialog class="question-board" v-model="questionDialogVisible" title="答疑看板" width="50vw">
     <el-input class="question-search" placeholder="输入关键词检索问题" :suffix-icon="Search" v-model="questionSearchInput"
               @change="searchQuestionList"/>
 
     <div class="question-list" v-infinite-scroll="moreQuestionList" :infinite-scroll-disabled="loadQuestionDisable"
          infinite-scroll-distance="10">
       <el-collapse>
-        <el-collapse-item v-for="(question,index) in questionList" :title="`问题：${question?.question}`" :name="index">
+        <el-collapse-item v-for="(question,index) in questionList" :name="index">
+          <template #title>
+            <el-text truncated>问题：{{ question?.question }}</el-text>
+          </template>
+
           <div>
             解答：{{ question?.reply }}
           </div>
         </el-collapse-item>
       </el-collapse>
 
-      <p class="loading-tip" v-show="questionLoading" v-loading="questionLoading" element-loading-text></p>
-      <el-divider class="no-more-tip" v-if="noMoreQuestion">
-        数据已全部加载完成
+      <p class="loading-tip" v-show="questionLoading"
+         v-loading="questionLoading" element-loading-text></p>
+      <el-divider class="no-more-tip" v-if="questionList.length>questionPageSize && noMoreQuestion">
+        The End
       </el-divider>
+
+      <el-empty v-if="questionList.length===0 && noMoreQuestion" description="暂无相关问题，请重新搜索/反馈问题"/>
+
     </div>
 
 
@@ -35,10 +43,10 @@
     </template>
   </el-dialog>
 
-  <el-dialog v-model="centerDialogVisible" title="意见反馈" width="549" style="margin-top: 30vh">
+  <el-dialog v-model="centerDialogVisible" title="意见反馈" width="55vw" style="margin-top: 30vh">
     <div style="margin-bottom: 12px">您的建议是我改进的动力!</div>
 
-    <el-input v-model="message" :rows="4" type="textarea" placeholder="请输入意见反馈"/>
+    <el-input v-model="message" :rows="4" type="textarea" placeholder="请输入意见反馈" show-word-limit maxlength="2400"/>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取消</el-button>
@@ -57,7 +65,7 @@ const centerDialogVisible = ref(false);
 const message = ref("");
 
 // 答疑面板问题列表
-const questionDialogVisible = ref(true);
+const questionDialogVisible = ref(false);
 const questionList = ref([])
 const questionLoading = ref(false)
 const loadQuestionDisable = ref(false)
@@ -65,6 +73,7 @@ const questionSearchInput = ref('')
 const questionPageNo = ref(1)
 const questionPageSize = ref(10)
 const noMoreQuestion = ref(false)
+const existQuestion = ref(false)
 
 const queryQuestionList = async () => {
   const {data: questions} = await getQuestionList({
@@ -118,7 +127,7 @@ const moreQuestionList = async () => {
 // 打开面板
 const openBoard = () => {
   // 存在上架问题则展示答疑面板
-  if (questionList?.value?.length > 0) {
+  if (existQuestion.value) {
     questionDialogVisible.value = true
   } else {
     // 不存在则直接打开反馈面板
@@ -151,6 +160,19 @@ const handleSubmit = async () => {
     alert("提交时出现错误，请稍后重试");
   }
 };
+
+onMounted(async () => {
+  try {
+    const questions = await queryQuestionList()
+    questionList.value = [...questions]
+    if (questions.length) {
+      existQuestion.value = true
+    }
+  } finally {
+
+  }
+
+})
 
 </script>
 <style scoped lang="scss">
@@ -225,7 +247,7 @@ const handleSubmit = async () => {
 }
 
 .question-list {
-  max-height: 500px;
+  max-height: 45vh;
   overflow-y: auto;
 }
 
@@ -237,6 +259,16 @@ const handleSubmit = async () => {
 ::v-deep .el-loading-mask {
   top: 5px;
   bottom: auto;
+}
+
+::v-deep .el-collapse-item__header {
+  height: auto;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+::v-deep .el-collapse-item__header.is-active .el-text {
+  white-space: pre-wrap;
 }
 
 .loading-tip {

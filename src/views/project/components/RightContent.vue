@@ -1,11 +1,39 @@
 <template>
   <div class="right" v-infinite-scroll="load" :infinite-scroll-disabled="disabled" infinite-scroll-distance="10">
     <div class="header">
-      <span class="category-name">
-        {{ selectedCategory?.categoryName || "全部分类" }}
-        <span v-show="searchQuery">({{ searchQuery }})</span>
-      </span>
-      <span class="total-count"> 共 {{ total }} 款应用</span>
+      <div class="header-category">
+        <span class="category-name">
+          {{ selectedCategory?.categoryName || "全部分类" }}
+          <span v-show="searchQuery">({{ searchQuery }})</span>
+        </span>
+        <span class="total-count">共 {{ total }} 款应用</span>
+      </div>
+      <div class="header-sort">
+        <span class="sort-title">排序方式：</span>
+        <el-select
+          :model-value="currentSort"
+          size="small"
+          popper-class="sort-select-options"
+          class="sort-select-hidden"
+          placement="bottom-end"
+          @change="
+            (value: string) => {
+              emit('sort-change', value);
+            }
+          "
+          @visible-change="
+            (value: boolean) => {
+              sortOptionsShow = value;
+            }
+          "
+        >
+          <el-option v-for="item in sortOptions" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+        <div class="sort-select">
+          <div class="sort-select-input">{{ sortLabel }}</div>
+          <div :class="`sort-select-arrow arrow-down ${sortOptionsShow ? '' : 'arrow-show'}`"></div>
+        </div>
+      </div>
     </div>
     <div class="app-list">
       <div v-for="app in apps" :key="app.appId" class="app-item">
@@ -41,7 +69,8 @@ import { App, Category } from "@/api/interface/index";
 import defaultIcon from "@/assets/images/default.svg";
 import { installApp, svgUrl2Base64 } from "@/api/modules/project";
 import { ElNotification } from "element-plus";
-defineProps<{
+import { computed, ref } from "vue";
+const props = defineProps<{
   apps: App[];
   selectedCategory: Category;
   total: number;
@@ -50,6 +79,10 @@ defineProps<{
   noMore: boolean;
   loading: boolean;
   searchQuery: string;
+  currentSort: string;
+}>();
+const emit = defineEmits<{
+  (event: "sort-change", value: string): void;
 }>();
 const onInstall = async (app: App) => {
   window.location.href = "og://" + app.appId;
@@ -85,21 +118,81 @@ const formatSVG = async (event: Event, url: string | undefined) => {
     target.src = defaultIcon;
   }
 };
+
+const sortOptionsShow = ref(false);
+const sortOptions = [
+  { label: "上架时间", value: "createTime" },
+  { label: "安装量", value: "installCount" }
+];
+const sortLabel = computed(() => sortOptions.find(item => item.value === props.currentSort)?.label);
 </script>
 <style scoped lang="scss">
 .right {
   flex: 1;
   margin-bottom: 60px;
+
   .header {
     margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 2px;
 
-    .category-name {
-      font-size: 18px;
+    .header-category {
+      .category-name {
+        font-size: 18px;
+      }
+
+      .total-count {
+        font-size: 14px;
+        color: #7a7a7a;
+        margin-left: 4px;
+      }
     }
 
-    .total-count {
-      font-size: 14px;
-      color: #7a7a7a;
+    .header-sort {
+      position: relative;
+      font-size: 12px;
+      color: #636363;
+      display: flex;
+      align-items: center;
+
+      .sort-select-hidden {
+        z-index: 999;
+        position: absolute;
+        right: 0;
+        width: 64px;
+        opacity: 0;
+      }
+
+      .sort-select {
+        position: relative;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .sort-select-input {
+          text-align: right;
+          width: 50px;
+          margin-right: 12px;
+        }
+
+        .sort-select-arrow {
+          width: 0;
+          height: 0;
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          border-bottom: 6px solid #a6a6a6;
+          position: absolute;
+          right: 0;
+          transition: transform 0.3s;
+          transform: rotate(0deg);
+
+          &.arrow-show {
+            transform: rotate(180deg);
+          }
+        }
+      }
     }
   }
 
@@ -173,6 +266,13 @@ const formatSVG = async (event: Event, url: string | undefined) => {
         }
       }
     }
+  }
+}
+.sort-select-options {
+  .el-select-dropdown__item {
+    font-size: 12px;
+    line-height: 28px;
+    height: 28px;
   }
 }
 </style>

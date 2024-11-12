@@ -2,8 +2,8 @@
   <div :class="['header-container', 'flx-justify-between flx-align-center', { scrolled: isScrolled }]">
     <img src="@/assets/images/logo.svg" alt="" />
     <span>
-      <a href="https://www.linglong.space/" target="_blank">如意玲珑官网</a>
-      <a href="https://github.com/OpenAtom-Linyaps/sig-linyaps-packing-sig" target="_blank">应用投递</a>
+      <a @click="openUrl('https://www.linglong.space/')">如意玲珑官网</a>
+      <a @click="openUrl('https://github.com/OpenAtom-Linyaps/sig-linyaps-packing-sig')">应用投递</a>
     </span>
   </div>
 </template>
@@ -26,6 +26,11 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
+
+// 使用新标签页打开链接
+const openUrl = (url: string) => {
+  window.open(url, "_blank");
+};
 </script>
 <style scoped lang="scss">
 .header-container {
@@ -43,6 +48,11 @@ onUnmounted(() => {
     font-size: 12px;
     a {
       margin-left: 12px;
+      cursor: pointer;
+      transition: color 0.2s;
+      &:hover {
+        color: #409eff;
+      }
     }
   }
 

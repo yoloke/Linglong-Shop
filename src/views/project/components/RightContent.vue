@@ -28,7 +28,7 @@
         </div>
         <div class="app-item-footer">
           <span class="app-item-version">v{{ app.version }}</span>
-          <el-button type="primary" plain size="mini" @click="onInstall(app)">安装</el-button>
+          <el-button type="primary" plain size="small" @click="onInstall(app)">安装</el-button>
         </div>
       </div>
     </div>
@@ -112,7 +112,7 @@ const formatSVG = async (event: Event, url: string | undefined) => {
     .app-item {
       border-radius: 8px;
       padding: 16px;
-      height: 150px !important;
+      height: 136px !important;
       font-size: 14px;
       background-color: #fff;
       color: #808080;

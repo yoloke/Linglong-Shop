@@ -39,3 +39,7 @@ export const installApp = (params: App) => {
 export const installdd = (arch: string, params?: App) => {
   return http.get(`/web/downloadU/${arch}`, params, { loading: false });
 };
+
+export const svgUrl2Base64 = (params: any) => {
+  return http.post<ResultData>("/web/svgUrl2Base64", params, { loading: false });
+};

@@ -1,6 +1,10 @@
 <template>
   <div class="footer-container flx-justify-between">
-    <span> 本商店来自于简易玲珑商店SIG组贡献</span>
+    <span>
+      本商店来自于
+      <a href="https://github.com/OpenAtom-Linyaps/sig-linyaps-simple-store" target="_blank">简易玲珑商店SIG组</a>
+      贡献
+    </span>
     <el-tooltip effect="light" placement="top-start">
       <template #content>
         <div class="flx-column">
@@ -37,6 +41,9 @@
   z-index: 9999;
   font-size: 12px;
   color: #808080;
+  a:hover {
+    color: blue;
+  }
   .info {
     color: #808080;
     .item {

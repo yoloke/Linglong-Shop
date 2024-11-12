@@ -20,6 +20,8 @@
       :loading="loading"
       :no-more="noMore"
       :search-query="searchQuery"
+      :current-sort="currentSort"
+      @sort-change="sortChange"
     />
   </div>
   <el-backtop :right="100" :bottom="100" />
@@ -40,6 +42,7 @@ const rankings = ref<Rankings[]>([]);
 const apps = ref<App[]>([]);
 
 const currentPage = ref(1); // 当前页码
+const currentSort = ref("createTime"); // 当前排序方式
 const loading = ref(false); // 加载状态
 const total = ref<number>(2); // 初始值为 null 以处理未知总数
 const noMore = computed(() => apps.value.length >= total.value);
@@ -52,7 +55,7 @@ const load = async () => {
     const { data: appsData } = await getApp({
       pageNo: currentPage.value,
       pageSize: 40,
-      sort: "createTime",
+      sort: currentSort.value,
       categoryId: categoryId // 如果有选择的分类，则传递
     });
 
@@ -93,7 +96,7 @@ const fetchAppsByCategory = async (category: Category) => {
     const { data: appsData } = await getApp({
       pageNo: currentPage.value,
       pageSize: 40,
-      sort: "installCount",
+      sort: currentSort.value,
       categoryId: category.categoryId,
       name: searchQuery.value
     });
@@ -117,7 +120,7 @@ const handleSearch = async (query: string) => {
     const { data: appsData } = await getApp({
       pageNo: currentPage.value,
       pageSize: 40,
-      sort: "installCount",
+      sort: currentSort.value,
       name: query // 传递搜索条件
     });
 
@@ -126,6 +129,29 @@ const handleSearch = async (query: string) => {
     currentPage.value += 1; // 增加页码
   } catch (error) {
     console.error("搜索失败:", error);
+  }
+};
+
+const sortChange = async (sort: string) => {
+  currentSort.value = sort;
+  currentPage.value = 1; // 重置页码
+  apps.value = []; // 清空应用列表
+
+  // 获取排序后的应用数据
+  try {
+    const { data: appsData } = await getApp({
+      pageNo: currentPage.value,
+      pageSize: 40,
+      sort,
+      categoryId: selectedCategory.value?.categoryId,
+      name: searchQuery.value
+    });
+
+    apps.value = appsData.records; // 更新应用列表
+    total.value = appsData.total; // 更新总数
+    currentPage.value += 1; // 增加页码
+  } catch (error) {
+    console.error("排序失败:", error);
   }
 };
 </script>

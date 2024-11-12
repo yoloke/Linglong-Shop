@@ -10,7 +10,7 @@
     <div class="app-list">
       <div v-for="app in apps" :key="app.appId" class="app-item">
         <div class="app-item-main">
-          <img :src="app.icon || defaultIcon" @error="(event) => formatSVG(event, app.icon)" alt="App Icon" />
+          <img :src="app.icon || defaultIcon" @error="event => formatSVG(event, app.icon)" alt="App Icon" />
           <div class="app-item-text">
             <div class="app-item-title">
               <el-text class="app-item-name" truncated>{{ app.zhName || app.name }}</el-text>
@@ -70,7 +70,7 @@ const onInstall = async (app: App) => {
 
 const formatSVG = async (event: Event, url: string | undefined) => {
   if (url) {
-    const response = await svgUrl2Base64({url: url});
+    const response = await svgUrl2Base64({ url: url });
     if (response.code == "200" && response.data) {
       // 设置 src 为 Base64 数据图片
       const target = event.target as HTMLImageElement; // 强制类型转换为 HTMLImageElement
@@ -84,7 +84,7 @@ const formatSVG = async (event: Event, url: string | undefined) => {
   if (target) {
     target.src = defaultIcon;
   }
-}
+};
 </script>
 <style scoped lang="scss">
 .right {

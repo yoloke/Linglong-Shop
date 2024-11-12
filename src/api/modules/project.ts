@@ -37,4 +37,4 @@ export const installdd = (arch: string, params?: App) => {
 
 export const svgUrl2Base64 = (params: any) => {
   return http.post<ResultData>("/web/svgUrl2Base64", params, { loading: false });
-}
+};

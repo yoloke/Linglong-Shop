@@ -52,3 +52,9 @@ export interface ResPage {
   records: App[];
   pages: string;
 }
+
+// 答疑问题
+export interface Question {
+  question: string;
+  reply: string;
+}

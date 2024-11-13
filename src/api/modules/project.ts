@@ -1,4 +1,4 @@
-import { ResultData, ReqPage, ResPage, Category, Rankings, App } from "@/api/interface/index";
+import {ResultData, ReqPage, ResPage, Category, Rankings, App, Question} from "@/api/interface/index";
 import http from "@/api";
 
 // 提交反馈
@@ -8,7 +8,7 @@ export const addSuggest = (params: any) => {
 
 // 答疑问题列表
 export const getQuestionList = (params: any) => {
-  return http.post<ResultData>("/web/questions",params, { loading: false });
+  return http.post<Question[]>("/web/questions",params, { loading: false });
 };
 
 // 新增登录

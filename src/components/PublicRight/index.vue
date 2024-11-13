@@ -15,11 +15,11 @@
       <el-collapse>
         <el-collapse-item v-for="(question,index) in questionList" :name="index">
           <template #title>
-            <el-text truncated>问题：{{ question?.question }}</el-text>
+            <el-text truncated>问题：{{ question.question }}</el-text>
           </template>
 
           <div>
-            解答：{{ question?.reply }}
+            解答：{{ question.reply }}
           </div>
         </el-collapse-item>
       </el-collapse>
@@ -60,13 +60,14 @@ import {ref, h, onMounted} from "vue";
 import {ElMessage} from "element-plus";
 import {CircleClose, Search} from "@element-plus/icons-vue"; // 引入自定义图标
 import {addSuggest, getQuestionList} from "@/api/modules/project";
+import {Question} from "@/api/interface";
 
 const centerDialogVisible = ref(false);
 const message = ref("");
 
 // 答疑面板问题列表
 const questionDialogVisible = ref(false);
-const questionList = ref([])
+const questionList = ref<Question[]>([])
 const questionLoading = ref(false)
 const loadQuestionDisable = ref(false)
 const questionSearchInput = ref('')
@@ -156,6 +157,10 @@ const handleSubmit = async () => {
     message.value = "";
     centerDialogVisible.value = false;
     questionDialogVisible.value = false;
+    ElMessage.success({
+      message: "提交成功",
+      type: "success",
+    });
   } catch (error) {
     alert("提交时出现错误，请稍后重试");
   }
@@ -200,13 +205,13 @@ onMounted(async () => {
 }
 
 
-::v-deep .el-collapse-item {
+:deep(.el-collapse-item) {
   border: 1px solid rgba(229, 229, 229, 1);
   border-radius: 2px 2px;
   margin-top: 8px;
 }
 
-::v-deep .el-collapse-item__header {
+:deep(.el-collapse-item__header) {
   background: rgba(247, 250, 255, 1);
   border-bottom: 1px solid rgba(229, 229, 229, 1);
 
@@ -219,11 +224,11 @@ onMounted(async () => {
   padding-left: 10px;
 }
 
-::v-deep .el-collapse-item__content {
+:deep(.el-collapse-item__content) {
   padding: 5px 10px;
 }
 
-::v-deep .el-collapse-item__wrap {
+:deep(.el-collapse-item__wrap) {
   border-bottom: 0;
 }
 
@@ -238,7 +243,7 @@ onMounted(async () => {
   vertical-align: middle;
 }
 
-::v-deep .el-link__inner {
+:deep(.el-link__inner) {
   margin-left: 5px;
   font-size: 12px;
   font-weight: 400;
@@ -251,23 +256,23 @@ onMounted(async () => {
   overflow-y: auto;
 }
 
-::v-deep .el-divider__text {
+:deep(.el-divider__text) {
   font-size: 10px;
   color: grey;
 }
 
-::v-deep .el-loading-mask {
+:deep(.el-loading-mask) {
   top: 5px;
   bottom: auto;
 }
 
-::v-deep .el-collapse-item__header {
+:deep(.el-collapse-item__header) {
   height: auto;
   padding-top: 15px;
   padding-bottom: 15px;
 }
 
-::v-deep .el-collapse-item__header.is-active .el-text {
+:deep(.el-collapse-item__header.is-active .el-text) {
   white-space: pre-wrap;
 }
 

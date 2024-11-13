@@ -279,4 +279,12 @@ onMounted(async () => {
 .loading-tip {
   height: 50px;
 }
+
+/* 隐藏所有元素的滚动条，防止抖动 */
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+
 </style>

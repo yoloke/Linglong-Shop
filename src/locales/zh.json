@@ -1,0 +1,65 @@
+{
+  "title": {
+    "app": "应用",
+    "store": "商店",
+    "client": "客户端",
+    "subtitle": "探索应用新世界，享受到高品质的应用体验。"
+  },
+  "appSearchBar": {
+    "placeholder": "查找应用",
+    "category": "分类",
+    "other": "其他"
+  },
+  "appList": {
+    "header": {
+      "all": "全部分类",
+      "total": "共 {total} 款应用",
+      "sortMethod": "排序方式",
+      "sort": {
+        "hot": "安装量",
+        "new": "上架时间"
+      }
+    },
+    "app": {
+      "install": "安装"
+    },
+    "noMore": "暂无更多数据"
+  },
+  "header": {
+    "website": "如意玲珑官网",
+    "delivery": "应用投递"
+  },
+  "footer": {
+    "aboutPre": "本商店来自于",
+    "about": "简易玲珑商店SIG组",
+    "aboutAft": "贡献",
+    "developers": "相关开发人员",
+    "frontend": "前端",
+    "backend": "后端",
+    "design": "设计"
+  },
+  "feedback": {
+    "title": "问题答疑",
+    "board": {
+      "title": "答疑看板",
+      "searchPlaceholder": "输入关键词检索问题",
+      "question": "问题",
+      "answer": "解答",
+      "notFound": "找不到想要的问题？",
+      "feedback": "我要反馈",
+      "empty": "暂无相关问题，请重新搜索/反馈问题"
+    },
+    "feedback": {
+      "title": "意见反馈",
+      "subtitle": "您的建议是我改进的动力!",
+      "placeholder": "请输入意见反馈",
+      "submit": "提交",
+      "cancel": "取消"
+    }
+  },
+  "tips": {
+    "title": "温馨提示",
+    "noPopup": "如果无弹出“玲珑安装程序”对话框，您必须先安装玲珑:",
+    "installLink": "点击此处安装玲珑环境"
+  }
+}

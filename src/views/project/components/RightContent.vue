@@ -3,13 +3,13 @@
     <div class="header">
       <div class="header-category">
         <span class="category-name">
-          {{ selectedCategory?.categoryName || "全部分类" }}
+          {{ selectedCategory?.categoryName || $t('appList.header.all') }}
           <span v-show="searchQuery">({{ searchQuery }})</span>
         </span>
-        <span class="total-count">共 {{ total }} 款应用</span>
+        <span class="total-count">{{ $t('appList.header.total', { total: total }) }}</span>
       </div>
       <div class="header-sort">
-        <span class="sort-title">排序方式：</span>
+        <span class="sort-title">{{ $t('appList.header.sortMethod') }}：</span>
         <el-select
           :model-value="currentSort"
           size="small"
@@ -56,12 +56,12 @@
         </div>
         <div class="app-item-footer">
           <span class="app-item-version">v{{ app.version }}</span>
-          <el-button type="primary" plain size="small" @click="onInstall(app)">安装</el-button>
+          <el-button type="primary" plain size="small" @click="onInstall(app)">{{ $t('appList.app.install') }}</el-button>
         </div>
       </div>
     </div>
     <p v-loading="loading" element-loading-text></p>
-    <p v-if="noMore">暂无更多数据</p>
+    <p v-if="noMore">{{ $t('appList.noMore') }}</p>
   </div>
 </template>
 <script setup lang="ts">
@@ -70,6 +70,8 @@ import defaultIcon from "@/assets/images/default.svg";
 import { installApp, svgUrl2Base64 } from "@/api/modules/project";
 import { ElNotification } from "element-plus";
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const props = defineProps<{
   apps: App[];
   selectedCategory: Category;
@@ -88,12 +90,12 @@ const onInstall = async (app: App) => {
   window.location.href = "og://" + app.appId;
   // 显示通知
   ElNotification({
-    title: "温馨提示",
+    title: t('tips.title'),
     dangerouslyUseHTMLString: true,
     message: `
     <span>
-      如果无弹出“玲珑安装程序”对话框，您必须先安装玲珑:
-      <a href="https://linglong.dev/guide/start/install.html" target="_blank" style="color: #409EFF; text-decoration: underline;">点击此处安装玲珑环境</a>
+      ${t('tips.noPopup')}
+      <a href="https://linglong.dev/guide/start/install.html" target="_blank" style="color: #409EFF; text-decoration: underline;">${t('tips.installLink')}</a>
     </span>
   `
   });
@@ -121,8 +123,8 @@ const formatSVG = async (event: Event, url: string | undefined) => {
 
 const sortOptionsShow = ref(false);
 const sortOptions = [
-  { label: "上架时间", value: "createTime" },
-  { label: "安装量", value: "installCount" }
+  { label: t('appList.header.sort.new'), value: "createTime" },
+  { label: t('appList.header.sort.hot'), value: "installCount" }
 ];
 const sortLabel = computed(() => sortOptions.find(item => item.value === props.currentSort)?.label);
 </script>

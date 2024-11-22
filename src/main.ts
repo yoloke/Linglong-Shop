@@ -23,6 +23,9 @@ import "@/assets/fonts/font.scss";
 import "amfe-flexible";
 import "@/utils/rem";
 
+// 国际化组件
+import { i18n } from "@/utils/i18n";
+
 import App from "./App.vue";
 
 const app = createApp(App);
@@ -31,4 +34,4 @@ const app = createApp(App);
 Object.keys(Icons).forEach(key => {
   app.component(key, Icons[key as keyof typeof Icons]);
 });
-app.use(ElementPlus).use(router).use(pinia).mount("#app");
+app.use(ElementPlus).use(router).use(pinia).use(i18n).mount("#app");

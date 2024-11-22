@@ -1,13 +1,13 @@
 <template>
   <div class="home-header flx-column">
     <span class="title">
-      <span class="app">应用</span>
-      <span class="store">商店</span>
+      <span class="app">{{ $t('title.app') }}</span>
+      <span class="store">{{ $t('title.store') }}</span>
       <span class="download" @click="onInstall()">
-        客户端 <el-icon class="icon"><Download /></el-icon>
+        {{ $t('title.client') }} <el-icon class="icon"><Download /></el-icon>
       </span>
     </span>
-    <span class="content">探索应用新世界，享受到高品质的应用体验。</span>
+    <span class="content">{{ $t('title.subtitle') }}</span>
   </div>
 </template>
 
@@ -73,6 +73,10 @@ const onInstall = async () => {
 
     .app {
       color: #1890ff;
+    }
+
+    .store {
+      margin-right: 8px;
     }
 
     .download {

@@ -1,12 +1,12 @@
 <template>
   <div class="left">
     <div class="left_1">
-      <el-input placeholder="查找应用" :suffix-icon="Search" v-model="query" @change="handleInputChange" />
+      <el-input :placeholder="$t('appSearchBar.placeholder')" :suffix-icon="Search" v-model="query" @change="handleInputChange" />
     </div>
     <div class="left_2">
       <el-card>
         <template #header>
-          <span>分类</span>
+          <span>{{ $t('appSearchBar.category') }}</span>
         </template>
         <div class="category">
           <div
@@ -18,7 +18,7 @@
             @click="handleCategoryClick(category)"
           >
              <el-icon>       <component :is="category.icon" />     </el-icon>
-            <span>{{ category.categoryName || "其他" }}</span>
+            <span>{{ category.categoryName || $t('appSearchBar.other') }}</span>
           </div>
         </div>
       </el-card>

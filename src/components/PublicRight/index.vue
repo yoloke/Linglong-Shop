@@ -1,15 +1,15 @@
 <template>
   <div class="right-container flx-column-align-center" @click="openBoard">
-    <span>问题答疑</span>
+    <span>{{ $t('feedback.title') }}</span>
     <el-icon>
       <Edit />
     </el-icon>
   </div>
 
-  <el-dialog class="question-board" v-model="questionDialogVisible" title="答疑看板" width="50vw">
+  <el-dialog class="question-board" v-model="questionDialogVisible" :title="$t('feedback.board.title')" width="50vw">
     <el-input
       class="question-search"
-      placeholder="输入关键词检索问题"
+      :placeholder="$t('feedback.board.searchPlaceholder')"
       :suffix-icon="Search"
       v-model="questionSearchInput"
       @change="searchQuestionList"
@@ -24,35 +24,35 @@
       <el-collapse>
         <el-collapse-item v-for="(question, index) in questionList" :name="index" :key="index">
           <template #title>
-            <el-text truncated>问题：{{ question.question }}</el-text>
+            <el-text truncated>{{ $t('feedback.board.question') }}：{{ question.question }}</el-text>
           </template>
 
-          <div>解答：{{ question.reply }}</div>
+          <div>{{ $t('feedback.board.answer') }}：{{ question.reply }}</div>
         </el-collapse-item>
       </el-collapse>
 
       <p class="loading-tip" v-show="questionLoading" v-loading="questionLoading" element-loading-text></p>
       <el-divider class="no-more-tip" v-if="questionList.length > questionPageSize && noMoreQuestion"> The End </el-divider>
 
-      <el-empty v-if="questionList.length === 0 && noMoreQuestion" description="暂无相关问题，请重新搜索/反馈问题" />
+      <el-empty v-if="questionList.length === 0 && noMoreQuestion" :description="$t('feedback.board.empty')" />
     </div>
 
     <template #footer>
       <div class="feedback-tip">
-        <span>找不到想要的问题?</span>
-        <el-link type="primary" @click="centerDialogVisible = true">我要反馈 →</el-link>
+        <span>{{ $t('feedback.board.notFound') }}</span>
+        <el-link type="primary" @click="centerDialogVisible = true">{{ $t('feedback.board.feedback') }} →</el-link>
       </div>
     </template>
   </el-dialog>
 
-  <el-dialog v-model="centerDialogVisible" title="意见反馈" width="55vw" style="margin-top: 30vh">
-    <div style="margin-bottom: 12px">您的建议是我改进的动力!</div>
+  <el-dialog v-model="centerDialogVisible" :title="$t('feedback.feedback.title')" width="55vw" style="margin-top: 30vh">
+    <div style="margin-bottom: 12px">{{ $t('feedback.feedback.subtitle') }}</div>
 
-    <el-input v-model="message" :rows="4" type="textarea" placeholder="请输入意见反馈" show-word-limit maxlength="2400" />
+    <el-input v-model="message" :rows="4" type="textarea" :placeholder="$t('feedback.feedback.placeholder')" show-word-limit maxlength="2400" />
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit"> 提交</el-button>
+        <el-button @click="centerDialogVisible = false">{{ $t('feedback.feedback.cancel') }}</el-button>
+        <el-button type="primary" @click="handleSubmit">{{ $t('feedback.feedback.submit') }}</el-button>
       </div>
     </template>
   </el-dialog>

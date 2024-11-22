@@ -1,28 +1,28 @@
 <template>
   <div class="footer-container flx-justify-between">
     <span>
-      本商店来自于
-      <a href="https://github.com/OpenAtom-Linyaps/sig-linyaps-simple-store" target="_blank">简易玲珑商店SIG组</a>
-      贡献
+      {{ $t('footer.aboutPre') }}
+      <a href="https://github.com/OpenAtom-Linyaps/sig-linyaps-simple-store" target="_blank">{{ $t('footer.about') }}</a>
+      {{ $t('footer.aboutAft') }}
     </span>
     <el-tooltip effect="light" placement="top-start">
       <template #content>
         <div class="flx-column">
           <div class="flx-justify-between info">
-            <span>后端：Jokul</span>
+            <span>{{ $t('footer.backend') }}：Jokul</span>
             <span> 986432015@qq.com</span>
           </div>
           <div class="flx-justify-between info">
-            <span style="margin-right: 12px">前端：Yoloke </span>
+            <span style="margin-right: 12px">{{ $t('footer.frontend') }}：Yoloke </span>
             <span> 2575735053@qq.com</span>
           </div>
           <div class="flx-justify-between info">
-            <span>设计：Gyro</span>
+            <span>{{ $t('footer.design') }}：Gyro</span>
             <span> bgsdmyck12@163.com</span>
           </div>
         </div>
       </template>
-      <span>相关开发人员</span>
+      <span>{{ $t('footer.developers') }}</span>
     </el-tooltip>
   </div>
 </template>

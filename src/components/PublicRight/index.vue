@@ -2,43 +2,45 @@
   <div class="right-container flx-column-align-center" @click="openBoard">
     <span>问题答疑</span>
     <el-icon>
-      <Edit/>
+      <Edit />
     </el-icon>
   </div>
 
   <el-dialog class="question-board" v-model="questionDialogVisible" title="答疑看板" width="50vw">
-    <el-input class="question-search" placeholder="输入关键词检索问题" :suffix-icon="Search" v-model="questionSearchInput"
-              @change="searchQuestionList"/>
+    <el-input
+      class="question-search"
+      placeholder="输入关键词检索问题"
+      :suffix-icon="Search"
+      v-model="questionSearchInput"
+      @change="searchQuestionList"
+    />
 
-    <div class="question-list" v-infinite-scroll="moreQuestionList" :infinite-scroll-disabled="loadQuestionDisable"
-         infinite-scroll-distance="10">
+    <div
+      class="question-list"
+      v-infinite-scroll="moreQuestionList"
+      :infinite-scroll-disabled="loadQuestionDisable"
+      infinite-scroll-distance="10"
+    >
       <el-collapse>
-        <el-collapse-item v-for="(question,index) in questionList" :name="index">
+        <el-collapse-item v-for="(question, index) in questionList" :name="index" :key="index">
           <template #title>
             <el-text truncated>问题：{{ question.question }}</el-text>
           </template>
 
-          <div>
-            解答：{{ question.reply }}
-          </div>
+          <div>解答：{{ question.reply }}</div>
         </el-collapse-item>
       </el-collapse>
 
-      <p class="loading-tip" v-show="questionLoading"
-         v-loading="questionLoading" element-loading-text></p>
-      <el-divider class="no-more-tip" v-if="questionList.length>questionPageSize && noMoreQuestion">
-        The End
-      </el-divider>
+      <p class="loading-tip" v-show="questionLoading" v-loading="questionLoading" element-loading-text></p>
+      <el-divider class="no-more-tip" v-if="questionList.length > questionPageSize && noMoreQuestion"> The End </el-divider>
 
-      <el-empty v-if="questionList.length===0 && noMoreQuestion" description="暂无相关问题，请重新搜索/反馈问题"/>
-
+      <el-empty v-if="questionList.length === 0 && noMoreQuestion" description="暂无相关问题，请重新搜索/反馈问题" />
     </div>
-
 
     <template #footer>
       <div class="feedback-tip">
         <span>找不到想要的问题?</span>
-        <el-link type="primary" @click="centerDialogVisible=true">我要反馈 →</el-link>
+        <el-link type="primary" @click="centerDialogVisible = true">我要反馈 →</el-link>
       </div>
     </template>
   </el-dialog>
@@ -46,7 +48,7 @@
   <el-dialog v-model="centerDialogVisible" title="意见反馈" width="55vw" style="margin-top: 30vh">
     <div style="margin-bottom: 12px">您的建议是我改进的动力!</div>
 
-    <el-input v-model="message" :rows="4" type="textarea" placeholder="请输入意见反馈" show-word-limit maxlength="2400"/>
+    <el-input v-model="message" :rows="4" type="textarea" placeholder="请输入意见反馈" show-word-limit maxlength="2400" />
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取消</el-button>
@@ -56,85 +58,85 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-import {ref, h, onMounted} from "vue";
-import {ElMessage} from "element-plus";
-import {CircleClose, Search} from "@element-plus/icons-vue"; // 引入自定义图标
-import {addSuggest, getQuestionList} from "@/api/modules/project";
-import {Question} from "@/api/interface";
+import { ref, h, onMounted } from "vue";
+import { ElMessage } from "element-plus";
+import { CircleClose, Search } from "@element-plus/icons-vue"; // 引入自定义图标
+import { addSuggest, getQuestionList } from "@/api/modules/project";
+import { Question } from "@/api/interface";
 
 const centerDialogVisible = ref(false);
 const message = ref("");
 
 // 答疑面板问题列表
 const questionDialogVisible = ref(false);
-const questionList = ref<Question[]>([])
-const questionLoading = ref(false)
-const loadQuestionDisable = ref(false)
-const questionSearchInput = ref('')
-const questionPageNo = ref(1)
-const questionPageSize = ref(10)
-const noMoreQuestion = ref(false)
-const existQuestion = ref(false)
+const questionList = ref<Question[]>([]);
+const questionLoading = ref(false);
+const loadQuestionDisable = ref(false);
+const questionSearchInput = ref("");
+const questionPageNo = ref(1);
+const questionPageSize = ref(10);
+const noMoreQuestion = ref(false);
+const existQuestion = ref(false);
 
 const queryQuestionList = async () => {
-  const {data: questions} = await getQuestionList({
+  const { data: questions } = await getQuestionList({
     questionKeyWord: questionSearchInput.value,
     pageNo: questionPageNo.value,
-    pageSize: questionPageSize.value,
-  })
+    pageSize: questionPageSize.value
+  });
 
   if (questions && questions?.length === questionPageSize.value) {
-    questionPageNo.value += 1
+    questionPageNo.value += 1;
   } else {
-    noMoreQuestion.value = true
+    noMoreQuestion.value = true;
   }
 
-  return questions
-}
+  return questions;
+};
 
 const searchQuestionList = async () => {
-  questionPageNo.value = 1
-  questionList.value = []
-  questionLoading.value = true
-  loadQuestionDisable.value = true
-  noMoreQuestion.value = false
+  questionPageNo.value = 1;
+  questionList.value = [];
+  questionLoading.value = true;
+  loadQuestionDisable.value = true;
+  noMoreQuestion.value = false;
 
   try {
-    const questions = await queryQuestionList()
-    questionList.value = [...questions]
+    const questions = await queryQuestionList();
+    questionList.value = [...questions];
   } finally {
-    questionLoading.value = false
-    loadQuestionDisable.value = false
+    questionLoading.value = false;
+    loadQuestionDisable.value = false;
   }
-}
+};
 
 const moreQuestionList = async () => {
   if (noMoreQuestion.value) {
-    return
+    return;
   }
 
-  questionLoading.value = true
-  loadQuestionDisable.value = true
+  questionLoading.value = true;
+  loadQuestionDisable.value = true;
 
   try {
-    const questions = await queryQuestionList()
-    questionList.value.push(...questions)
+    const questions = await queryQuestionList();
+    questionList.value.push(...questions);
   } finally {
-    questionLoading.value = false
-    loadQuestionDisable.value = false
+    questionLoading.value = false;
+    loadQuestionDisable.value = false;
   }
-}
+};
 
 // 打开面板
 const openBoard = () => {
   // 存在上架问题则展示答疑面板
   if (existQuestion.value) {
-    questionDialogVisible.value = true
+    questionDialogVisible.value = true;
   } else {
     // 不存在则直接打开反馈面板
-    centerDialogVisible.value = true
+    centerDialogVisible.value = true;
   }
-}
+};
 
 // 提交处理函数
 const handleSubmit = async () => {
@@ -143,7 +145,7 @@ const handleSubmit = async () => {
       showClose: true,
       message: "请输入意见反馈",
       type: "error",
-      icon: h(CircleClose, {style: "width: 1em; height: 1em;"}) // 使用VNode渲染自定义图标
+      icon: h(CircleClose, { style: "width: 1em; height: 1em;" }) // 使用VNode渲染自定义图标
     });
     return;
   }
@@ -159,7 +161,7 @@ const handleSubmit = async () => {
     questionDialogVisible.value = false;
     ElMessage.success({
       message: "提交成功",
-      type: "success",
+      type: "success"
     });
   } catch (error) {
     alert("提交时出现错误，请稍后重试");
@@ -168,17 +170,14 @@ const handleSubmit = async () => {
 
 onMounted(async () => {
   try {
-    const questions = await queryQuestionList()
-    questionList.value = [...questions]
+    const questions = await queryQuestionList();
+    questionList.value = [...questions];
     if (questions.length) {
-      existQuestion.value = true
+      existQuestion.value = true;
     }
   } finally {
-
   }
-
-})
-
+});
 </script>
 <style scoped lang="scss">
 .right-container {
@@ -203,7 +202,6 @@ onMounted(async () => {
 .title {
   margin-bottom: 12px;
 }
-
 
 :deep(.el-collapse-item) {
   border: 1px solid rgba(229, 229, 229, 1);
@@ -231,7 +229,6 @@ onMounted(async () => {
 :deep(.el-collapse-item__wrap) {
   border-bottom: 0;
 }
-
 
 .feedback-tip span {
   font-size: 12px;
@@ -279,5 +276,4 @@ onMounted(async () => {
 .loading-tip {
   height: 50px;
 }
-
 </style>

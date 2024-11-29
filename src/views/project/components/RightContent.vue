@@ -103,13 +103,20 @@ const onInstall = async (app: App) => {
 
 const formatSVG = async (event: Event, url: string | undefined) => {
   const target = event.target as HTMLImageElement;
-  // 如果已经使用过默认图标,直接返回,防止循环
   if (target.src === defaultIcon) return;
   if (url) {
     try {
       const response = await svgUrl2Base64({ url: url });
       if (response.code == "200" && response.data) {
-        target.src = response.data as unknown as string;
+        // 检查base64图片是否能正常显示
+        const img = new Image();
+        img.src = response.data as unknown as string;
+        img.onerror = () => {
+          target.src = defaultIcon;
+        };
+        img.onload = () => {
+          target.src = response.data as unknown as string;
+        };
         return;
       }
     } catch (error) {

@@ -102,21 +102,22 @@ const onInstall = async (app: App) => {
 };
 
 const formatSVG = async (event: Event, url: string | undefined) => {
+  const target = event.target as HTMLImageElement;
+  // 如果已经使用过默认图标,直接返回,防止循环
+  if (target.src === defaultIcon) return;
   if (url) {
-    const response = await svgUrl2Base64({ url: url });
-    if (response.code == "200" && response.data) {
-      // 设置 src 为 Base64 数据图片
-      const target = event.target as HTMLImageElement; // 强制类型转换为 HTMLImageElement
-      if (target) {
-        target.src = response.data as unknown as string; // 设置为 Base64 数据
+    try {
+      const response = await svgUrl2Base64({ url: url });
+      if (response.code == "200" && response.data) {
+        target.src = response.data as unknown as string;
         return;
       }
+    } catch (error) {
+      console.error("SVG转换失败:", error);
     }
   }
-  const target = event.target as HTMLImageElement; // 强制类型转换为 HTMLImageElement
-  if (target) {
-    target.src = defaultIcon;
-  }
+  // 所有情况失败时使用默认图标
+  target.src = defaultIcon;
 };
 
 const sortOptionsShow = ref(false);

@@ -3,13 +3,13 @@
     <div class="header">
       <div class="header-category">
         <span class="category-name">
-          {{ selectedCategory?.categoryName || $t('appList.header.all') }}
+          {{ selectedCategory?.categoryName || $t("appList.header.all") }}
           <span v-show="searchQuery">({{ searchQuery }})</span>
         </span>
-        <span class="total-count">{{ $t('appList.header.total', { total: total }) }}</span>
+        <span class="total-count">{{ $t("appList.header.total", { total: total }) }}</span>
       </div>
       <div class="header-sort">
-        <span class="sort-title">{{ $t('appList.header.sortMethod') }}：</span>
+        <span class="sort-title">{{ $t("appList.header.sortMethod") }}：</span>
         <el-select
           :model-value="currentSort"
           size="small"
@@ -56,12 +56,12 @@
         </div>
         <div class="app-item-footer">
           <span class="app-item-version">v{{ app.version }}</span>
-          <el-button type="primary" plain size="small" @click="onInstall(app)">{{ $t('appList.app.install') }}</el-button>
+          <el-button type="primary" plain size="small" @click="onInstall(app)">{{ $t("appList.app.install") }}</el-button>
         </div>
       </div>
     </div>
     <p v-loading="loading" element-loading-text></p>
-    <p v-if="noMore">{{ $t('appList.noMore') }}</p>
+    <p v-if="noMore">{{ $t("appList.noMore") }}</p>
   </div>
 </template>
 <script setup lang="ts">
@@ -90,12 +90,12 @@ const onInstall = async (app: App) => {
   window.location.href = "og://" + app.appId;
   // 显示通知
   ElNotification({
-    title: t('tips.title'),
+    title: t("tips.title"),
     dangerouslyUseHTMLString: true,
     message: `
     <span>
-      ${t('tips.noPopup')}
-      <a href="https://linglong.dev/guide/start/install.html" target="_blank" style="color: #409EFF; text-decoration: underline;">${t('tips.installLink')}</a>
+      ${t("tips.noPopup")}
+      <a href="https://linglong.dev/guide/start/install.html" target="_blank" style="color: #409EFF; text-decoration: underline;">${t("tips.installLink")}</a>
     </span>
   `
   });
@@ -123,8 +123,8 @@ const formatSVG = async (event: Event, url: string | undefined) => {
 
 const sortOptionsShow = ref(false);
 const sortOptions = [
-  { label: t('appList.header.sort.new'), value: "createTime" },
-  { label: t('appList.header.sort.hot'), value: "installCount" }
+  { label: t("appList.header.sort.new"), value: "createTime" },
+  { label: t("appList.header.sort.hot"), value: "installCount" }
 ];
 const sortLabel = computed(() => sortOptions.find(item => item.value === props.currentSort)?.label);
 </script>

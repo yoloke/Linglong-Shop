@@ -1,13 +1,13 @@
 <template>
   <div class="home-header flx-column">
     <span class="title">
-      <span class="app">{{ $t('title.app') }}</span>
-      <span class="store">{{ $t('title.store') }}</span>
+      <span class="app">{{ $t("title.app") }}</span>
+      <span class="store">{{ $t("title.store") }}</span>
       <span class="download" @click="onInstall()">
-        {{ $t('title.client') }} <el-icon class="icon"><Download /></el-icon>
+        {{ $t("title.client") }} <el-icon class="icon"><Download /></el-icon>
       </span>
     </span>
-    <span class="content">{{ $t('title.subtitle') }}</span>
+    <span class="content">{{ $t("title.subtitle") }}</span>
   </div>
 </template>
 

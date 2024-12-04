@@ -2,8 +2,8 @@
   <div :class="['header-container', 'flx-justify-between flx-align-center', { scrolled: isScrolled }]">
     <img src="@/assets/images/logo.svg" alt="" />
     <span>
-      <a @click="openUrl('https://www.linglong.space/')">{{ $t('header.website') }}</a>
-      <a @click="openUrl('https://github.com/OpenAtom-Linyaps/sig-linyaps-packing-sig')">{{ $t('header.delivery') }}</a>
+      <a @click="openUrl('https://www.linglong.space/')">{{ $t("header.website") }}</a>
+      <a @click="openUrl('https://github.com/OpenAtom-Linyaps/sig-linyaps-packing-sig')">{{ $t("header.delivery") }}</a>
     </span>
   </div>
 </template>

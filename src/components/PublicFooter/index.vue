@@ -1,28 +1,28 @@
 <template>
   <div class="footer-container flx-justify-between">
     <span>
-      {{ $t('footer.aboutPre') }}
-      <a href="https://github.com/OpenAtom-Linyaps/sig-linyaps-simple-store" target="_blank">{{ $t('footer.about') }}</a>
-      {{ $t('footer.aboutAft') }}
+      {{ $t("footer.aboutPre") }}
+      <a href="https://github.com/OpenAtom-Linyaps/sig-linyaps-simple-store" target="_blank">{{ $t("footer.about") }}</a>
+      {{ $t("footer.aboutAft") }}
     </span>
     <el-tooltip effect="light" placement="top-start">
       <template #content>
         <div class="flx-column">
           <div class="flx-justify-between info">
-            <span>{{ $t('footer.backend') }}：Jokul</span>
+            <span>{{ $t("footer.backend") }}：Jokul</span>
             <span> 986432015@qq.com</span>
           </div>
           <div class="flx-justify-between info">
-            <span style="margin-right: 12px">{{ $t('footer.frontend') }}：Yoloke </span>
+            <span style="margin-right: 12px">{{ $t("footer.frontend") }}：Yoloke </span>
             <span> 2575735053@qq.com</span>
           </div>
           <div class="flx-justify-between info">
-            <span>{{ $t('footer.design') }}：Gyro</span>
+            <span>{{ $t("footer.design") }}：Gyro</span>
             <span> bgsdmyck12@163.com</span>
           </div>
         </div>
       </template>
-      <span>{{ $t('footer.developers') }}</span>
+      <span>{{ $t("footer.developers") }}</span>
     </el-tooltip>
   </div>
 </template>

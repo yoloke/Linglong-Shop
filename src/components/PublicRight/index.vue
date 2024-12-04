@@ -1,6 +1,6 @@
 <template>
   <div class="right-container flx-column-align-center" @click="openBoard">
-    <span>{{ $t('feedback.title') }}</span>
+    <span>{{ $t("feedback.title") }}</span>
     <el-icon>
       <Edit />
     </el-icon>
@@ -24,10 +24,10 @@
       <el-collapse>
         <el-collapse-item v-for="(question, index) in questionList" :name="index" :key="index">
           <template #title>
-            <el-text truncated>{{ $t('feedback.board.question') }}：{{ question.question }}</el-text>
+            <el-text truncated>{{ $t("feedback.board.question") }}：{{ question.question }}</el-text>
           </template>
 
-          <div>{{ $t('feedback.board.answer') }}：{{ question.reply }}</div>
+          <div>{{ $t("feedback.board.answer") }}：{{ question.reply }}</div>
         </el-collapse-item>
       </el-collapse>
 
@@ -39,20 +39,27 @@
 
     <template #footer>
       <div class="feedback-tip">
-        <span>{{ $t('feedback.board.notFound') }}</span>
-        <el-link type="primary" @click="centerDialogVisible = true">{{ $t('feedback.board.feedback') }} →</el-link>
+        <span>{{ $t("feedback.board.notFound") }}</span>
+        <el-link type="primary" @click="centerDialogVisible = true">{{ $t("feedback.board.feedback") }} →</el-link>
       </div>
     </template>
   </el-dialog>
 
   <el-dialog v-model="centerDialogVisible" :title="$t('feedback.feedback.title')" width="55vw" style="margin-top: 30vh">
-    <div style="margin-bottom: 12px">{{ $t('feedback.feedback.subtitle') }}</div>
+    <div style="margin-bottom: 12px">{{ $t("feedback.feedback.subtitle") }}</div>
 
-    <el-input v-model="message" :rows="4" type="textarea" :placeholder="$t('feedback.feedback.placeholder')" show-word-limit maxlength="2400" />
+    <el-input
+      v-model="message"
+      :rows="4"
+      type="textarea"
+      :placeholder="$t('feedback.feedback.placeholder')"
+      show-word-limit
+      maxlength="2400"
+    />
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">{{ $t('feedback.feedback.cancel') }}</el-button>
-        <el-button type="primary" @click="handleSubmit">{{ $t('feedback.feedback.submit') }}</el-button>
+        <el-button @click="centerDialogVisible = false">{{ $t("feedback.feedback.cancel") }}</el-button>
+        <el-button type="primary" @click="handleSubmit">{{ $t("feedback.feedback.submit") }}</el-button>
       </div>
     </template>
   </el-dialog>

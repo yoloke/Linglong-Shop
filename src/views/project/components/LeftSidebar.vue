@@ -6,7 +6,7 @@
     <div class="left_2">
       <el-card>
         <template #header>
-          <span>{{ $t('appSearchBar.category') }}</span>
+          <span>{{ $t("appSearchBar.category") }}</span>
         </template>
         <div class="category">
           <div
@@ -18,7 +18,7 @@
             @click="handleCategoryClick(category)"
           >
              <el-icon>       <component :is="category.icon" />     </el-icon>
-            <span>{{ category.categoryName || $t('appSearchBar.other') }}</span>
+            <span>{{ category.categoryName || $t("appSearchBar.other") }}</span>
           </div>
         </div>
       </el-card>

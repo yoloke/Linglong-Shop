@@ -86,8 +86,22 @@ const emit = defineEmits<{
 }>();
 
 const onInstall = async (app: App) => {
-  window.location.href = "og://" + app.appId;
-  // 显示通知
+  // 判断系统环境，不支持则返回
+  const userAgent = navigator.userAgent || navigator.platform;
+  if (!/Linux/i.test(userAgent)) {
+    ElNotification({
+      title: "温馨提示",
+      dangerouslyUseHTMLString: true,
+      message: `
+        <span>当前系统环境不支持玲珑安装</span>
+      `
+    });
+    return;
+  }
+  // 入参加入客户端ip
+  let clientIp = sessionStorage.getItem('clientIp');
+  app.clientIp = clientIp ? clientIp : "";
+  // 温馨提示
   ElNotification({
     title: "温馨提示",
     dangerouslyUseHTMLString: true,
@@ -98,10 +112,11 @@ const onInstall = async (app: App) => {
       </span>
     `
   });
-  let clientIp = sessionStorage.getItem('clientIp');
-  app.clientIp = clientIp ? clientIp : ""; // 入参加入客户端ip
-  const { code } = await installApp(app);
-  console.log(code);
+  // 调用自定义协议执行安装
+  window.location.href = "og://" + app.appId;
+  await installApp(app);
+  // const { code } = await installApp(app);
+  // console.log(code);
 };
 
 const formatSVG = async (event: Event, url: string | undefined) => {

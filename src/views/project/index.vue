@@ -74,27 +74,27 @@ const load = async () => {
 };
 const searchQuery = ref("");
 onMounted(async () => {
+  // 输出版本信息
   const osVersion = navigator.userAgent || navigator.appVersion;
-  console.log(osVersion); // 输出版本信息
-
-  // 获取登录IP
-  let clientIp = "";
-  let clientRepo = await axios.get('http://ip-api.com/json')
-  if (clientRepo.status == 200) {
-    clientIp = clientRepo.data.query ? clientRepo.data.query : "";
-  }
-  // 存入session中
-  sessionStorage.setItem('clientIp',clientIp);
-  // 传递 osVersion
-  await getLogin({ clientIp, osVersion }); 
 
   // 获取分类数据
   const { data: categoryData } = await getCategories({});
   categories.value = [{ categoryId: undefined, categoryName: "全部分类", icon: "Files" }, ...categoryData];
 
   // 获取排名数据
-  const { data: rankingData } = await getTop();
-  rankings.value = rankingData.slice(0, 6);
+  // const { data: rankingData } = await getTop();
+  // rankings.value = rankingData.slice(0, 6);
+
+  // 获取登录IP
+  let clientIp = "";
+  let clientRepo = await axios.get('https://ipwhois.app/json/')
+  if (clientRepo.status == 200) {
+    clientIp = clientRepo.data.ip ? clientRepo.data.ip : "";
+  }
+  // 存入session中
+  sessionStorage.setItem('clientIp',clientIp);
+  // 传递 osVersion
+  await getLogin({ clientIp, osVersion }); 
 });
 
 const fetchAppsByCategory = async (category: Category) => {

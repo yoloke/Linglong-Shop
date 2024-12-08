@@ -16,7 +16,6 @@ import { Download } from "@element-plus/icons-vue";
 import { installdd } from "@/api/modules/project";
 const getArchitecture = () => {
   const userAgent = navigator.userAgent || navigator.platform;
-
   if (/x86_64|x64|amd64/i.test(userAgent)) {
     return "x86_64";
   } else if (/arm64|aarch64/i.test(userAgent)) {
@@ -28,7 +27,7 @@ const getArchitecture = () => {
   }
 };
 const architecture = getArchitecture();
-console.log(`System architecture: ${architecture}`);
+// console.log(`System architecture: ${architecture}`);
 const onInstall = async () => {
   try {
     // 请求接口，获取后端返回的数据对象（包含下载链接）

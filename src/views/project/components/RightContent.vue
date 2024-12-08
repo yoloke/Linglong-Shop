@@ -84,6 +84,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: "sort-change", value: string): void;
 }>();
+
 const onInstall = async (app: App) => {
   window.location.href = "og://" + app.appId;
   // 显示通知
@@ -91,12 +92,14 @@ const onInstall = async (app: App) => {
     title: "温馨提示",
     dangerouslyUseHTMLString: true,
     message: `
-    <span>
-      如果无弹出“玲珑安装程序”对话框，您必须先安装玲珑:
-      <a href="https://linglong.dev/guide/start/install.html" target="_blank" style="color: #409EFF; text-decoration: underline;">点击此处安装玲珑环境</a>
-    </span>
-  `
+      <span>
+        如果无弹出“玲珑安装程序”对话框，您必须先安装玲珑:
+        <a href="https://linglong.dev/guide/start/install.html" target="_blank" style="color: #409EFF; text-decoration: underline;">点击此处安装玲珑环境</a>
+      </span>
+    `
   });
+  let clientIp = sessionStorage.getItem('clientIp');
+  app.clientIp = clientIp ? clientIp : ""; // 入参加入客户端ip
   const { code } = await installApp(app);
   console.log(code);
 };

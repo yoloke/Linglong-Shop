@@ -31,6 +31,7 @@
 
 <script setup lang="ts">
 import { App, Category, Rankings } from "@/api/interface/index";
+import axios from "axios";
 import HomeHeader from "./components/HomeHeader.vue";
 import LeftSidebar from "./components/LeftSidebar.vue";
 import RightContent from "./components/RightContent.vue";
@@ -76,7 +77,17 @@ onMounted(async () => {
   const osVersion = navigator.userAgent || navigator.appVersion;
   console.log(osVersion); // 输出版本信息
 
-  await getLogin({ osVersion }); // 传递 osVersion
+  // 获取登录IP
+  let clientIp = "";
+  let clientRepo = await axios.get('http://ip-api.com/json')
+  if (clientRepo.status == 200) {
+    clientIp = clientRepo.data.query ? clientRepo.data.query : "";
+  }
+  // 存入session中
+  sessionStorage.setItem('clientIp',clientIp);
+  // 传递 osVersion
+  await getLogin({ clientIp, osVersion }); 
+
   // 获取分类数据
   const { data: categoryData } = await getCategories({});
   categories.value = [{ categoryId: undefined, categoryName: "全部分类", icon: "Files" }, ...categoryData];

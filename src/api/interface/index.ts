@@ -28,6 +28,7 @@ export interface App {
   description?: string;
   categoryName?: string;
   version?: string;
+  clientIp?: string;
 }
 
 // 应用分类

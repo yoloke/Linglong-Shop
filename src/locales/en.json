@@ -1,0 +1,65 @@
+{
+  "title": {
+    "app": "App ",
+    "store": "Store",
+    "client": "Client",
+    "subtitle": "Explore a new world of apps and enjoy a high-quality app experience."
+  },
+  "appSearchBar": {
+    "placeholder": "Search for apps",
+    "category": "Category",
+    "other": "Other",
+    "all": "All"
+  },
+  "appList": {
+    "header": {
+      "total": "Total {total} apps",
+      "sortMethod": "Sort",
+      "sort": {
+        "hot": "Hottest",
+        "new": "Newest"
+      }
+    },
+    "app": {
+      "install": "Install"
+    },
+    "noMore": "No more apps"
+  },
+  "header": {
+    "website": "Linglong Official Website",
+    "delivery": "App Delivery"
+  },
+  "footer": {
+    "aboutPre": "Contributed by",
+    "about": "Simple Linglong Store SIG Group",
+    "aboutAft": "",
+    "developers": "Related Developers",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "design": "Design"
+  },
+  "feedback": {
+    "title": "Q&A",
+    "board": {
+      "title": "Q&A Board",
+      "searchPlaceholder": "Enter keywords to search for questions",
+      "question": "Question",
+      "answer": "Answer",
+      "notFound": "Can't find the question?",
+      "feedback": "Feedback",
+      "empty": "No related questions, please search again or give feedback"
+    },
+    "feedback": {
+      "title": "Feedback",
+      "subtitle": "Your suggestions are my motivation for improvement!",
+      "placeholder": "Please enter your feedback",
+      "submit": "Submit",
+      "cancel": "Cancel"
+    }
+  },
+  "tips": {
+    "title": "Tips",
+    "noPopup": "If the 'Linglong Installer' dialog does not pop up, you must first install Linglong:",
+    "installLink": "Click here to install the Linglong environment"
+  }
+}

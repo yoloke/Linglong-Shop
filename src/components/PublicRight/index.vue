@@ -151,12 +151,12 @@ const handleSubmit = async () => {
   }
   const osVersion = navigator.userAgent || navigator.appVersion;
 
-  let clientIp = sessionStorage.getItem('clientIp');
+  let clientIp = sessionStorage.getItem("clientIp");
 
   await addSuggest({
     osVersion,
     message: message.value,
-    clientIp: clientIp ? clientIp : "",
+    clientIp: clientIp ? clientIp : ""
   }); // 传递 osVersion
   try {
     // 清空表单并关闭对话框

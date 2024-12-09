@@ -99,7 +99,7 @@ const onInstall = async (app: App) => {
     return;
   }
   // 入参加入客户端ip
-  let clientIp = sessionStorage.getItem('clientIp');
+  let clientIp = sessionStorage.getItem("clientIp");
   app.clientIp = clientIp ? clientIp : "";
   // 温馨提示
   ElNotification({

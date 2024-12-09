@@ -88,14 +88,14 @@ onMounted(async () => {
 
   // 获取登录IP
   let clientIp = "";
-  let clientRepo = await axios.get('https://ipwhois.app/json/')
+  let clientRepo = await axios.get("https://ipwhois.app/json/");
   if (clientRepo.status == 200) {
     clientIp = clientRepo.data.ip ? clientRepo.data.ip : "";
   }
   // 存入session中
-  sessionStorage.setItem('clientIp',clientIp);
+  sessionStorage.setItem("clientIp", clientIp);
   // 传递 osVersion
-  await getLogin({ clientIp, osVersion }); 
+  await getLogin({ clientIp, osVersion });
 });
 
 const fetchAppsByCategory = async (category: Category) => {

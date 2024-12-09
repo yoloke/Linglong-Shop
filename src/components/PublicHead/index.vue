@@ -1,13 +1,26 @@
 <template>
   <div :class="['header-container', 'flx-justify-between flx-align-center', { scrolled: isScrolled }]">
-    <img src="@/assets/images/logo.svg" alt="" />
-    <span>
+    <img src="@/assets/images/logo.svg" alt="logo" />
+    <span class="menu-list">
       <a @click="openUrl('https://www.linglong.space/')">{{ $t("header.website") }}</a>
       <a @click="openUrl('https://github.com/OpenAtom-Linyaps/sig-linyaps-packing-sig')">{{ $t("header.delivery") }}</a>
+      <el-dropdown>
+        <span class="el-dropdown-link">
+          <img class="language-icon" :src="languageIcon" alt="language" />
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="changeLanguage('zh')">中文</el-dropdown-item>
+            <el-dropdown-item @click="changeLanguage('en')">English</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </span>
   </div>
 </template>
 <script setup lang="ts">
+import languageIcon from "@/assets/icons/language.svg";
+import { i18n } from "@/utils/i18n";
 import { ref, onMounted, onUnmounted } from "vue";
 
 const isScrolled = ref(false);
@@ -31,6 +44,13 @@ onUnmounted(() => {
 const openUrl = (url: string) => {
   window.open(url, "_blank");
 };
+
+const changeLanguage = (lang: "zh" | "en") => {
+  if (i18n.global.locale === lang) return;
+  i18n.global.locale = lang;
+  localStorage.setItem("language", lang);
+  // location.reload();
+};
 </script>
 <style scoped lang="scss">
 .header-container {
@@ -44,15 +64,21 @@ const openUrl = (url: string) => {
   box-sizing: border-box;
   background: rgb(255 255 255 / 43%);
   z-index: 100;
-  span {
-    font-size: 12px;
+  .menu-list {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
     a {
-      margin-left: 12px;
       cursor: pointer;
       transition: color 0.2s;
       &:hover {
         color: #409eff;
       }
+    }
+    .language-icon {
+      width: 16px;
+      height: 16px;
     }
   }
 

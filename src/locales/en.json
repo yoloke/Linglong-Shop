@@ -8,11 +8,11 @@
   "appSearchBar": {
     "placeholder": "Search for apps",
     "category": "Category",
-    "other": "Other"
+    "other": "Other",
+    "all": "All"
   },
   "appList": {
     "header": {
-      "all": "All Categories",
       "total": "Total {total} apps",
       "sortMethod": "Sort",
       "sort": {

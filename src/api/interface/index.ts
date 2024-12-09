@@ -27,6 +27,7 @@ export interface App {
   icon?: string;
   description?: string;
   categoryName?: string;
+  categoryId?: string;
   version?: string;
 }
 

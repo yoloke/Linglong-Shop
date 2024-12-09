@@ -8,11 +8,11 @@
   "appSearchBar": {
     "placeholder": "查找应用",
     "category": "分类",
-    "other": "其他"
+    "other": "其他",
+    "all": "全部分类"
   },
   "appList": {
     "header": {
-      "all": "全部分类",
       "total": "共 {total} 款应用",
       "sortMethod": "排序方式",
       "sort": {

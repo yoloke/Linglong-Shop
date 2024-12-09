@@ -3,7 +3,7 @@
     <div class="header">
       <div class="header-category">
         <span class="category-name">
-          {{ selectedCategory?.categoryName || $t("appList.header.all") }}
+          {{ categoriesDict.get(selectedCategory?.categoryId || "") || $t("appSearchBar.all") }}
           <span v-show="searchQuery">({{ searchQuery }})</span>
         </span>
         <span class="total-count">{{ $t("appList.header.total", { total: total }) }}</span>
@@ -42,7 +42,9 @@
           <div class="app-item-text">
             <div class="app-item-title">
               <el-text class="app-item-name" truncated>{{ app.zhName || app.name }}</el-text>
-              <div class="app-item-category">{{ app.categoryName }}</div>
+              <div class="app-item-category">
+                {{ categoriesDict.get(app.categoryId || "") }}
+              </div>
             </div>
             <el-tooltip effect="light" placement="top">
               <template #content>
@@ -74,6 +76,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const props = defineProps<{
   apps: App[];
+  categoriesDict: Map<string, string>;
   selectedCategory: Category;
   total: number;
   load: () => void;
@@ -122,11 +125,11 @@ const formatSVG = async (event: Event, url: string | undefined) => {
 };
 
 const sortOptionsShow = ref(false);
-const sortOptions = [
+const sortOptions = computed(() => [
   { label: t("appList.header.sort.new"), value: "createTime" },
   { label: t("appList.header.sort.hot"), value: "installCount" }
-];
-const sortLabel = computed(() => sortOptions.find(item => item.value === props.currentSort)?.label);
+]);
+const sortLabel = computed(() => sortOptions.value.find(item => item.value === props.currentSort)?.label);
 </script>
 <style scoped lang="scss">
 .right {

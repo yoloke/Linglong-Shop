@@ -18,7 +18,7 @@ export const getLogin = (params: any) => {
 
 // 获取分类
 export const getCategories = (params: any) => {
-  return http.get<Category[]>("/web/categories", { params });
+  return http.get<Category[]>("/web/categories", params);
 };
 
 // 获取排名

@@ -13,6 +13,7 @@
 
     <RightContent
       :apps="apps"
+      :categories-dict="categoriesDict"
       :selected-category="selectedCategory"
       :total="total"
       :load="load"
@@ -35,8 +36,12 @@ import HomeHeader from "./components/HomeHeader.vue";
 import LeftSidebar from "./components/LeftSidebar.vue";
 import RightContent from "./components/RightContent.vue";
 import { getLogin, getCategories, getTop, getApp } from "@/api/modules/project";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
+import { i18n } from "@/utils/i18n";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const categories = ref<Category[]>([]);
+const categoriesDict = ref<Map<string, string>>(new Map());
 const rankings = ref<Rankings[]>([]);
 
 const apps = ref<App[]>([]);
@@ -47,7 +52,7 @@ const loading = ref(false); // 加载状态
 const total = ref<number>(2); // 初始值为 null 以处理未知总数
 const noMore = computed(() => apps.value.length >= total.value);
 const disabled = computed(() => loading.value || noMore.value); // 是否禁用滚动加载
-const selectedCategory = ref<Category>({ categoryId: undefined, categoryName: "全部分类" });
+const selectedCategory = ref<Category>({ categoryId: undefined, categoryName: t("appSearchBar.all") });
 const load = async () => {
   loading.value = true;
   try {
@@ -78,13 +83,30 @@ onMounted(async () => {
 
   await getLogin({ osVersion }); // 传递 osVersion
   // 获取分类数据
-  const { data: categoryData } = await getCategories({});
-  categories.value = [{ categoryId: undefined, categoryName: "全部分类", icon: "Files" }, ...categoryData];
+  await getCategory();
 
   // 获取排名数据
   const { data: rankingData } = await getTop();
   rankings.value = rankingData.slice(0, 6);
 });
+
+const getCategory = async () => {
+  const { data: categoryData } = await getCategories({ lang: i18n.global.locale });
+  categories.value = [{ categoryId: undefined, categoryName: t("appSearchBar.all"), icon: "Files" }, ...categoryData];
+  categories.value.forEach(category => {
+    if (category.categoryId) {
+      categoriesDict.value.set(category.categoryId, category.categoryName);
+    }
+  });
+  console.log(categoriesDict.value);
+};
+
+watch(
+  () => i18n.global.locale,
+  () => {
+    getCategory();
+  }
+);
 
 const fetchAppsByCategory = async (category: Category) => {
   currentPage.value = 1;
@@ -113,7 +135,7 @@ const handleSearch = async (query: string) => {
   searchQuery.value = query;
   currentPage.value = 1; // 重置页码
   apps.value = []; // 清空应用列表
-  selectedCategory.value = { categoryId: undefined, categoryName: "全部分类" }; // 设置选中的分类
+  selectedCategory.value = { categoryId: undefined, categoryName: t("appSearchBar.all") }; // 设置选中的分类
 
   // 获取搜索结果
   try {
@@ -158,7 +180,7 @@ const sortChange = async (sort: string) => {
 <style scoped lang="scss">
 .container {
   display: flex;
-  gap: 0 80px;
+  gap: 0 60px;
   justify-content: space-between;
   align-items: flex-start;
   margin: 40px var(--container-margin);

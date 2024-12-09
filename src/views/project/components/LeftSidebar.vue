@@ -71,7 +71,7 @@ const handleInputChange = () => {
 
 <style scoped lang="scss">
 .left {
-  width: 300px;
+  width: 320px;
   font-size: 14px;
 
   > div {
@@ -85,7 +85,8 @@ const handleInputChange = () => {
   .category {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
+    grid-row-gap: 20px;
+    grid-column-gap: 8px;
     cursor: pointer;
 
     .el-icon {

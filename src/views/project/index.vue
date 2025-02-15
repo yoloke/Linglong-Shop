@@ -124,7 +124,7 @@ const fetchAppsByCategory = async (category: Category) => {
   currentPage.value = 1;
   apps.value = [];
   selectedCategory.value = category;
-
+  loading.value = true;
   // 获取选择分类的应用数据
   try {
     const { data: appsData } = await getApp({
@@ -141,6 +141,7 @@ const fetchAppsByCategory = async (category: Category) => {
   } catch (error) {
     console.error("获取应用数据失败:", error);
   }
+  loading.value = false;
 };
 
 const handleSearch = async (query: string) => {
@@ -148,7 +149,7 @@ const handleSearch = async (query: string) => {
   currentPage.value = 1; // 重置页码
   apps.value = []; // 清空应用列表
   selectedCategory.value = { categoryId: undefined, categoryName: t("appSearchBar.all") }; // 设置选中的分类
-
+  loading.value = true;
   // 获取搜索结果
   try {
     const { data: appsData } = await getApp({
@@ -164,6 +165,7 @@ const handleSearch = async (query: string) => {
   } catch (error) {
     console.error("搜索失败:", error);
   }
+  loading.value = false;
 };
 
 const sortChange = async (sort: string) => {

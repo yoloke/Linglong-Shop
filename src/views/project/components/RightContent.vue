@@ -41,7 +41,7 @@
           <img :src="app.icon || defaultIcon" @error="event => formatSVG(event, app.icon)" alt="App Icon" />
           <div class="app-item-text">
             <div class="app-item-title">
-              <el-text class="app-item-name" truncated>{{ app.zhName || app.name }}</el-text>
+              <el-text class="app-item-name" truncated :title="app.zhName || app.name">{{ app.zhName || app.name }}</el-text>
               <div class="app-item-category">
                 {{ categoriesDict.get(app.categoryId || "") }}
               </div>

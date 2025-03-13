@@ -63,6 +63,7 @@ const load = async () => {
       pageNo: currentPage.value,
       pageSize: 40,
       sort: currentSort.value,
+      lan: i18n.global.locale,
       categoryId: categoryId // 如果有选择的分类，则传递
     });
 
@@ -110,7 +111,6 @@ const getCategory = async () => {
       categoriesDict.value.set(category.categoryId, category.categoryName);
     }
   });
-  console.log(categoriesDict.value);
 };
 
 watch(

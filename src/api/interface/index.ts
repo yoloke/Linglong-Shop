@@ -16,6 +16,7 @@ export interface ReqPage {
   name?: string;
   categoryId?: string;
   sort?: string;
+  lan?: string;
   [key: string]: any;
 }
 

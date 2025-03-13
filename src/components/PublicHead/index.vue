@@ -49,7 +49,7 @@ const changeLanguage = (lang: "zh" | "en") => {
   if (i18n.global.locale === lang) return;
   i18n.global.locale = lang;
   localStorage.setItem("language", lang);
-  // location.reload();
+  location.reload();
 };
 </script>
 <style scoped lang="scss">

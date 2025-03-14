@@ -131,6 +131,7 @@ const fetchAppsByCategory = async (category: Category) => {
       pageNo: currentPage.value,
       pageSize: 40,
       sort: currentSort.value,
+      lan: i18n.global.locale,
       categoryId: category.categoryId,
       name: searchQuery.value
     });
@@ -156,6 +157,7 @@ const handleSearch = async (query: string) => {
       pageNo: currentPage.value,
       pageSize: 40,
       sort: currentSort.value,
+      lan: i18n.global.locale,
       name: query // 传递搜索条件
     });
 
@@ -179,6 +181,7 @@ const sortChange = async (sort: string) => {
       pageNo: currentPage.value,
       pageSize: 40,
       sort,
+      lan: i18n.global.locale,
       categoryId: selectedCategory.value?.categoryId,
       name: searchQuery.value
     });

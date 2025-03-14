@@ -113,7 +113,7 @@ const onInstall = async (app: App) => {
     message: `
       <span>
         ${t("tips.noPopup")}
-        <a href="https://linglong.dev/guide/start/install.html" target="_blank" style="color: #409EFF; text-decoration: underline;">${t("tips.installLink")}</a>
+        <a href="https://linyaps.org.cn/guide/start/install.html" target="_blank" style="color: #409EFF; text-decoration: underline;">${t("tips.installLink")}</a>
       </span>
     `
   });

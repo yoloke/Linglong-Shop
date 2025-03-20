@@ -55,6 +55,21 @@ const total = ref<number>(2); // 初始值为 null 以处理未知总数
 const noMore = computed(() => apps.value.length >= total.value);
 const disabled = computed(() => loading.value || noMore.value); // 是否禁用滚动加载
 const selectedCategory = ref<Category>({ categoryId: undefined, categoryName: t("appSearchBar.all") });
+
+const getArchitecture = () => {
+  const userAgent = navigator.userAgent || navigator.platform;
+  if (/x86_64|x64|amd64/i.test(userAgent)) {
+    return "x86_64";
+  } else if (/arm64|aarch64/i.test(userAgent)) {
+    return "arm64";
+  } else if (/loongarch64/i.test(userAgent)) {
+    return "loongarch64";
+  } else {
+    return "unknown";
+  }
+};
+const architecture = getArchitecture();
+
 const load = async () => {
   loading.value = true;
   try {
@@ -64,6 +79,7 @@ const load = async () => {
       pageSize: 40,
       sort: currentSort.value,
       lan: i18n.global.locale,
+      arch: architecture,
       categoryId: categoryId // 如果有选择的分类，则传递
     });
 
@@ -132,6 +148,7 @@ const fetchAppsByCategory = async (category: Category) => {
       pageSize: 40,
       sort: currentSort.value,
       lan: i18n.global.locale,
+      arch: architecture,
       categoryId: category.categoryId,
       name: searchQuery.value
     });
@@ -158,6 +175,7 @@ const handleSearch = async (query: string) => {
       pageSize: 40,
       sort: currentSort.value,
       lan: i18n.global.locale,
+      arch: architecture,
       name: query // 传递搜索条件
     });
 
@@ -182,6 +200,7 @@ const sortChange = async (sort: string) => {
       pageSize: 40,
       sort,
       lan: i18n.global.locale,
+      arch: architecture,
       categoryId: selectedCategory.value?.categoryId,
       name: searchQuery.value
     });

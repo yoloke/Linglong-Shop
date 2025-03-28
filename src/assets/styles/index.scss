@@ -2,7 +2,49 @@
 @import './common.scss';
 @import './element.scss';
 
+@font-face {
+    font-family: 'PingFangSC';
+    src: url('../fonts/苹方黑体-极细-简.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PingFangSC';
+    src: url('../fonts/苹方黑体-纤细-简.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PingFangSC';
+    src: url('../fonts/苹方黑体-细-简.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PingFangSC';
+    src: url('../fonts/苹方黑体-准-简.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PingFangSC';
+    src: url('../fonts/苹方黑体-中黑-简.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PingFangSC';
+    src: url('../fonts/苹方黑体-中粗-简.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
 body {
-    font-family: "思源黑体";
+    font-family: "PingFangSC";
     background-color: rgb(245 245 245 / 100%);
 }

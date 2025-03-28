@@ -4,6 +4,7 @@ import viteCompression from "vite-plugin-compression"; // 生成.gz文件
 import { visualizer } from "rollup-plugin-visualizer"; // 分析生成包的大小
 import path from "path"; //这个path用到了上面安装的@types/node
 
+import svgLoader from "vite-svg-loader";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
@@ -15,6 +16,23 @@ export default defineConfig(() => {
   return {
     plugins: [
       vue(),
+      svgLoader({
+        svgoConfig: {
+          multipass: true,
+          plugins: [
+            {
+              name: 'preset-default',
+              params: {
+                overrides: {
+                  // viewBox is required to resize SVGs with CSS.
+                  // @see https://github.com/svg/svgo/issues/1128
+                  removeViewBox: false,
+                },
+              },
+            },
+          ],
+        },
+      }),
       AutoImport({
         //自动导入第三方库或组件 不需要手动编写import {xxx} from vue
         // dts: true, // 如果使用 Typescript，需要设置 dts 为 true 插件会在项目根目录生成类型文件 auto-imports.d.ts ，确保该文件在 tsconfig 中被 include

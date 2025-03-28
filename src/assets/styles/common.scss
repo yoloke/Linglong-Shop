@@ -194,3 +194,10 @@
   width: 28px;
   height: 28px;
 }
+
+.select-user-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

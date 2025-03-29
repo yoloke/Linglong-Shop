@@ -12,7 +12,7 @@
           v-for="(_, index) in new Array(newsList.length)"
           :key="index"
           :class="`dot ${currentIndex === index ? 'active' : ''}`"
-          @click="currentIndex = index"
+          @click="changeNews(index)"
         ></div>
       </div>
     </div>
@@ -44,10 +44,17 @@ const newsList = [
 ];
 const currentIndex = ref(0);
 const interval = ref<NodeJS.Timeout | null>(null);
+const changeNews = (index: number) => {
+  currentIndex.value = index;
+  if (interval.value) clearInterval(interval.value); // 清除定时器
+  interval.value = setInterval(() => {
+    currentIndex.value = (currentIndex.value + 1) % newsList.length;
+  }, 8000); // 每8秒切换一次
+};
 onMounted(() => {
   interval.value = setInterval(() => {
     currentIndex.value = (currentIndex.value + 1) % newsList.length;
-  }, 8000); // 每5秒切换一次
+  }, 8000); // 每8秒切换一次
 });
 onUnmounted(() => {
   if (interval.value) clearInterval(interval.value); // 清除定时器

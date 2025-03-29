@@ -71,8 +71,8 @@ onUnmounted(() => {
   align-items: center;
   width: 100%;
   .header-container {
-    margin: 0 32%;
-    width: 100%;
+    margin: 0 auto;
+    min-width: 888px;
     display: flex;
     .news {
       flex: 1;

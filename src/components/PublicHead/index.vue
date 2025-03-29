@@ -8,13 +8,7 @@
       </div>
     </div>
     <div class="header-search">
-      <el-input
-        v-model="searchInput"
-        style="width: 360px; height: 42px"
-        placeholder="搜索您需要的应用"
-        class="search-input"
-        clearable
-      >
+      <el-input v-model="searchInput" placeholder="搜索您需要的应用" class="search-input" clearable>
         <template #append>
           <!-- <img src="@/assets/icons/search.svg" alt="search" class="search-icon" /> -->
           <searchIcon class="search-icon" />
@@ -146,6 +140,8 @@ const changeLanguage = (lang: "zh" | "en") => {
     // position: absolute;
     // margin: auto;
     :deep(.search-input) {
+      width: 360px;
+      height: 42px;
       .el-input__wrapper {
         box-sizing: border-box;
         background-color: #f2f2f2;
@@ -299,6 +295,15 @@ const changeLanguage = (lang: "zh" | "en") => {
 
   img {
     width: 120px;
+  }
+}
+
+@media screen and (width <= 1250px) {
+  .download-client {
+    display: none !important;
+  }
+  .tourl {
+    display: none !important;
   }
 }
 </style>

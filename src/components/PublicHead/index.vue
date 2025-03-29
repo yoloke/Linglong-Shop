@@ -1,5 +1,5 @@
 <template>
-  <div :class="['header-container', 'flx-align-center', { scrolled: isScrolled }]">
+  <div :class="['header-container', 'flx-align-center', { scrolled: true }]">
     <div class="header-logo-area">
       <linyapsLogo class="header-logo" />
       <div class="header-logo-title">
@@ -22,7 +22,7 @@
       </el-input>
     </div>
     <div class="header-actions">
-      <div class="download-client">
+      <div class="download-client" @click="onInstall">
         <DownloadClientIcon class="download-client-icon" />
         <div class="install-text">客户端下载</div>
       </div>
@@ -34,9 +34,9 @@
         <ArrowBottomIcon class="env-install-icon" />
       </div>
       <div class="language">
-        <a class="zh active">简</a>
+        <a :class="`zh ${i18n.global.locale === 'zh' ? 'active' : ''}`" @click="changeLanguage('zh')">简</a>
         <span class="divider select-user-none">/</span>
-        <a class="en">EN</a>
+        <a :class="`en ${i18n.global.locale === 'en' ? 'active' : ''}`" @click="changeLanguage('en')">EN</a>
       </div>
     </div>
     <!-- <span class="menu-list">
@@ -57,9 +57,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import languageIcon from "@/assets/icons/language.svg";
 import { i18n } from "@/utils/i18n";
 import { ref, onMounted, onUnmounted } from "vue";
+import onInstall from "@/utils/downloadClient";
 
 // ########## 组件头部 ########## //
 // 标题
@@ -73,22 +73,21 @@ const searchInput = ref<string>("");
 import DownloadClientIcon from "@/assets/icons/download_client.svg?component";
 import ArrowBottomIcon from "@/assets/icons/arrow_bottom.svg?component";
 
-const isScrolled = ref(false);
+// // 处理滚动事件
+// const isScrolled = ref(false);
+// const handleScroll = () => {
+//   isScrolled.value = window.scrollY > 66; // 设置滚动阈值
+// };
 
-// 处理滚动事件
-const handleScroll = () => {
-  isScrolled.value = window.scrollY > 66; // 设置滚动阈值
-};
+// // 组件挂载时添加事件监听器
+// onMounted(() => {
+//   window.addEventListener("scroll", handleScroll);
+// });
 
-// 组件挂载时添加事件监听器
-onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
-});
-
-// 组件卸载时移除事件监听器
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
-});
+// // 组件卸载时移除事件监听器
+// onUnmounted(() => {
+//   window.removeEventListener("scroll", handleScroll);
+// });
 
 // 使用新标签页打开链接
 const openUrl = (url: string) => {

@@ -1,95 +1,118 @@
 <template>
-  <div class="home-header flx-column">
-    <span class="title">
-      <span class="app">{{ $t("title.app") }}</span>
-      <span class="store">{{ $t("title.store") }}</span>
-      <span class="download" @click="onInstall()">
-        {{ $t("title.client") }} <el-icon class="icon"><Download /></el-icon>
-      </span>
-    </span>
-    <span class="content">{{ $t("title.subtitle") }}</span>
+  <div class="home-header">
+    <div class="header-container">
+      <div class="news">
+        <div v-for="(item, index) in newsList" :key="item.content" :class="`new ${currentIndex === index ? 'active' : ''}`">
+          <div class="news-content">{{ item.content }}</div>
+          <div class="news-action" @click="item.action.func()">{{ item.action.text }}</div>
+        </div>
+      </div>
+      <div class="dots">
+        <div
+          v-for="(_, index) in new Array(newsList.length)"
+          :key="index"
+          :class="`dot ${currentIndex === index ? 'active' : ''}`"
+          @click="currentIndex = index"
+        ></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Download } from "@element-plus/icons-vue";
-import { installdd } from "@/api/modules/project";
-const getArchitecture = () => {
-  const userAgent = navigator.userAgent || navigator.platform;
-  if (/x86_64|x64|amd64/i.test(userAgent)) {
-    return "x86_64";
-  } else if (/arm64|aarch64/i.test(userAgent)) {
-    return "arm64";
-  } else if (/loongarch64/i.test(userAgent)) {
-    return "loongarch64";
-  } else {
-    return "unknown";
+import { onMounted, onUnmounted } from "vue";
+import { ref } from "vue";
+import onInstall from "@/utils/downloadClient";
+// ########## 通知内容 ########## //
+const newsList = [
+  {
+    content: "加入 Telegram Group: deepin.org/to/tg 了解更多资讯",
+    action: {
+      text: "点击了解",
+      func: () => {
+        window.open("https://deepin.org/to/tg", "_blank");
+      }
+    }
+  },
+  {
+    content: "下载客户端，探索应用新世界",
+    action: {
+      text: "我要下载",
+      func: onInstall
+    }
   }
-};
-const architecture = getArchitecture();
-// console.log(`System architecture: ${architecture}`);
-const onInstall = async () => {
-  try {
-    // 请求接口，获取后端返回的数据对象（包含下载链接）
-    const response = await installdd(architecture);
-
-    // 获取后端返回的文件下载 URL
-    const downloadUrl = response.data; // 从 response 中获取 data 字段中的 URL
-
-    // 创建一个隐藏的链接，指向文件下载 URL
-    const link = document.createElement("a");
-    link.href = downloadUrl as string; // 指向后端返回的文件下载链接
-
-    // 设置 download 属性为空，浏览器会从 URL 中提取文件名
-    link.setAttribute("download", "");
-
-    // 将链接追加到 DOM 中并触发点击下载
-    document.body.appendChild(link);
-    link.click();
-
-    // 下载完成后移除链接
-    document.body.removeChild(link);
-  } catch (error) {
-    console.error("下载失败：", error);
-  }
-};
+];
+const currentIndex = ref(0);
+const interval = ref<NodeJS.Timeout | null>(null);
+onMounted(() => {
+  interval.value = setInterval(() => {
+    currentIndex.value = (currentIndex.value + 1) % newsList.length;
+  }, 8000); // 每5秒切换一次
+});
+onUnmounted(() => {
+  if (interval.value) clearInterval(interval.value); // 清除定时器
+});
 </script>
 
 <style scoped lang="scss">
 .home-header {
-  padding-left: var(--container-margin);
-  height: 201px;
-  background-image: url("@/assets/images/header_bg.svg");
-  background-size: cover;
-  background-position: right center;
-  background-repeat: no-repeat;
-
-  .title {
-    margin-top: 100px;
-    margin-bottom: 10px;
-    font-size: 38px;
-    font-weight: 700;
-
-    .app {
-      color: #1890ff;
+  margin-top: 86px;
+  height: 65px;
+  background-color: #fff;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  .header-container {
+    margin: 0 32%;
+    width: 100%;
+    display: flex;
+    .news {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .new {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        opacity: 0;
+        transition: all 1s ease;
+        &.active {
+          opacity: 1;
+        }
+      }
+      .news-content {
+        color: #000;
+      }
+      .news-action {
+        color: #1890ff;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
-
-    .store {
-      margin-right: 8px;
+    .dots {
+      flex: 0 0 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      .dot {
+        cursor: pointer;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #efefef;
+        transition: all 1s ease;
+        &.active {
+          background-color: #1890ff;
+        }
+      }
     }
-
-    .download {
-      font-size: 12px;
-      font-weight: 600;
-      color: #1890ff;
-      cursor: pointer;
-    }
-  }
-
-  .content {
-    font-size: 12px;
-    font-weight: 400;
-    color: #7a7a7a;
   }
 }
 </style>

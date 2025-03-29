@@ -1,58 +1,28 @@
 <template>
   <div class="left">
-    <div class="left_1">
-      <el-input :placeholder="$t('appSearchBar.placeholder')" :suffix-icon="Search" v-model="query" @change="handleInputChange" />
-    </div>
-    <div class="left_2">
-      <el-card>
-        <template #header>
-          <span>{{ $t("appSearchBar.category") }}</span>
-        </template>
-        <div class="category">
-          <div
-            v-for="category in categories"
-            :key="category.categoryId"
-            :class="{
-              'is-active': category.categoryName === currentCategory.categoryName
-            }"
-            @click="handleCategoryClick(category)"
-          >
-             <el-icon>       <component :is="category.icon" />     </el-icon>
-            <span>{{ category.categoryName || $t("appSearchBar.other") }}</span>
-          </div>
+    <el-affix :offset="130">
+      <div class="categories">
+        <div
+          v-for="category in categories"
+          :key="category.categoryId"
+          :class="{
+            'is-active': category.categoryName === currentCategory.categoryName
+          }"
+          class="category"
+          @click="handleCategoryClick(category)"
+        >
+          <el-icon size="16"><component :is="category.icon" /></el-icon>
+          <div class="category-name">{{ category.categoryName || $t("appSearchBar.other") }}</div>
+          <!-- <div class="category-count">{{ category.categoryName === currentCategory.categoryName ? "(1000)" : "(1)" }}</div> -->
         </div>
-      </el-card>
-    </div>
-    <div class="left_3" v-if="false">
-      <el-card>
-        <template #header>
-          <span>排行</span>
-        </template>
-        <el-table :data="rankings">
-          <el-table-column prop="appName" label="应用名称">
-            <template #default="scope">
-              <div class="ranking-item">
-                <img :src="scope.row.appIcon" />
-                <el-tooltip effect="dark" :content="scope.row.appName" placement="top">
-                  <span class="ranking-item-appName">
-                    {{ scope.row.appName }}
-                  </span>
-                </el-tooltip>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column prop="downloadCount" label="下载数" align="center" />
-        </el-table>
-      </el-card>
-    </div>
+      </div>
+    </el-affix>
   </div>
 </template>
 <script setup lang="ts">
 import { Category, Rankings } from "@/api/interface/index";
-import { Search } from "@element-plus/icons-vue";
-import { ref } from "vue";
 const emit = defineEmits(["selectCategory", "search"]);
-const query = ref("");
+
 defineProps<{
   categories: Category[];
   rankings: Rankings[];
@@ -62,57 +32,60 @@ defineProps<{
 const handleCategoryClick = (category: Category) => {
   emit("selectCategory", category);
 };
-
-// 输入框内容改变时触发
-const handleInputChange = () => {
-  emit("search", query.value);
-};
 </script>
 
 <style scoped lang="scss">
 .left {
-  width: 320px;
-  font-size: 14px;
-
-  > div {
-    margin-bottom: 16px;
-  }
-
-  .is-active {
-    color: #1890ff !important;
-  }
-
-  .category {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-row-gap: 20px;
-    grid-column-gap: 8px;
-    cursor: pointer;
-
-    .el-icon {
-      width: 40px;
-      margin-bottom: 4px;
-      margin-left: -8px;
-    }
-  }
-
-  .ranking-item {
+  height: 100%;
+  .categories {
+    background-color: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    max-height: calc(100vh - 86px - 80px);
+    overflow-y: auto;
     display: flex;
-    align-items: center;
-    margin-left: -30px;
-    z-index: 999;
-
-    img {
-      width: 20px;
+    flex-direction: column;
+    gap: 4px;
+    &::-webkit-scrollbar {
+      display: none;
     }
-
-    .ranking-item-appName {
-      margin-left: 10px;
-      max-width: 150px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    .category {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      &:hover {
+        background-color: #1890FF;
+        color: #fff;
+      }
+      .category-icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .category-name {
+        font-size: 12px;
+        width: 4em;
+        margin-right: 16px;
+      }
+      .category-count {
+        min-width: 3em;
+        font-size: 12px;
+      }
     }
+    .is-active {
+      background-color: #1890FF;
+      color: #fff;
+    }
+  }
+  :deep(.el-affix--fixed) {
+    top: 106px !important;
   }
 }
 </style>

@@ -2,14 +2,13 @@
   <PublicHead />
   <HomeHeader />
   <div class="container">
-    <el-affix :offset="110">
-      <LeftSidebar
-        :categories="categories"
-        :rankings="rankings"
-        :current-category="selectedCategory"
-        @select-category="fetchAppsByCategory"
-        @search="handleSearch"
-    /></el-affix>
+    <LeftSidebar
+      :categories="categories"
+      :rankings="rankings"
+      :current-category="selectedCategory"
+      @select-category="fetchAppsByCategory"
+      @search="handleSearch"
+    />
 
     <RightContent
       :apps="apps"

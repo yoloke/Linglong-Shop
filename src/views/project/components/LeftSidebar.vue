@@ -1,5 +1,5 @@
 <template>
-  <div class="left">
+  <div class="left-sidebar">
     <el-affix :offset="130">
       <div class="categories">
         <div
@@ -35,7 +35,7 @@ const handleCategoryClick = (category: Category) => {
 </script>
 
 <style scoped lang="scss">
-.left {
+.left-sidebar {
   height: 100%;
   .categories {
     background-color: #fff;
@@ -59,7 +59,7 @@ const handleCategoryClick = (category: Category) => {
       border-radius: 8px;
       cursor: pointer;
       &:hover {
-        background-color: #1890FF;
+        background-color: #1890ff;
         color: #fff;
       }
       .category-icon {
@@ -80,7 +80,7 @@ const handleCategoryClick = (category: Category) => {
       }
     }
     .is-active {
-      background-color: #1890FF;
+      background-color: #1890ff;
       color: #fff;
     }
   }

@@ -23,6 +23,7 @@
       :current-sort="currentSort"
       @sort-change="sortChange"
     />
+    <RightSidebar />
   </div>
   <el-backtop :right="100" :bottom="100" />
   <PublicRight />
@@ -35,6 +36,7 @@ import axios from "axios";
 import HomeHeader from "./components/HomeHeader.vue";
 import LeftSidebar from "./components/LeftSidebar.vue";
 import RightContent from "./components/RightContent.vue";
+import RightSidebar from "./components/RightSidebar.vue";
 // import { getLogin, getCategories, getTop, getApp } from "@/api/modules/project";
 import { getLogin, getCategories, getApp } from "@/api/modules/project";
 import { ref, computed, onMounted, watch } from "vue";
@@ -251,7 +253,11 @@ const sortChange = async (sort: string) => {
 }
 
 @media screen and (width <= 1250px) {
-  .left {
+  .left-sidebar {
+    display: none;
+  }
+
+  .right-sidebar {
     display: none;
   }
 

@@ -6,10 +6,33 @@
           {{ categoriesDict.get(selectedCategory?.categoryId || "") || $t("appSearchBar.all") }}
           <span v-show="searchQuery">({{ searchQuery }})</span>
         </span>
-        <span class="total-count">{{ $t("appList.header.total", { total: total }) }}</span>
+        <div class="architecture">
+          <div class="architecture-item active">x86</div>
+          <div class="architecture-item">ARM</div>
+        </div>
+        <div class="total-count">
+          <span class="text">共</span>
+          <span class="number">{{ total }}</span>
+          <span class="text">款应用</span>
+        </div>
       </div>
       <div class="header-sort">
-        <span class="sort-title">{{ $t("appList.header.sortMethod") }}：</span>
+        <div class="sort">
+          <div class="hottest active">
+            <span class="dot"></span>
+            <span class="text">按下载排序</span>
+          </div>
+          <div class="newest">
+            <span class="dot"></span>
+            <span class="text">按最新排序</span>
+          </div>
+        </div>
+        <div class="hide">
+          <Checked class="checked" v-if="true" />
+          <Unchecked class="checked" v-else />
+          <span class="text">过滤低分应用</span>
+        </div>
+        <!-- <span class="sort-title">{{ $t("appList.header.sortMethod") }}：</span>
         <el-select
           :model-value="currentSort"
           size="small"
@@ -32,7 +55,7 @@
         <div class="sort-select">
           <div class="sort-select-input">{{ sortLabel }}</div>
           <div :class="`sort-select-arrow arrow-down ${sortOptionsShow ? '' : 'arrow-show'}`"></div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="app-list">
@@ -58,7 +81,7 @@
         </div>
         <div class="app-item-footer">
           <span class="app-item-version">v{{ app.version }}</span>
-          <el-button type="primary" plain size="small" @click="onInstall(app)">{{ $t("appList.app.install") }}</el-button>
+          <el-button class="button" type="primary" plain size="small" @click="onInstall(app)">{{ $t("appList.app.install") }}</el-button>
         </div>
       </div>
     </div>
@@ -89,6 +112,10 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: "sort-change", value: string): void;
 }>();
+
+// 图标
+import Checked from "@/assets/icons/checked.svg?component";
+import Unchecked from "@/assets/icons/unchecked.svg?component";
 
 const onInstall = async (app: App) => {
   // 判断系统环境，不支持则返回
@@ -165,19 +192,56 @@ const sortLabel = computed(() => sortOptions.value.find(item => item.value === p
   .header {
     margin-bottom: 12px;
     display: flex;
-    justify-content: space-between;
     align-items: flex-end;
     padding: 0 2px;
 
     .header-category {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin-right: auto;
       .category-name {
         font-size: 18px;
+        font-weight: 500;
+        line-height: 18px;
+        height: 18px;
+      }
+
+      .architecture {
+        height: 18px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        line-height: 12px;
+        color: #000;
+
+        .architecture-item {
+          padding: 3px 6px;
+          border-radius: 4px;
+          background-color: #ececec;
+          cursor: pointer;
+          &.active {
+            background-color: #1890ff;
+            color: #fff;
+          }
+
+          &:hover {
+            background-color: #1890ff;
+            color: #fff;
+          }
+        }
       }
 
       .total-count {
-        font-size: 14px;
-        color: #7a7a7a;
         margin-left: 4px;
+        margin-bottom: 1px;
+        font-size: 14px;
+        color: #383838;
+        .number {
+          color: #1890ff;
+          margin: 0 4px;
+        }
       }
     }
 
@@ -187,41 +251,53 @@ const sortLabel = computed(() => sortOptions.value.find(item => item.value === p
       color: #636363;
       display: flex;
       align-items: center;
-
-      .sort-select-hidden {
-        z-index: 999;
-        position: absolute;
-        right: 0;
-        width: 64px;
-        opacity: 0;
-      }
-
-      .sort-select {
-        position: relative;
+      gap: 48px;
+      .sort {
         display: flex;
         align-items: center;
-        cursor: pointer;
-
-        .sort-select-input {
-          text-align: right;
-          width: 50px;
-          margin-right: 12px;
-        }
-
-        .sort-select-arrow {
-          width: 0;
-          height: 0;
-          border-left: 5px solid transparent;
-          border-right: 5px solid transparent;
-          border-bottom: 6px solid #a6a6a6;
-          position: absolute;
-          right: 0;
-          transition: transform 0.3s;
-          transform: rotate(0deg);
-
-          &.arrow-show {
-            transform: rotate(180deg);
+        gap: 16px;
+        .hottest,
+        .newest {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          cursor: pointer;
+          &.active {
+            .dot {
+              opacity: 1;
+            }
+            .text {
+              color: #383838;
+            }
           }
+          .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 1s ease;
+            background-color: #1890ff;
+          }
+          .text {
+            font-size: 14px;
+            color: #8f9a9d;
+            line-height: 18px;
+          }
+        }
+      }
+      .hide {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        cursor: pointer;
+        .icon {
+          width: 18px;
+          height: 18px;
+        }
+        .text {
+          font-size: 14px;
+          color: #383838;
+          line-height: 18px;
         }
       }
     }
@@ -231,7 +307,7 @@ const sortLabel = computed(() => sortOptions.value.find(item => item.value === p
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 16px;
-    margin-bottom: 20px;
+    margin: 24px 0;
 
     .app-item {
       border-radius: 8px;
@@ -240,7 +316,11 @@ const sortLabel = computed(() => sortOptions.value.find(item => item.value === p
       font-size: 14px;
       background-color: #fff;
       color: #808080;
-      box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
+      // box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
+      border: 1px solid #fff;
+      &:hover {
+        border: 1px solid #1890ff;
+      }
 
       .app-item-main {
         display: flex;
@@ -275,7 +355,7 @@ const sortLabel = computed(() => sortOptions.value.find(item => item.value === p
               text-align: right;
               flex: 0 0 80px;
               font-size: 12px;
-              color: #575757;
+              color: #9a9898;
             }
           }
 
@@ -294,6 +374,21 @@ const sortLabel = computed(() => sortOptions.value.find(item => item.value === p
         align-items: end;
         .app-item-version {
           font-size: 12px;
+          color: #808080;
+          line-height: 18px;
+        }
+        .button {
+          border: #1890ff 1px solid;
+          border-radius: 4px;
+          padding: 4px 16px;
+          background-color: transparent;
+          &:hover {
+            background-color: #1890ff;
+            color: #fff;
+          }
+          span {
+            font-size: 12px;
+          }
         }
       }
     }

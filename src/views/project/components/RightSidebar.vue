@@ -72,17 +72,12 @@
   height: 100%;
   width: 336px;
   .recommended {
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.05);
     background-color: #fff;
     border-radius: 8px;
     max-height: calc(100vh - 86px - 80px);
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    -ms-overflow-style: none;
-    scrollbar-width: none;
     .title-area {
       display: flex;
       justify-content: space-between;
@@ -106,6 +101,12 @@
     .recommended-apps {
       display: flex;
       flex-direction: column;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      -ms-overflow-style: none;
+      scrollbar-width: none;
       .recommended-app {
         display: flex;
         padding: 24px;

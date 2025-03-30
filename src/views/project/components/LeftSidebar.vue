@@ -38,6 +38,7 @@ const handleCategoryClick = (category: Category) => {
 .left-sidebar {
   height: 100%;
   .categories {
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.05);
     background-color: #fff;
     padding: 16px;
     border-radius: 8px;

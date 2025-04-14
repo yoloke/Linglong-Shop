@@ -7,10 +7,15 @@
     </span>
     <div class="contact">
       <span class="text">联系我们</span>
-      <facebook class="icon facebook" />
-      <telegram class="icon telegram" />
-      <wechat class="icon wechat" />
-      <email class="icon email" />
+      <facebook @click="openUrl('https://www.facebook.com/groups/mydeepinlinux')" class="icon facebook" />
+      <telegram @click="openUrl('https://deepin.org/to/tg')" class="icon telegram" />
+      <el-popover class="box-item" placement="top">
+        <template #reference>
+          <wechat class="icon wechat" />
+        </template>
+        <img src="@/assets/images/wechatQRCode.jpg" alt="wechat" />
+      </el-popover>
+      <a href="mailto:appstore@deepin.org"><email class="icon email" /></a>
     </div>
     <!-- <el-tooltip effect="light" placement="top-start">
       <template #content>
@@ -38,6 +43,7 @@ import facebook from "@/assets/icons/facebook.svg?component";
 import telegram from "@/assets/icons/telegram.svg?component";
 import wechat from "@/assets/icons/wechat.svg?component";
 import email from "@/assets/icons/email.svg?component";
+import { openUrl } from "@/utils/common";
 </script>
 <style scoped lang="scss">
 .footer-container {

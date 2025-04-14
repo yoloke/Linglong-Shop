@@ -1,6 +1,6 @@
 <template>
   <div :class="['header-container', 'flx-align-center', { scrolled: true }]">
-    <div class="header-logo-area">
+    <div class="header-logo-area select-user-none">
       <linyapsLogo class="header-logo" />
       <div class="header-logo-title">
         <span class="title">{{ $t("title.title") }}</span>
@@ -20,10 +20,10 @@
         <DownloadClientIcon class="download-client-icon" />
         <div class="install-text">客户端下载</div>
       </div>
-      <a class="tourl">社区官网</a>
-      <a class="tourl">应用投递</a>
-      <a class="tourl">文档中心</a>
-      <div class="env-install">
+      <a class="tourl" @click="openUrl('https://linyaps.org.cn/')">社区官网</a>
+      <a class="tourl" @click="openUrl('https://appstore-dev.uniontech.com/#/index')">应用投递</a>
+      <a class="tourl" @click="openUrl('https://linyaps.org.cn/guide/start/whatis.html')">文档中心</a>
+      <div class="env-install" @click="openUrl('https://linyaps.org.cn/guide/start/install.html')">
         <div class="install-text">环境安装</div>
         <ArrowBottomIcon class="env-install-icon" />
       </div>
@@ -54,6 +54,7 @@
 import { i18n } from "@/utils/i18n";
 import { ref, onMounted, onUnmounted } from "vue";
 import onInstall from "@/utils/downloadClient";
+import { openUrl } from "@/utils/common";
 
 // ########## 组件头部 ########## //
 // 标题
@@ -82,11 +83,6 @@ import ArrowBottomIcon from "@/assets/icons/arrow_bottom.svg?component";
 // onUnmounted(() => {
 //   window.removeEventListener("scroll", handleScroll);
 // });
-
-// 使用新标签页打开链接
-const openUrl = (url: string) => {
-  window.open(url, "_blank");
-};
 
 const changeLanguage = (lang: "zh" | "en") => {
   if (i18n.global.locale === lang) return;

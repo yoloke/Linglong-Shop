@@ -17,6 +17,19 @@ export interface ReqPage {
   categoryId?: string;
   sort?: string;
   lan?: string;
+  arch?: string;
+  [key: string]: any;
+}
+
+// 分页---请求参数(全部可选)
+export interface ReqPageParams {
+  pageNo?: number;
+  pageSize?: number;
+  name?: string;
+  categoryId?: string;
+  sort?: string;
+  lan?: string;
+  arch?: string;
   [key: string]: any;
 }
 

@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { App, Category, Rankings } from "@/api/interface/index";
+import { App, Category, Rankings, ReqPageParams } from "@/api/interface/index";
 import axios from "axios";
 import HomeHeader from "./components/HomeHeader.vue";
 import LeftSidebar from "./components/LeftSidebar.vue";
@@ -42,6 +42,8 @@ import { getLogin, getCategories, getApp } from "@/api/modules/project";
 import { ref, computed, onMounted, watch } from "vue";
 import { i18n } from "@/utils/i18n";
 import { useI18n } from "vue-i18n";
+import { getArchitecture } from "@/utils/common";
+
 const { t } = useI18n();
 const categories = ref<Category[]>([]);
 const categoriesDict = ref<Map<string, string>>(new Map());
@@ -57,33 +59,20 @@ const noMore = computed(() => apps.value.length >= total.value);
 const disabled = computed(() => loading.value || noMore.value); // 是否禁用滚动加载
 const selectedCategory = ref<Category>({ categoryId: undefined, categoryName: t("appSearchBar.all") });
 
-const getArchitecture = () => {
-  const userAgent = navigator.userAgent || navigator.platform;
-  if (/x86_64|x64|amd64/i.test(userAgent)) {
-    return "x86_64";
-  } else if (/arm64|aarch64/i.test(userAgent)) {
-    return "arm64";
-  } else if (/loongarch64/i.test(userAgent)) {
-    return "loongarch64";
-  } else if (/loong64/i.test(userAgent)) {
-    return "loong64";
-  } else {
-    return "unknown";
-  }
-};
 const architecture = getArchitecture();
 
-const load = async () => {
+const getApps = async (params: ReqPageParams) => {
   loading.value = true;
   try {
-    const categoryId = selectedCategory.value?.categoryId; // 使用可选链运算符安全地访问 categoryId
     const { data: appsData } = await getApp({
       pageNo: currentPage.value,
       pageSize: 40,
+      name: searchQuery.value, // 传递搜索条件
       sort: currentSort.value,
       lan: i18n.global.locale,
       arch: architecture,
-      categoryId: categoryId // 如果有选择的分类，则传递
+      categoryId: selectedCategory.value?.categoryId, // 如果有选择的分类，则传递
+      ...params
     });
 
     // 更新总数
@@ -97,6 +86,10 @@ const load = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const load = async () => {
+  getApps({}); // 传递空对象以获取所有应用
 };
 const searchQuery = ref("");
 onMounted(async () => {
@@ -120,6 +113,7 @@ onMounted(async () => {
   sessionStorage.setItem("clientIp", clientIp);
   // 传递 osVersion
   await getLogin({ clientIp, osVersion });
+  await load();
 });
 
 const getCategory = async () => {
@@ -132,37 +126,22 @@ const getCategory = async () => {
   });
 };
 
-watch(
-  () => i18n.global.locale,
-  () => {
-    getCategory();
-  }
-);
+// watch(
+//   () => i18n.global.locale,
+//   () => {
+//     getCategory();
+//   }
+// );
 
 const fetchAppsByCategory = async (category: Category) => {
   currentPage.value = 1;
   apps.value = [];
   selectedCategory.value = category;
-  loading.value = true;
   // 获取选择分类的应用数据
-  try {
-    const { data: appsData } = await getApp({
-      pageNo: currentPage.value,
-      pageSize: 40,
-      sort: currentSort.value,
-      lan: i18n.global.locale,
-      arch: architecture,
-      categoryId: category.categoryId,
-      name: searchQuery.value
-    });
-
-    apps.value = appsData.records; // 更新应用列表
-    total.value = appsData.total; // 更新总数
-    currentPage.value += 1; // 增加页码
-  } catch (error) {
-    console.error("获取应用数据失败:", error);
-  }
-  loading.value = false;
+  getApps({
+    categoryId: category.categoryId,
+    name: searchQuery.value // 传递搜索条件
+  });
 };
 
 const handleSearch = async (query: string) => {
@@ -170,50 +149,26 @@ const handleSearch = async (query: string) => {
   currentPage.value = 1; // 重置页码
   apps.value = []; // 清空应用列表
   selectedCategory.value = { categoryId: undefined, categoryName: t("appSearchBar.all") }; // 设置选中的分类
-  loading.value = true;
-  // 获取搜索结果
-  try {
-    const { data: appsData } = await getApp({
-      pageNo: currentPage.value,
-      pageSize: 40,
-      sort: currentSort.value,
-      lan: i18n.global.locale,
-      arch: architecture,
-      name: query // 传递搜索条件
-    });
-
-    apps.value = appsData.records; // 更新应用列表
-    total.value = appsData.total; // 更新总数
-    currentPage.value += 1; // 增加页码
-  } catch (error) {
-    console.error("搜索失败:", error);
-  }
-  loading.value = false;
+  getApps({
+    name: query // 传递搜索条件
+  });
 };
 
 const sortChange = async (sort: string) => {
   currentSort.value = sort;
   currentPage.value = 1; // 重置页码
   apps.value = []; // 清空应用列表
+  getApps({
+    sort // 传递排序条件
+  });
+};
 
-  // 获取排序后的应用数据
-  try {
-    const { data: appsData } = await getApp({
-      pageNo: currentPage.value,
-      pageSize: 40,
-      sort,
-      lan: i18n.global.locale,
-      arch: architecture,
-      categoryId: selectedCategory.value?.categoryId,
-      name: searchQuery.value
-    });
-
-    apps.value = appsData.records; // 更新应用列表
-    total.value = appsData.total; // 更新总数
-    currentPage.value += 1; // 增加页码
-  } catch (error) {
-    console.error("排序失败:", error);
-  }
+const filterChange = async (filter: string) => {
+  currentPage.value = 1; // 重置页码
+  apps.value = []; // 清空应用列表
+  getApps({
+    filter // 传递筛选条件
+  });
 };
 </script>
 <style scoped lang="scss">

@@ -18,11 +18,14 @@
       </div>
       <div class="header-sort">
         <div class="sort">
-          <div class="hottest active">
+          <div
+            :class="`hottest ${currentSort === 'installCount' ? 'active' : ''}`"
+            @click="() => emit('sort-change', 'installCount')"
+          >
             <span class="dot"></span>
             <span class="text">按下载排序</span>
           </div>
-          <div class="newest">
+          <div :class="`newest ${currentSort === 'createTime' ? 'active' : ''}`" @click="() => emit('sort-change', 'createTime')">
             <span class="dot"></span>
             <span class="text">按最新排序</span>
           </div>
@@ -275,7 +278,7 @@ const sortLabel = computed(() => sortOptions.value.find(item => item.value === p
             height: 8px;
             border-radius: 50%;
             opacity: 0;
-            transition: all 1s ease;
+            transition: all 0.3s ease;
             background-color: #1890ff;
           }
           .text {

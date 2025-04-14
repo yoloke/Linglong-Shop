@@ -1,17 +1,5 @@
 import { installdd } from "@/api/modules/project";
-
-const getArchitecture = () => {
-  const userAgent = navigator.userAgent || navigator.platform;
-  if (/x86_64|x64|amd64/i.test(userAgent)) {
-    return "x86_64";
-  } else if (/arm64|aarch64/i.test(userAgent)) {
-    return "arm64";
-  } else if (/loongarch64/i.test(userAgent)) {
-    return "loongarch64";
-  } else {
-    return "unknown";
-  }
-};
+import { getArchitecture } from "@/utils/common";
 
 const architecture = getArchitecture();
 

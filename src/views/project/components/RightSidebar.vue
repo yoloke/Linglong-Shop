@@ -105,8 +105,8 @@
       &::-webkit-scrollbar {
         display: none;
       }
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+      // -ms-overflow-style: none;
+      // scrollbar-width: none;
       .recommended-app {
         display: flex;
         padding: 24px;

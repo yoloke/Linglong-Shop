@@ -50,8 +50,8 @@ const handleCategoryClick = (category: Category) => {
     &::-webkit-scrollbar {
       display: none;
     }
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    // -ms-overflow-style: none;
+    // scrollbar-width: none;
     .category {
       display: flex;
       align-items: center;

@@ -87,8 +87,11 @@ onUnmounted(() => {
         gap: 12px;
         opacity: 0;
         transition: all 1s ease;
+        z-index: 0;
+        width: 100%;
         &.active {
           opacity: 1;
+          z-index: 1;
         }
       }
       .news-content {

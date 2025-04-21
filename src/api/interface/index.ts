@@ -51,7 +51,7 @@ export interface Category {
   icon?: string;
   categoryId: string | undefined;
   categoryName: string;
-  count?: string;
+  categoryAppCount?: string;
 }
 
 export interface Rankings {

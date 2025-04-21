@@ -13,7 +13,21 @@
         >
           <el-icon size="16"><component :is="category.icon" /></el-icon>
           <div class="category-name">{{ category.categoryName || $t("appSearchBar.other") }}</div>
-          <!-- <div class="category-count">{{ category.categoryName === currentCategory.categoryName ? "(1000)" : "(1)" }}</div> -->
+          <div class="category-count">
+            {{
+              category.categoryName === t("appSearchBar.all")
+                ? "(" +
+                  categories
+                    .map(item => {
+                      return item.categoryAppCount ? parseInt(item.categoryAppCount) : 0;
+                    })
+                    .reduce((a, b) => a + b, 0) +
+                  ")"
+                : category.categoryAppCount
+                  ? `(${category.categoryAppCount})`
+                  : ""
+            }}
+          </div>
         </div>
       </div>
     </el-affix>
@@ -22,6 +36,8 @@
 <script setup lang="ts">
 import { Category, Rankings } from "@/api/interface/index";
 const emit = defineEmits(["selectCategory", "search"]);
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 defineProps<{
   categories: Category[];
@@ -73,7 +89,7 @@ const handleCategoryClick = (category: Category) => {
       .category-name {
         font-size: 12px;
         width: 4em;
-        margin-right: 16px;
+        margin-right: 4px;
       }
       .category-count {
         min-width: 3em;

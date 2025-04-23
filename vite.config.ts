@@ -9,8 +9,6 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
-import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
-
 // https://vitejs.dev/config/
 export default defineConfig(() => {
   return {
@@ -21,17 +19,17 @@ export default defineConfig(() => {
           multipass: true,
           plugins: [
             {
-              name: 'preset-default',
+              name: "preset-default",
               params: {
                 overrides: {
                   // viewBox is required to resize SVGs with CSS.
                   // @see https://github.com/svg/svgo/issues/1128
-                  removeViewBox: false,
-                },
-              },
-            },
-          ],
-        },
+                  removeViewBox: false
+                }
+              }
+            }
+          ]
+        }
       }),
       AutoImport({
         //自动导入第三方库或组件 不需要手动编写import {xxx} from vue
@@ -60,13 +58,6 @@ export default defineConfig(() => {
         open: true, // 在构建后自动打开报告
         filename: "bundle-stats.html", // 生成的报告文件名
         title: "Bundle Visualizer" // 报告的标题
-      }),
-      // 使用 svg 图标
-      createSvgIconsPlugin({
-        // Specify the icon folder to be cached
-        iconDirs: [path.resolve(process.cwd(), "src/assets/icons")],
-        // Specify symbolId format
-        symbolId: "icon-[dir]-[name]"
       })
     ],
     resolve: {

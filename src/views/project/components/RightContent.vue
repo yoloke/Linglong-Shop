@@ -62,9 +62,10 @@
       </div>
     </div>
     <div class="app-list">
-      <div v-for="app in apps" :key="app.appId" class="app-item">
+      <div v-for="(app, index) in appList" :key="app.appId" class="app-item">
         <div class="app-item-main">
-          <img :src="app.icon || defaultIcon" @error="event => formatSVG(event, app.icon)" alt="App Icon" />
+          <img v-if="app.icon" :src="app.icon" @error="event => formatSVG(event, app.icon, index)" alt="App Icon" />
+          <defaultIcon class="defaultIcon" v-else />
           <div class="app-item-text">
             <div class="app-item-title">
               <el-text class="app-item-name" truncated :title="app.zhName || app.name">{{ app.zhName || app.name }}</el-text>
@@ -94,10 +95,10 @@
 </template>
 <script setup lang="ts">
 import { App, Category } from "@/api/interface/index";
-import defaultIcon from "@/assets/images/default.svg";
+import defaultIcon from "@/assets/images/default.svg?component";
 import { installApp, svgUrl2Base64 } from "@/api/modules/project";
 import { ElNotification } from "element-plus";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const props = defineProps<{
@@ -115,6 +116,15 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: "sort-change", value: string): void;
 }>();
+
+const appList = ref<App[]>([]);
+watch(
+  props.apps,
+  newApps => {
+    appList.value = newApps;
+  },
+  { immediate: true }
+);
 
 // 图标
 import Checked from "@/assets/icons/checked.svg?component";
@@ -154,9 +164,8 @@ const onInstall = async (app: App) => {
   // console.log(code);
 };
 
-const formatSVG = async (event: Event, url: string | undefined) => {
+const formatSVG = async (event: Event, url: string | undefined, index: number) => {
   const target = event.target as HTMLImageElement;
-  if (target.src === defaultIcon) return;
   if (url) {
     try {
       const response = await svgUrl2Base64({ url: url });
@@ -165,7 +174,8 @@ const formatSVG = async (event: Event, url: string | undefined) => {
         const img = new Image();
         img.src = response.data as unknown as string;
         img.onerror = () => {
-          target.src = defaultIcon;
+          console.error("SVG转换失败:", response.data);
+          appList.value[index].icon = undefined;
         };
         img.onload = () => {
           target.src = response.data as unknown as string;
@@ -176,8 +186,7 @@ const formatSVG = async (event: Event, url: string | undefined) => {
       console.error("SVG转换失败:", error);
     }
   }
-  // 所有情况失败时使用默认图标
-  target.src = defaultIcon;
+  appList.value[index].icon = undefined;
 };
 
 const sortOptionsShow = ref(false);

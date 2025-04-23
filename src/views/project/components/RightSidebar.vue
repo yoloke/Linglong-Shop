@@ -4,48 +4,23 @@
       <div class="recommended">
         <div class="title-area">
           <div class="title">社区推荐</div>
-          <div class="action">换一换</div>
+          <div class="action" @click="getApps">换一换</div>
         </div>
         <div class="recommended-apps">
-          <div class="recommended-app">
-            <div class="icon"></div>
+          <div class="recommended-app" v-for="(app, index) in recommendApps" :key="index">
+            <img
+              class="icon"
+              v-if="app.icon"
+              :src="app.icon"
+              @error="event => formatSVG(event, app.icon, index)"
+              alt="App Icon"
+            />
+            <defaultIcon class="icon" v-else />
             <div class="info">
-              <div class="name">QQ</div>
-              <div class="detail">这里是它滴描述这里是它滴描述这里是它...</div>
+              <div class="name" :title="app.name">{{ app.name }}</div>
+              <div class="detail" :title="app.description">{{ app.description }}</div>
             </div>
-            <div class="install">安装</div>
-          </div>
-          <div class="recommended-app">
-            <div class="icon"></div>
-            <div class="info">
-              <div class="name">QQ</div>
-              <div class="detail">这里是它滴描述这里是它滴描述这里是它...</div>
-            </div>
-            <div class="install">安装</div>
-          </div>
-          <div class="recommended-app">
-            <div class="icon"></div>
-            <div class="info">
-              <div class="name">QQ</div>
-              <div class="detail">这里是它滴描述这里是它滴描述这里是它...</div>
-            </div>
-            <div class="install">安装</div>
-          </div>
-          <div class="recommended-app">
-            <div class="icon"></div>
-            <div class="info">
-              <div class="name">QQ</div>
-              <div class="detail">这里是它滴描述这里是它滴描述这里是它...</div>
-            </div>
-            <div class="install">安装</div>
-          </div>
-          <div class="recommended-app">
-            <div class="icon"></div>
-            <div class="info">
-              <div class="name">QQ</div>
-              <div class="detail">这里是它滴描述这里是它滴描述这里是它...</div>
-            </div>
-            <div class="install">安装</div>
+            <div class="install" @click="onInstall(app)">安装</div>
           </div>
         </div>
       </div>
@@ -53,18 +28,79 @@
   </div>
 </template>
 <script setup lang="ts">
-// import { Category, Rankings } from "@/api/interface/index";
-// const emit = defineEmits(["selectCategory", "search"]);
+import { App, Recommend, ResultData } from "@/api/interface";
+import { getRecommendApp, installApp, svgUrl2Base64 } from "@/api/modules/project";
+import { ElNotification } from "element-plus";
+import { ref, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
-// defineProps<{
-//   categories: Category[];
-//   rankings: Rankings[];
-//   currentCategory: Category;
-// }>();
+const recommendApps = ref<Recommend[]>([]);
+const getApps = async () => {
+  getRecommendApp({ arch: "x86_64", repoName: "stable" }).then((res: ResultData) => {
+    recommendApps.value = res.data as Recommend[];
+  });
+};
+onMounted(() => {
+  getApps();
+});
 
-// const handleCategoryClick = (category: Category) => {
-//   emit("selectCategory", category);
-// };
+const onInstall = async (app: App) => {
+  // 判断系统环境，不支持则返回
+  const userAgent = navigator.userAgent || navigator.platform;
+  if (!/Linux/i.test(userAgent)) {
+    ElNotification({
+      title: "温馨提示",
+      dangerouslyUseHTMLString: true,
+      message: `
+        <span>当前系统环境不支持玲珑安装</span>
+      `
+    });
+    return;
+  }
+  // 入参加入客户端ip
+  let clientIp = sessionStorage.getItem("clientIp");
+  app.clientIp = clientIp ? clientIp : "";
+  // 温馨提示
+  ElNotification({
+    title: t("tips.title"),
+    dangerouslyUseHTMLString: true,
+    message: `
+      <span>
+        ${t("tips.noPopup")}
+        <a href="https://linyaps.org.cn/guide/start/install.html" target="_blank" style="color: #409EFF; text-decoration: underline;">${t("tips.installLink")}</a>
+      </span>
+    `
+  });
+  // 调用自定义协议执行安装
+  window.location.href = "og://" + app.appId;
+  await installApp(app);
+};
+
+const formatSVG = async (event: Event, url: string | undefined, index: number) => {
+  const target = event.target as HTMLImageElement;
+  if (url) {
+    try {
+      const response = await svgUrl2Base64({ url: url });
+      if (response.code == "200" && response.data) {
+        // 检查base64图片是否能正常显示
+        const img = new Image();
+        img.src = response.data as unknown as string;
+        img.onerror = () => {
+          console.error("SVG转换失败:", response.data);
+          recommendApps.value[index].icon = undefined;
+        };
+        img.onload = () => {
+          target.src = response.data as unknown as string;
+        };
+        return;
+      }
+    } catch (error) {
+      console.error("SVG转换失败:", error);
+    }
+  }
+  recommendApps.value[index].icon = undefined;
+};
 </script>
 
 <style scoped lang="scss">
@@ -115,18 +151,21 @@
           flex: 0 0 60px;
           width: 60px;
           height: 60px;
-          background-color: #ccc;
           border-radius: 8px;
           margin-right: 10px;
         }
         .info {
           flex-grow: 1;
+          max-width: 134px;
           .name {
             font-size: 16px;
             font-weight: 400;
             color: #000;
             height: 24px;
             line-height: 24px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
           .detail {
             font-size: 12px;

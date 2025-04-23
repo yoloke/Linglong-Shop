@@ -74,3 +74,21 @@ export interface Question {
   question: string;
   reply: string;
 }
+
+// 推荐应用
+export interface Recommend {
+  id: string;
+  mainId: string;
+  appId: string;
+  name: string;
+  zhName: string;
+  version: string;
+  xh: string;
+  [key: string]: any;
+}
+
+export interface RecommendReq {
+  arch: string;
+  repoName: string;
+  [key: string]: any;
+}

@@ -1,4 +1,4 @@
-import { ResultData, ReqPage, ResPage, Category, Rankings, App, Question } from "@/api/interface/index";
+import { ResultData, ReqPage, ResPage, Category, Rankings, App, Question, Recommend, RecommendReq } from "@/api/interface/index";
 import http from "@/api";
 
 // 提交反馈
@@ -42,4 +42,9 @@ export const installdd = (arch: string, params?: App) => {
 
 export const svgUrl2Base64 = (params: any) => {
   return http.post<ResultData>("/web/svgUrl2Base64", params, { loading: false });
+};
+
+// 获取推荐应用
+export const getRecommendApp = (params: RecommendReq) => {
+  return http.post<ResultData<Recommend[]>>("/web/getWebAppRecommendList", params, { loading: false });
 };

@@ -43,7 +43,7 @@ import RightContent from "./components/RightContent.vue";
 import RightSidebar from "./components/RightSidebar.vue";
 // import { getLogin, getCategories, getTop, getApp } from "@/api/modules/project";
 import { getLogin, getCategories, getApp } from "@/api/modules/project";
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { i18n } from "@/utils/i18n";
 import { useI18n } from "vue-i18n";
 import { getArchitecture } from "@/utils/common";
@@ -56,7 +56,6 @@ const rankings = ref<Rankings[]>([]);
 const apps = ref<App[]>([]);
 
 const currentPage = ref(1); // 当前页码
-const currentSort = ref("createTime"); // 当前排序方式
 const loading = ref(false); // 加载状态
 const total = ref<number>(2); // 初始值为 null 以处理未知总数
 const noMore = computed(() => apps.value.length >= total.value);

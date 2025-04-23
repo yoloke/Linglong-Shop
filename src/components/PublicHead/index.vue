@@ -10,7 +10,6 @@
     <div class="header-search">
       <el-input v-model="searchInput" placeholder="搜索您需要的应用" class="search-input" clearable>
         <template #append>
-          <!-- <img src="@/assets/icons/search.svg" alt="search" class="search-icon" /> -->
           <searchIcon class="search-icon" />
         </template>
       </el-input>
@@ -33,26 +32,11 @@
         <a :class="`en ${i18n.global.locale === 'en' ? 'active' : ''}`" @click="changeLanguage('en')">EN</a>
       </div>
     </div>
-    <!-- <span class="menu-list">
-      <a @click="openUrl('https://www.linglong.space/')">{{ $t("header.website") }}</a>
-      <a @click="openUrl('https://github.com/OpenAtom-Linyaps/sig-linyaps-packing-sig')">{{ $t("header.delivery") }}</a>
-      <el-dropdown>
-        <span class="el-dropdown-link">
-          <img class="language-icon" :src="languageIcon" alt="language" />
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item @click="changeLanguage('zh')">中文</el-dropdown-item>
-            <el-dropdown-item @click="changeLanguage('en')">English</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
-    </span> -->
   </div>
 </template>
 <script setup lang="ts">
 import { i18n } from "@/utils/i18n";
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref } from "vue";
 import onInstall from "@/utils/downloadClient";
 import { openUrl } from "@/utils/common";
 
@@ -67,22 +51,6 @@ const searchInput = ref<string>("");
 // 其他 Icon
 import DownloadClientIcon from "@/assets/icons/download_client.svg?component";
 import ArrowBottomIcon from "@/assets/icons/arrow_bottom.svg?component";
-
-// // 处理滚动事件
-// const isScrolled = ref(false);
-// const handleScroll = () => {
-//   isScrolled.value = window.scrollY > 66; // 设置滚动阈值
-// };
-
-// // 组件挂载时添加事件监听器
-// onMounted(() => {
-//   window.addEventListener("scroll", handleScroll);
-// });
-
-// // 组件卸载时移除事件监听器
-// onUnmounted(() => {
-//   window.removeEventListener("scroll", handleScroll);
-// });
 
 const changeLanguage = (lang: "zh" | "en") => {
   if (i18n.global.locale === lang) return;

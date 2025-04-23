@@ -17,25 +17,6 @@
       </el-popover>
       <a href="mailto:appstore@deepin.org"><email class="icon email" /></a>
     </div>
-    <!-- <el-tooltip effect="light" placement="top-start">
-      <template #content>
-        <div class="flx-column">
-          <div class="flx-justify-between info">
-            <span>{{ $t("footer.backend") }}：Jokul</span>
-            <span> 986432015@qq.com</span>
-          </div>
-          <div class="flx-justify-between info">
-            <span style="margin-right: 12px">{{ $t("footer.frontend") }}：Yoloke </span>
-            <span> 2575735053@qq.com</span>
-          </div>
-          <div class="flx-justify-between info">
-            <span>{{ $t("footer.design") }}：Gyro</span>
-            <span> bgsdmyck12@163.com</span>
-          </div>
-        </div>
-      </template>
-      <span>{{ $t("footer.developers") }}</span>
-    </el-tooltip> -->
   </div>
 </template>
 <script setup lang="ts">

@@ -51,30 +51,6 @@
           <Unchecked class="checked" v-else @click="() => emit('filter-change', '1')" />
           <span class="text">过滤低分应用</span>
         </div>
-        <!-- <span class="sort-title">{{ $t("appList.header.sortMethod") }}：</span>
-        <el-select
-          :model-value="currentSort"
-          size="small"
-          popper-class="sort-select-options"
-          class="sort-select-hidden"
-          placement="bottom-end"
-          @change="
-            (value: string) => {
-              emit('sort-change', value);
-            }
-          "
-          @visible-change="
-            (value: boolean) => {
-              sortOptionsShow = value;
-            }
-          "
-        >
-          <el-option v-for="item in sortOptions" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-        <div class="sort-select">
-          <div class="sort-select-input">{{ sortLabel }}</div>
-          <div :class="`sort-select-arrow arrow-down ${sortOptionsShow ? '' : 'arrow-show'}`"></div>
-        </div> -->
       </div>
     </div>
     <div class="app-list">
@@ -101,7 +77,9 @@
         </div>
         <div class="app-item-footer">
           <span class="app-item-version">v{{ app.version }}</span>
-          <el-button class="button" type="primary" plain size="small" @click="onInstall(app)">{{ $t("appList.app.install") }}</el-button>
+          <el-button class="button" type="primary" plain size="small" @click="onInstall(app)">{{
+            $t("appList.app.install")
+          }}</el-button>
         </div>
       </div>
     </div>
@@ -114,7 +92,7 @@ import { App, Category } from "@/api/interface/index";
 import defaultIcon from "@/assets/images/default.svg?component";
 import { installApp, svgUrl2Base64 } from "@/api/modules/project";
 import { ElNotification } from "element-plus";
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const props = defineProps<{
@@ -180,8 +158,6 @@ const onInstall = async (app: App) => {
   // 调用自定义协议执行安装
   window.location.href = "og://" + app.appId;
   await installApp(app);
-  // const { code } = await installApp(app);
-  // console.log(code);
 };
 
 const formatSVG = async (event: Event, url: string | undefined, index: number) => {
@@ -208,13 +184,6 @@ const formatSVG = async (event: Event, url: string | undefined, index: number) =
   }
   appList.value[index].icon = undefined;
 };
-
-const sortOptionsShow = ref(false);
-const sortOptions = computed(() => [
-  { label: t("appList.header.sort.new"), value: "createTime" },
-  { label: t("appList.header.sort.hot"), value: "installCount" }
-]);
-const sortLabel = computed(() => sortOptions.value.find(item => item.value === props.currentSort)?.label);
 </script>
 <style scoped lang="scss">
 .right {

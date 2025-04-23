@@ -21,7 +21,11 @@
       :no-more="noMore"
       :search-query="searchQuery"
       :current-sort="currentSort"
+      :current-arch="currentArch"
+      :current-filter="currentFilter"
       @sort-change="sortChange"
+      @filter-change="filterChange"
+      @arch-change="archChange"
     />
     <RightSidebar />
   </div>
@@ -59,7 +63,12 @@ const noMore = computed(() => apps.value.length >= total.value);
 const disabled = computed(() => loading.value || noMore.value); // 是否禁用滚动加载
 const selectedCategory = ref<Category>({ categoryId: undefined, categoryName: t("appSearchBar.all") });
 
-const architecture = getArchitecture();
+!localStorage.getItem("currentSort") && localStorage.setItem("currentSort", "createTime");
+!localStorage.getItem("currentArch") && localStorage.setItem("currentArch", getArchitecture());
+!localStorage.getItem("currentFilter") && localStorage.setItem("currentFilter", "0");
+const currentSort = ref(localStorage.getItem("currentSort") || "createTime"); // 当前排序方式
+const currentArch = ref(localStorage.getItem("currentArch") || getArchitecture()); // 当前架构
+const currentFilter = ref(localStorage.getItem("currentFilter") || "0"); // 当前筛选条件
 
 const getApps = async (params: ReqPageParams) => {
   loading.value = true;
@@ -70,8 +79,9 @@ const getApps = async (params: ReqPageParams) => {
       name: searchQuery.value, // 传递搜索条件
       sort: currentSort.value,
       lan: i18n.global.locale,
-      arch: architecture,
+      arch: currentArch.value === "unknown" ? undefined : currentArch.value, // 如果架构为 unknown，则不传递
       categoryId: selectedCategory.value?.categoryId, // 如果有选择的分类，则传递
+      filter: currentFilter.value === "0" ? false : true, // 如果没有选择的筛选条件，则不传递
       ...params
     });
 
@@ -156,19 +166,29 @@ const handleSearch = async (query: string) => {
 
 const sortChange = async (sort: string) => {
   currentSort.value = sort;
+  localStorage.setItem("currentSort", sort); // 保存排序方式
   currentPage.value = 1; // 重置页码
   apps.value = []; // 清空应用列表
-  getApps({
-    sort // 传递排序条件
-  });
+  getApps({});
+};
+
+const archChange = async (arch: string) => {
+  if (currentArch.value === arch) {
+    return;
+  }
+  currentArch.value = arch;
+  localStorage.setItem("currentArch", arch); // 保存架构
+  currentPage.value = 1; // 重置页码
+  apps.value = []; // 清空应用列表
+  getApps({});
 };
 
 const filterChange = async (filter: string) => {
+  currentFilter.value = filter;
+  localStorage.setItem("currentFilter", filter); // 保存筛选条件
   currentPage.value = 1; // 重置页码
   apps.value = []; // 清空应用列表
-  getApps({
-    filter // 传递筛选条件
-  });
+  getApps({});
 };
 </script>
 <style scoped lang="scss">

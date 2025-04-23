@@ -7,8 +7,24 @@
           <span v-show="searchQuery">({{ searchQuery }})</span>
         </span>
         <div class="architecture">
-          <div class="architecture-item active">x86</div>
-          <div class="architecture-item">ARM</div>
+          <div
+            :class="`architecture-item ${currentArch === 'x86_64' ? 'active' : ''}`"
+            @click="() => emit('arch-change', 'x86_64')"
+          >
+            x86
+          </div>
+          <div
+            :class="`architecture-item ${currentArch === 'arm64' ? 'active' : ''}`"
+            @click="() => emit('arch-change', 'arm64')"
+          >
+            ARM
+          </div>
+          <div
+            :class="`architecture-item ${currentArch === 'loongarch64' ? 'active' : ''}`"
+            @click="() => emit('arch-change', 'loongarch64')"
+          >
+            Loongarch
+          </div>
         </div>
         <div class="total-count">
           <span class="text">共</span>
@@ -31,8 +47,8 @@
           </div>
         </div>
         <div class="hide">
-          <Checked class="checked" v-if="true" />
-          <Unchecked class="checked" v-else />
+          <Checked class="checked" v-if="currentFilter === '1'" @click="() => emit('filter-change', '0')" />
+          <Unchecked class="checked" v-else @click="() => emit('filter-change', '1')" />
           <span class="text">过滤低分应用</span>
         </div>
         <!-- <span class="sort-title">{{ $t("appList.header.sortMethod") }}：</span>
@@ -111,10 +127,14 @@ const props = defineProps<{
   noMore: boolean;
   loading: boolean;
   searchQuery: string;
-  currentSort: string;
+  currentSort: string | undefined;
+  currentArch: string;
+  currentFilter: string;
 }>();
 const emit = defineEmits<{
   (event: "sort-change", value: string): void;
+  (event: "filter-change", value: string): void;
+  (event: "arch-change", value: string): void;
 }>();
 
 const appList = ref<App[]>([]);

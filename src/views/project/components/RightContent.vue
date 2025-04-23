@@ -339,7 +339,8 @@ const sortLabel = computed(() => sortOptions.value.find(item => item.value === p
         height: 70px;
         align-items: start;
 
-        img {
+        img,
+        .defaultIcon {
           margin-right: 12px;
           width: 60px;
           height: 60px;

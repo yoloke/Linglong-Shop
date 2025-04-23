@@ -119,11 +119,11 @@ const emit = defineEmits<{
 
 const appList = ref<App[]>([]);
 watch(
-  props.apps,
+  () => props.apps,
   newApps => {
     appList.value = newApps;
   },
-  { immediate: true }
+  { immediate: true, deep: true }
 );
 
 // 图标

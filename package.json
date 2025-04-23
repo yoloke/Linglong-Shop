@@ -22,6 +22,7 @@
     "axios": "^1.7.3",
     "dayjs": "^1.11.12",
     "element-plus": "^2.8.0",
+    "mitt": "^3.0.1",
     "pinia": "^2.2.1",
     "pinia-plugin-persistedstate": "^3.2.1",
     "postcss-pxtorem": "^6.1.0",

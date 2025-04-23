@@ -43,7 +43,7 @@ import RightContent from "./components/RightContent.vue";
 import RightSidebar from "./components/RightSidebar.vue";
 // import { getLogin, getCategories, getTop, getApp } from "@/api/modules/project";
 import { getLogin, getCategories, getApp } from "@/api/modules/project";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { i18n } from "@/utils/i18n";
 import { useI18n } from "vue-i18n";
 import { getArchitecture } from "@/utils/common";
@@ -106,7 +106,9 @@ onMounted(async () => {
   const osVersion = navigator.userAgent || navigator.appVersion;
 
   // 获取分类数据
-  await getCategory();
+  getCategory();
+
+  load();
 
   // 获取排名数据
   // const { data: rankingData } = await getTop();
@@ -121,8 +123,7 @@ onMounted(async () => {
   // 存入session中
   sessionStorage.setItem("clientIp", clientIp);
   // 传递 osVersion
-  await getLogin({ clientIp, osVersion });
-  await load();
+  getLogin({ clientIp, osVersion });
 });
 
 const getCategory = async () => {
@@ -162,6 +163,14 @@ const handleSearch = async (query: string) => {
     name: query // 传递搜索条件
   });
 };
+
+onMounted(() => {
+  window.eventBus.on("search", handleSearch);
+});
+
+onUnmounted(() => {
+  window.eventBus.off("search", handleSearch);
+});
 
 const sortChange = async (sort: string) => {
   currentSort.value = sort;

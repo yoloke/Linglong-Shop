@@ -8,9 +8,16 @@
       </div>
     </div>
     <div class="header-search">
-      <el-input v-model="searchInput" placeholder="搜索您需要的应用" class="search-input" clearable>
+      <el-input
+        v-model="searchInput"
+        placeholder="搜索您需要的应用"
+        class="search-input"
+        @keyup.enter="handleSearch"
+        @clear="handleSearch"
+        clearable
+      >
         <template #append>
-          <searchIcon class="search-icon" />
+          <searchIcon @click="handleSearch" class="search-icon" />
         </template>
       </el-input>
     </div>
@@ -47,6 +54,10 @@ import linyapsLogo from "@/assets/images/linyaps_logo.svg?component";
 // 搜索框
 import searchIcon from "@/assets/icons/search.svg?component";
 const searchInput = ref<string>("");
+
+const handleSearch = () => {
+  window.eventBus.emit("search", searchInput.value);
+};
 
 // 其他 Icon
 import DownloadClientIcon from "@/assets/icons/download_client.svg?component";

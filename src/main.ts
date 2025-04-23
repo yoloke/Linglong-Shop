@@ -26,6 +26,10 @@ import "@/utils/rem";
 // 国际化组件
 import { i18n } from "@/utils/i18n";
 
+// 事件总线
+import mitt from "mitt";
+window.eventBus = mitt();
+
 import App from "./App.vue";
 
 const app = createApp(App);

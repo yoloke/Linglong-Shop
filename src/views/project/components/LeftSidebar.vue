@@ -13,7 +13,7 @@
         >
           <el-icon size="16"><component :is="category.icon" /></el-icon>
           <div class="category-name">{{ category.categoryName || $t("appSearchBar.other") }}</div>
-          <div class="category-count">
+          <!-- <div class="category-count">
             {{
               category.categoryName === t("appSearchBar.all")
                 ? "(" +
@@ -27,7 +27,7 @@
                   ? `(${category.categoryAppCount})`
                   : ""
             }}
-          </div>
+          </div> -->
         </div>
       </div>
     </el-affix>
@@ -36,8 +36,8 @@
 <script setup lang="ts">
 import { Category, Rankings } from "@/api/interface/index";
 const emit = defineEmits(["selectCategory", "search"]);
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+// import { useI18n } from "vue-i18n";
+// const { t } = useI18n();
 
 defineProps<{
   categories: Category[];

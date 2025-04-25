@@ -15,6 +15,8 @@ export const getArchitecture = () => {
     return "arm64";
   } else if (/loongarch64/i.test(userAgent)) {
     return "loongarch64";
+  } else if (/loong64/i.test(userAgent)) {
+    return "loong64";
   } else {
     return "unknown";
   }

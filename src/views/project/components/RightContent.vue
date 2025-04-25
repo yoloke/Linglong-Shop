@@ -20,6 +20,12 @@
             ARM
           </div>
           <div
+            :class="`architecture-item ${currentArch === 'loong64' ? 'active' : ''}`"
+            @click="() => emit('arch-change', 'loong64')"
+          >
+            Loong
+          </div>
+          <div
             :class="`architecture-item ${currentArch === 'loongarch64' ? 'active' : ''}`"
             @click="() => emit('arch-change', 'loongarch64')"
           >

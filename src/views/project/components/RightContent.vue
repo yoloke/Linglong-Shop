@@ -52,9 +52,12 @@
             <span class="text">按最新排序</span>
           </div>
         </div>
-        <div class="hide">
-          <Checked class="checked" v-if="currentFilter === '1'" @click="() => emit('filter-change', '0')" />
-          <Unchecked class="checked" v-else @click="() => emit('filter-change', '1')" />
+        <div class="hide" v-if="currentFilter === '1'" @click="() => emit('filter-change', '0')">
+          <Checked class="checked" />
+          <span class="text">过滤低分应用</span>
+        </div>
+        <div class="hide" v-else @click="() => emit('filter-change', '1')">
+          <Unchecked class="checked" />
           <span class="text">过滤低分应用</span>
         </div>
       </div>

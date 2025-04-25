@@ -3,8 +3,8 @@
     <el-affix :offset="130">
       <div class="recommended">
         <div class="title-area">
-          <div class="title">社区推荐</div>
-          <div class="action" @click="getApps">换一换</div>
+          <div class="title">{{ $t("recommend.title") }}</div>
+          <div class="action" @click="getApps">{{ $t("recommend.change") }}</div>
         </div>
         <div class="recommended-apps">
           <div class="recommended-app" v-for="(app, index) in recommendApps" :key="index">
@@ -20,7 +20,7 @@
               <div class="name" :title="app.name">{{ app.zhName }}</div>
               <div class="detail" :title="app.description">{{ app.description }}</div>
             </div>
-            <div class="install" @click="onInstall(app)">安装</div>
+            <div class="install" @click="onInstall(app)">{{ $t("recommend.install") }}</div>
           </div>
         </div>
       </div>
@@ -32,12 +32,13 @@ import { App, Recommend, ResultData } from "@/api/interface";
 import { getRecommendApp, installApp, svgUrl2Base64 } from "@/api/modules/project";
 import { ElNotification } from "element-plus";
 import { ref, onMounted } from "vue";
+import { i18n } from "@/utils/i18n";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 const recommendApps = ref<Recommend[]>([]);
 const getApps = async () => {
-  getRecommendApp({ arch: "x86_64", repoName: "stable" }).then((res: ResultData) => {
+  getRecommendApp({ arch: "x86_64", repoName: "stable", lan: i18n.global.locale }).then((res: ResultData) => {
     recommendApps.value = res.data as Recommend[];
   });
 };
@@ -50,10 +51,10 @@ const onInstall = async (app: App) => {
   const userAgent = navigator.userAgent || navigator.platform;
   if (!/Linux/i.test(userAgent)) {
     ElNotification({
-      title: "温馨提示",
+      title: t("tips.title"),
       dangerouslyUseHTMLString: true,
       message: `
-        <span>当前系统环境不支持玲珑安装</span>
+        <span>${t("tips.noSupport")}</span>
       `
     });
     return;

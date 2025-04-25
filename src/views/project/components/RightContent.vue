@@ -33,9 +33,9 @@
           </div>
         </div>
         <div class="total-count">
-          <span class="text">共</span>
+          <span class="text">{{ $t("appList.header.totalPre") }}</span>
           <span class="number">{{ total }}</span>
-          <span class="text">款应用</span>
+          <span class="text">{{ $t("appList.header.totalAft") }}</span>
         </div>
       </div>
       <div class="header-sort">
@@ -45,20 +45,20 @@
             @click="() => emit('sort-change', 'installCount')"
           >
             <span class="dot"></span>
-            <span class="text">按下载排序</span>
+            <span class="text">{{ $t("appList.header.sort.hot") }}</span>
           </div>
           <div :class="`newest ${currentSort === 'createTime' ? 'active' : ''}`" @click="() => emit('sort-change', 'createTime')">
             <span class="dot"></span>
-            <span class="text">按最新排序</span>
+            <span class="text">{{ $t("appList.header.sort.new") }}</span>
           </div>
         </div>
         <div class="hide" v-if="currentFilter === '1'" @click="() => emit('filter-change', '0')">
           <Checked class="checked" />
-          <span class="text">过滤低分应用</span>
+          <span class="text">{{ $t("appList.header.filter") }}</span>
         </div>
         <div class="hide" v-else @click="() => emit('filter-change', '1')">
           <Unchecked class="checked" />
-          <span class="text">过滤低分应用</span>
+          <span class="text">{{ $t("appList.header.filter") }}</span>
         </div>
       </div>
     </div>
@@ -142,10 +142,10 @@ const onInstall = async (app: App) => {
   const userAgent = navigator.userAgent || navigator.platform;
   if (!/Linux/i.test(userAgent)) {
     ElNotification({
-      title: "温馨提示",
+      title: t("tips.title"),
       dangerouslyUseHTMLString: true,
       message: `
-        <span>当前系统环境不支持玲珑安装</span>
+        <span>${t("tips.noSupport")}</span>
       `
     });
     return;

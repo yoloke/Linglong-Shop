@@ -6,7 +6,7 @@
       {{ $t("footer.aboutAft") }}
     </span>
     <div class="contact">
-      <span class="text">联系我们</span>
+      <span class="text">{{ $t("footer.contactUs") }}</span>
       <facebook @click="openUrl('https://www.facebook.com/groups/mydeepinlinux')" class="icon facebook" />
       <telegram @click="openUrl('https://deepin.org/to/tg')" class="icon telegram" />
       <el-popover class="box-item" placement="top">

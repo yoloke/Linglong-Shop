@@ -3,14 +3,14 @@
     <div class="header-logo-area select-user-none">
       <linyapsLogo class="header-logo" />
       <div class="header-logo-title">
-        <span class="title">{{ $t("title.title") }}</span>
+        <span :class="`title ${i18n.global.locale === 'zh' ? 'zh' : ''}`">{{ $t("title.title") }}</span>
         <span class="content">- {{ $t("title.subtitle1") }} -</span>
       </div>
     </div>
     <div class="header-search">
       <el-input
         v-model="searchInput"
-        placeholder="搜索您需要的应用"
+        :placeholder="$t('title.search')"
         class="search-input"
         @keyup.enter="handleSearch"
         @clear="handleSearch"
@@ -24,13 +24,13 @@
     <div class="header-actions">
       <div class="download-client" @click="onInstall">
         <DownloadClientIcon class="download-client-icon" />
-        <div class="install-text">客户端下载</div>
+        <div class="install-text">{{ $t("title.downloadClient") }}</div>
       </div>
-      <a class="tourl" @click="openUrl('https://linyaps.org.cn/')">社区官网</a>
-      <a class="tourl" @click="openUrl('https://appstore-dev.uniontech.com/#/index')">应用投递</a>
-      <a class="tourl" @click="openUrl('https://linyaps.org.cn/guide/start/whatis.html')">文档中心</a>
+      <a class="tourl" @click="openUrl('https://linyaps.org.cn/')">{{ $t("title.website") }}</a>
+      <a class="tourl" @click="openUrl('https://appstore-dev.uniontech.com/#/index')">{{ $t("title.delivery") }}</a>
+      <a class="tourl" @click="openUrl('https://linyaps.org.cn/guide/start/whatis.html')">{{ $t("title.documents") }}</a>
       <div class="env-install" @click="openUrl('https://linyaps.org.cn/guide/start/install.html')">
-        <div class="install-text">环境安装</div>
+        <div class="install-text">{{ $t("title.installEnv") }}</div>
         <ArrowBottomIcon class="env-install-icon" />
       </div>
       <div class="language">
@@ -101,7 +101,9 @@ const changeLanguage = (lang: "zh" | "en") => {
         font-weight: 600;
         color: #000;
         height: 18px;
-        letter-spacing: 0.05em;
+        &.zh {
+          letter-spacing: 0.05em;
+        }
       }
       .content {
         font-size: 12px;

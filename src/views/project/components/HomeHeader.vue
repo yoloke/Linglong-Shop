@@ -22,22 +22,24 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from "vue";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import onInstall from "@/utils/downloadClient";
 // ########## 通知内容 ########## //
 const newsList = [
   {
-    content: "加入 Telegram Group: deepin.org/to/tg 了解更多资讯",
+    content: t("news.first.content"),
     action: {
-      text: "点击了解",
+      text: t("news.first.action"),
       func: () => {
         window.open("https://deepin.org/to/tg", "_blank");
       }
     }
   },
   {
-    content: "下载客户端，探索应用新世界",
+    content: t("news.second.content"),
     action: {
-      text: "我要下载",
+      text: t("news.second.action"),
       func: onInstall
     }
   }

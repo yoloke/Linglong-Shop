@@ -2,10 +2,22 @@
   "title": {
     "title": "如意玲珑应用商店",
     "subtitle1": "Linux 应用宝库",
-    "app": "应用",
-    "store": "商店",
-    "client": "客户端",
-    "subtitle": "探索应用新世界，享受到高品质的应用体验。"
+    "search": "搜索您需要的应用",
+    "downloadClient": "客户端下载",
+    "website": "社区官网",
+    "delivery": "应用投递",
+    "documents": "文档中心",
+    "installEnv": "环境安装"
+  },
+  "news": {
+    "first": {
+      "content": "加入 Telegram Group: deepin.org/to/tg 了解更多资讯",
+      "action": "点击了解"
+    },
+    "second": {
+      "content": "下载客户端，探索应用新世界",
+      "action": "我要下载"
+    }
   },
   "appSearchBar": {
     "placeholder": "查找应用",
@@ -15,12 +27,14 @@
   },
   "appList": {
     "header": {
-      "total": "共 {total} 款应用",
+      "totalPre": "共",
+      "totalAft": "款应用",
       "sortMethod": "排序方式",
       "sort": {
-        "hot": "安装量",
-        "new": "上架时间"
-      }
+        "hot": "按下载排序",
+        "new": "按最新排序"
+      },
+      "filter": "过滤低分应用"
     },
     "app": {
       "install": "安装"
@@ -35,10 +49,7 @@
     "aboutPre": "本商店来自于",
     "about": "简易玲珑商店SIG组",
     "aboutAft": "贡献",
-    "developers": "相关开发人员",
-    "frontend": "前端",
-    "backend": "后端",
-    "design": "设计"
+    "contactUs": "联系我们"
   },
   "feedback": {
     "title": "问题答疑",
@@ -61,7 +72,13 @@
   },
   "tips": {
     "title": "温馨提示",
+    "noSupport": "当前系统环境不支持玲珑安装",
     "noPopup": "如果无弹出“玲珑安装程序”对话框，您必须先安装玲珑:",
     "installLink": "点击此处安装玲珑环境"
+  },
+  "recommend": {
+    "title": "社区推荐",
+    "change": "换一换",
+    "install": "安装"
   }
 }

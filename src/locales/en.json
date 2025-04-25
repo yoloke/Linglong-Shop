@@ -1,9 +1,23 @@
 {
   "title": {
-    "app": "App ",
-    "store": "Store",
-    "client": "Client",
-    "subtitle": "Explore a new world of apps and enjoy a high-quality app experience."
+    "title": "Linyaps App Store",
+    "subtitle1": "Linux Application Repository",
+    "search": "Search for apps",
+    "downloadClient": "Client",
+    "website": "Community",
+    "delivery": "App Delivery",
+    "documents": "Docs",
+    "installEnv": "Setup Env"
+  },
+  "news": {
+    "first": {
+      "content": "Join Telegram Group: deepin.org/to/tg to learn more",
+      "action": "Learn More"
+    },
+    "second": {
+      "content": "Download the client to explore a new world of apps",
+      "action": "Download"
+    }
   },
   "appSearchBar": {
     "placeholder": "Search for apps",
@@ -13,12 +27,14 @@
   },
   "appList": {
     "header": {
-      "total": "Total {total} apps",
+      "totalPre": "Total",
+      "totalAft": "apps",
       "sortMethod": "Sort",
       "sort": {
-        "hot": "Hottest",
+        "hot": "Popular",
         "new": "Newest"
-      }
+      },
+      "filter": "Filter Low-Rated Apps"
     },
     "app": {
       "install": "Install"
@@ -26,17 +42,14 @@
     "noMore": "No more apps"
   },
   "header": {
-    "website": "Linyaps Commiunity",
+    "website": "Linyaps Community",
     "delivery": "App Delivery"
   },
   "footer": {
     "aboutPre": "Designed & Developed by",
-    "about": "Simple Linglong Store SIG Group",
+    "about": "Linyaps Simple Store SIG",
     "aboutAft": "",
-    "developers": "Developers",
-    "frontend": "Frontend",
-    "backend": "Backend",
-    "design": "Design"
+    "contactUs": "Contact Us"
   },
   "feedback": {
     "title": "Q&A",
@@ -59,7 +72,13 @@
   },
   "tips": {
     "title": "Tips",
+    "noSupport": "Current system environment does not support Linglong installation",
     "noPopup": "If the 'Linglong Installer' dialog does not pop up, you must first install Linglong:",
     "installLink": "Click here to install the Linglong environment"
+  },
+  "recommend": {
+    "title": "Recommended Apps",
+    "change": "Refresh",
+    "install": "Install"
   }
 }

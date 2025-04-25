@@ -17,7 +17,7 @@
             />
             <defaultIcon class="icon" v-else />
             <div class="info">
-              <div class="name" :title="app.name">{{ app.name }}</div>
+              <div class="name" :title="app.name">{{ app.zhName }}</div>
               <div class="detail" :title="app.description">{{ app.description }}</div>
             </div>
             <div class="install" @click="onInstall(app)">安装</div>

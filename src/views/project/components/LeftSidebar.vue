@@ -88,7 +88,7 @@ const handleCategoryClick = (category: Category) => {
       }
       .category-name {
         font-size: 12px;
-        width: 4em;
+        width: 6em;
         margin-right: 4px;
       }
       .category-count {

@@ -25,12 +25,12 @@
           >
             Loong
           </div>
-          <div
+          <!-- <div
             :class="`architecture-item ${currentArch === 'loongarch64' ? 'active' : ''}`"
             @click="() => emit('arch-change', 'loongarch64')"
           >
             Loongarch
-          </div>
+          </div> -->
         </div>
         <div class="total-count">
           <span class="text">{{ $t("appList.header.totalPre") }}</span>

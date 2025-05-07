@@ -32,7 +32,7 @@ const newsList = [
     action: {
       text: t("news.first.action"),
       func: () => {
-        window.open("https://deepin.org/to/tg", "_blank");
+        window.open("https://linyaps.org.cn/guide/lessons/basic-notes.html", "_blank");
       }
     }
   },

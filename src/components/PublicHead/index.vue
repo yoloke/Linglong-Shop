@@ -31,7 +31,7 @@
       <a class="tourl" @click="openUrl('https://linyaps.org.cn/guide/start/whatis.html')">{{ $t("title.documents") }}</a>
       <div class="env-install" @click="openUrl('https://linyaps.org.cn/guide/start/install.html')">
         <div class="install-text">{{ $t("title.installEnv") }}</div>
-        <ArrowBottomIcon class="env-install-icon" />
+        <!-- <ArrowBottomIcon class="env-install-icon" /> -->
       </div>
       <div class="language">
         <a :class="`zh ${i18n.global.locale === 'zh' ? 'active' : ''}`" @click="changeLanguage('zh')">简</a>
@@ -61,7 +61,7 @@ const handleSearch = () => {
 
 // 其他 Icon
 import DownloadClientIcon from "@/assets/icons/download_client.svg?component";
-import ArrowBottomIcon from "@/assets/icons/arrow_bottom.svg?component";
+// import ArrowBottomIcon from "@/assets/icons/arrow_bottom.svg?component";
 
 const changeLanguage = (lang: "zh" | "en") => {
   if (i18n.global.locale === lang) return;
@@ -202,7 +202,7 @@ const changeLanguage = (lang: "zh" | "en") => {
       cursor: pointer;
       height: 36px;
       background-color: #1890ff;
-      padding: 0 9px;
+      padding: 0 16px;
       border-radius: 6px;
       transition: background-color 0.3s;
       .env-install-icon {

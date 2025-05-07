@@ -15,7 +15,12 @@
         </template>
         <img src="@/assets/images/wechatQRCode.jpg" alt="wechat" />
       </el-popover>
-      <a href="mailto:appstore@deepin.org"><email class="icon email" /></a>
+      <el-popover class="box-item" placement="top">
+        <template #reference>
+          <a href="mailto:appstore@deepin.org"><email class="icon email" /></a>
+        </template>
+        <span style="font-size: 16px">appstore@deepin.org</span>
+      </el-popover>
     </div>
   </div>
 </template>

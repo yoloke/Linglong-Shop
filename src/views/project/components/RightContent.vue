@@ -343,6 +343,7 @@ const formatSVG = async (event: Event, url: string | undefined, index: number) =
           width: 60px;
           height: 60px;
           flex: 0 0 60px;
+          border-radius: 8px;
         }
 
         .app-item-text {

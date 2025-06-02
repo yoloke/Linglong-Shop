@@ -5,6 +5,7 @@ const architecture = getArchitecture();
 
 const onInstall = async () => {
   try {
+    console.log("开始下载客户端，当前架构：", architecture);
     // 请求接口，获取后端返回的数据对象（包含下载链接）
     const response = await installdd(architecture);
 

@@ -1,4 +1,4 @@
-import { ResultData, ReqPage, ResPage, Category, Rankings, App, Question, Recommend, RecommendReq } from "@/api/interface/index";
+import { ResultData, ReqPage, ResPage, Category, Rankings, App, Question, RecommendReq, News } from "@/api/interface/index";
 import http from "@/api";
 
 // 提交反馈
@@ -44,7 +44,12 @@ export const svgUrl2Base64 = (params: any) => {
   return http.post<ResultData>("/web/svgUrl2Base64", params, { loading: false });
 };
 
-// 获取推荐应用
+// 获取推荐应用列表
 export const getRecommendApp = (params: RecommendReq) => {
-  return http.post<ResultData<Recommend[]>>("/web/getWebAppRecommendList", params, { loading: false });
+  return http.post<ResultData>("/web/getWebAppRecommendList", params, { loading: false });
+};
+
+// 获取新闻横幅列表
+export const getNewsList = (lang?: string) => {
+  return http.get<News[]>("/web/getNewsList", { lang: lang || "zh" }, { loading: false });
 };

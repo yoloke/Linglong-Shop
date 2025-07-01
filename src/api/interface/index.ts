@@ -60,6 +60,15 @@ export interface Rankings {
   appName: string;
 }
 
+// 新闻横幅
+export interface News {
+  id: string;
+  content: string;
+  actionType: string;
+  actionText: string;
+  actionUrl?: string;
+}
+
 // 分页---响应参数
 export interface ResPage {
   size: number;

@@ -199,5 +199,8 @@ const formatSVG = async (event: Event, url: string | undefined, index: number) =
       }
     }
   }
+  :deep(.el-affix--fixed) {
+    top: 106px !important;
+  }
 }
 </style>

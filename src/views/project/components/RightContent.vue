@@ -200,10 +200,14 @@ const formatSVG = async (event: Event, url: string | undefined, index: number) =
   margin-bottom: 60px;
 
   .header {
+    position: sticky;
+    top: 86px;
+    background-color: #fafafa;
+    z-index: 10;
     margin-bottom: 12px;
     display: flex;
     align-items: flex-end;
-    padding: 0 2px;
+    padding: 24px 2px 12px 2px;
 
     .header-category {
       display: flex;

@@ -44,6 +44,66 @@ export interface App {
   categoryId?: string;
   version?: string;
   clientIp?: string;
+  channel?: string;
+  arch?: string;
+  kind?: string;
+  module?: string;
+  repoName?: string;
+  runtime?: string;
+  size?: string;
+  uabUrl?: string;
+  user?: string;
+  installCount?: number;
+  uninstallCount?: number;
+  descInfo?: string;
+  createTime?: string;
+}
+
+export interface AppScreenshot {
+  lan?: string;
+  screenshotKey: string;
+}
+
+export interface AppTag {
+  [key: string]: any;
+}
+
+export interface AppDetail extends App {
+  base?: string;
+  devId?: string;
+  devName?: string;
+  iconNoShow?: string;
+  lan?: string;
+  appScreenshotList?: AppScreenshot[];
+  appTagList?: AppTag[];
+}
+
+export type AppDetailMap = Record<string, AppDetail[]>;
+
+export interface AppDetailQuery {
+  appId: string;
+  arch?: string;
+  lang?: string;
+}
+
+export interface AppComment {
+  id: string;
+  appId: string;
+  version?: string;
+  remark: string;
+  visit?: string;
+  clientIp?: string;
+  agreeNum: number;
+  disagreeNum: number;
+  createTime?: string;
+  updateTime?: string;
+  isDelete?: string;
+}
+
+export interface AppCommentQuery {
+  appId: string;
+  pageNo?: number;
+  pageSize?: number;
 }
 
 // 应用分类

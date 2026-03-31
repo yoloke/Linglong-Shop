@@ -84,11 +84,12 @@ export default defineConfig(() => {
           assetFileNames: "static/[ext]/[name]-[hash].[ext]"
         }
       }
-    },
-    server: {
+    },    server: {
       proxy: {
         "/api": {
           target: "https://storeapi.linyaps.org.cn", // 目标服务器
+          // target: "https://test-storeadmin.onbed.cn/api/", // 目标服务器
+          // target: "http://localhost:8687/", // 目标服务器
           changeOrigin: true, // 是否改变请求源
           rewrite: path => path.replace(/^\/api/, "") // 重写路径
         }

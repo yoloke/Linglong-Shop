@@ -1,4 +1,18 @@
-import { ResultData, ReqPage, ResPage, Category, Rankings, App, Question, RecommendReq, News } from "@/api/interface/index";
+import {
+  ResultData,
+  ReqPage,
+  ResPage,
+  Category,
+  Rankings,
+  App,
+  AppComment,
+  AppCommentQuery,
+  AppDetailMap,
+  AppDetailQuery,
+  Question,
+  RecommendReq,
+  News
+} from "@/api/interface/index";
 import http from "@/api";
 
 // 提交反馈
@@ -42,6 +56,16 @@ export const installdd = (arch: string, params?: App) => {
 
 export const svgUrl2Base64 = (params: any) => {
   return http.post<ResultData>("/web/svgUrl2Base64", params, { loading: false });
+};
+
+// 获取应用详情（包含截图、详细描述等）
+export const getAppDetail = (params: AppDetailQuery[]) => {
+  return http.post<AppDetailMap>("/app/getAppDetail", params, { loading: false });
+};
+
+// 获取应用评论列表（只读展示）
+export const getAppCommentList = (params: AppCommentQuery) => {
+  return http.post<AppComment[]>("/app/getAppCommentList", params, { loading: false });
 };
 
 // 获取推荐应用列表

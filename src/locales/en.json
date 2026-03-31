@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Loading..."
+  },
   "title": {
     "title": "Linyaps App Store",
     "subtitle1": "Linux Application Repository",
@@ -80,5 +83,69 @@
     "title": "Recommended Apps",
     "change": "Refresh",
     "install": "Install"
+  },
+  "appDetail": {
+    "actions": {
+      "back": "Back",
+      "backHome": "Back to Home",
+      "install": "Install",
+      "shareLink": "Share Link"
+    },
+    "meta": {
+      "appId": "App ID",
+      "arch": "Architecture",
+      "developer": "Developer",
+      "source": "Source",
+      "size": "Package Size",
+      "downloads": "Downloads",
+      "unknown": "Unavailable"
+    },
+    "states": {
+      "unavailableTitle": "App details are temporarily unavailable",
+      "invalidAppId": "This app link is invalid. Please return to the list and try again.",
+      "loadFailed": "Failed to load the app details. Please try again later.",
+      "notFound": "No details are available for this app yet.",
+      "noSummary": "No summary available.",
+      "noDescription": "No detailed description available."
+    },
+    "share": {
+      "message": "Take a look at \"{name}\"",
+      "shared": "The share panel is now open",
+      "copied": "Link copied — share away",
+      "copyFailed": "Unable to copy the link. Please copy it from the address bar manually."
+    },
+    "description": {
+      "title": "Overview"
+    },
+    "screenshots": {
+      "title": "Screenshots",
+      "count": "{count} images",
+      "empty": "No screenshots are available for this app yet.",
+      "unavailable": "Preview unavailable"
+    },
+    "versions": {
+      "title": "Version History",
+      "count": "{count} versions",
+      "empty": "No version history is available yet.",
+      "latest": "Latest",
+      "expand": "Show {count} older versions",
+      "collapse": "Collapse version history",
+      "labels": {
+        "arch": "Arch",
+        "channel": "Channel",
+        "module": "Module",
+        "size": "Size",
+        "downloads": "Downloads"
+      }
+    },
+    "comments": {
+      "title": "Comments",
+      "readonlyHint": "Comments are read-only in the web version for now.",
+      "count": "Showing {count} comments",
+      "empty": "No comments yet — screenshots and version history are still ready for browsing.",
+      "versionLabel": "Version: {version}",
+      "likes": "Likes",
+      "dislikes": "Dislikes"
+    }
   }
 }

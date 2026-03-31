@@ -139,7 +139,7 @@
               :src="screenshot.screenshotKey"
               :preview-src-list="screenshotPreviewList"
               :initial-index="index"
-              fit="cover"
+              fit="contain"
               preview-teleported
               class="screenshot-card"
             >
@@ -685,9 +685,29 @@ watch(
 .screenshot-card {
   border-radius: var(--detail-inner-radius);
   width: 100%;
-  height: 180px;
+  min-height: 216px;
+  height: 216px;
+  max-height: 216px;
   background: linear-gradient(180deg, #f8fafc 0%, #eef4ff 100%);
   overflow: hidden;
+}
+
+.screenshot-card :deep(.el-image__wrapper) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 216px;
+  max-height: 216px;
+}
+
+.screenshot-card :deep(.el-image__inner) {
+  width: 100%;
+  height: 100%;
+  min-height: 216px;
+  max-height: 216px;
+  object-fit: contain;
 }
 
 .screenshot-card :deep(img) {
@@ -901,6 +921,18 @@ watch(
 @media screen and (width <= 768px) {
   .app-detail-page {
     padding: 102px 16px 48px;
+  }
+
+  .screenshot-card {
+    min-height: 180px;
+    height: 180px;
+    max-height: 180px;
+  }
+
+  .screenshot-card :deep(.el-image__wrapper),
+  .screenshot-card :deep(.el-image__inner) {
+    min-height: 180px;
+    max-height: 180px;
   }
 
   .hero-card,

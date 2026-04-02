@@ -63,10 +63,19 @@
       </div>
     </div>
     <div class="app-list">
-      <div v-for="(app, index) in appList" :key="app.appId" class="app-item">
+      <div
+        v-for="(app, index) in appList"
+        :key="app.appId"
+        class="app-item"
+        role="link"
+        tabindex="0"
+        @click="handleOpenDetail(app)"
+        @keydown.enter="handleOpenDetail(app)"
+        @keydown.space.prevent="handleOpenDetail(app)"
+      >
         <div class="app-item-main">
-          <img v-if="app.icon" :src="app.icon" @error="event => formatSVG(event, app.icon, index)" alt="App Icon" />
-          <defaultIcon class="defaultIcon" v-else />
+          <img v-if="app.icon" :src="app.icon" @error="() => handleIconError(app.icon, index)" alt="App Icon" />
+          <DefaultIcon class="defaultIcon" v-else />
           <div class="app-item-text">
             <div class="app-item-title">
               <el-text class="app-item-name" truncated :title="app.zhName || app.name">{{ app.zhName || app.name }}</el-text>
@@ -86,7 +95,7 @@
         </div>
         <div class="app-item-footer">
           <span class="app-item-version">v{{ app.version }}</span>
-          <el-button class="button" type="primary" plain size="small" @click="onInstall(app)">{{
+          <el-button class="button" type="primary" plain size="small" @click.stop="onInstall(app)">{{
             $t("appList.app.install")
           }}</el-button>
         </div>
@@ -98,12 +107,13 @@
 </template>
 <script setup lang="ts">
 import { App, Category } from "@/api/interface/index";
-import defaultIcon from "@/assets/images/default.svg?component";
-import { installApp, svgUrl2Base64 } from "@/api/modules/project";
-import { ElNotification } from "element-plus";
+import DefaultIcon from "@/assets/images/default.svg?component";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import { buildAppDetailLocation, installLinglongApp, resolveSvgIconDataUrl } from "@/utils/app";
 const { t } = useI18n();
+const router = useRouter();
 const props = defineProps<{
   apps: App[];
   categoriesDict: Map<string, string>;
@@ -138,60 +148,29 @@ import Checked from "@/assets/icons/checked.svg?component";
 import Unchecked from "@/assets/icons/unchecked.svg?component";
 
 const onInstall = async (app: App) => {
-  // 判断系统环境，不支持则返回
-  const userAgent = navigator.userAgent || navigator.platform;
-  if (!/Linux/i.test(userAgent)) {
-    ElNotification({
-      title: t("tips.title"),
-      dangerouslyUseHTMLString: true,
-      message: `
-        <span>${t("tips.noSupport")}</span>
-      `
-    });
-    return;
-  }
-  // 入参加入客户端ip
-  let clientIp = sessionStorage.getItem("clientIp");
-  app.clientIp = clientIp ? clientIp : "";
-  // 温馨提示
-  ElNotification({
-    title: t("tips.title"),
-    dangerouslyUseHTMLString: true,
-    message: `
-      <span>
-        ${t("tips.noPopup")}
-        <a href="https://linyaps.org.cn/guide/start/install.html" target="_blank" style="color: #409EFF; text-decoration: underline;">${t("tips.installLink")}</a>
-      </span>
-    `
-  });
-  // 调用自定义协议执行安装
-  window.location.href = "og://" + app.appId;
-  await installApp(app);
+  await installLinglongApp(app, t);
 };
 
-const formatSVG = async (event: Event, url: string | undefined, index: number) => {
-  const target = event.target as HTMLImageElement;
-  if (url) {
-    try {
-      const response = await svgUrl2Base64({ url: url });
-      if (response.code == "200" && response.data) {
-        // 检查base64图片是否能正常显示
-        const img = new Image();
-        img.src = response.data as unknown as string;
-        img.onerror = () => {
-          console.error("SVG转换失败:", response.data);
-          appList.value[index].icon = undefined;
-        };
-        img.onload = () => {
-          target.src = response.data as unknown as string;
-        };
-        return;
-      }
-    } catch (error) {
-      console.error("SVG转换失败:", error);
+const handleOpenDetail = (app: App) => {
+  router.push(buildAppDetailLocation(app.appId, props.currentArch));
+};
+
+const updateIconByIndex = (index: number, icon?: string) => {
+  appList.value = appList.value.map((item, itemIndex) => {
+    if (itemIndex !== index) {
+      return item;
     }
-  }
-  appList.value[index].icon = undefined;
+
+    return {
+      ...item,
+      icon
+    };
+  });
+};
+
+const handleIconError = async (url: string | undefined, index: number) => {
+  const fallbackIcon = await resolveSvgIconDataUrl(url);
+  updateIconByIndex(index, fallbackIcon);
 };
 </script>
 <style scoped lang="scss">
@@ -330,10 +309,23 @@ const formatSVG = async (event: Event, url: string | undefined, index: number) =
       font-size: 14px;
       background-color: #fff;
       color: #808080;
+      cursor: pointer;
       // box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
       border: 1px solid #fff;
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:focus-visible {
+        outline: 2px solid #1890ff;
+        outline-offset: 2px;
+      }
+
       &:hover {
         border: 1px solid #1890ff;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgb(24 144 255 / 10%);
       }
 
       .app-item-main {

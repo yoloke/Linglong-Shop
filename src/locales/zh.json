@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "加载中..."
+  },
   "title": {
     "title": "如意玲珑应用商店",
     "subtitle1": "Linux 应用宝库",
@@ -80,5 +83,69 @@
     "title": "社区推荐",
     "change": "换一换",
     "install": "安装"
+  },
+  "appDetail": {
+    "actions": {
+      "back": "返回上一页",
+      "backHome": "返回首页",
+      "install": "立即安装",
+      "shareLink": "分享链接"
+    },
+    "meta": {
+      "appId": "应用 ID",
+      "arch": "适配架构",
+      "developer": "开发者",
+      "source": "仓库来源",
+      "size": "包体大小",
+      "downloads": "累计下载",
+      "unknown": "暂无信息"
+    },
+    "states": {
+      "unavailableTitle": "应用详情暂时不可用",
+      "invalidAppId": "当前应用链接无效，请返回列表后重试。",
+      "loadFailed": "应用详情加载失败，请稍后再试。",
+      "notFound": "暂未查询到该应用的详情信息。",
+      "noSummary": "暂无摘要信息。",
+      "noDescription": "暂无详细介绍。"
+    },
+    "share": {
+      "message": "来看看「{name}」这个应用",
+      "shared": "分享面板已打开",
+      "copied": "链接已复制，快去分享吧",
+      "copyFailed": "链接复制失败，请手动复制地址栏"
+    },
+    "description": {
+      "title": "应用介绍"
+    },
+    "screenshots": {
+      "title": "应用截图",
+      "count": "共 {count} 张",
+      "empty": "这个应用暂未提供截图。",
+      "unavailable": "截图暂不可用"
+    },
+    "versions": {
+      "title": "版本历史",
+      "count": "共 {count} 个版本",
+      "empty": "暂未获取到版本历史。",
+      "latest": "最新版",
+      "expand": "展开其余 {count} 个版本",
+      "collapse": "收起版本历史",
+      "labels": {
+        "arch": "架构",
+        "channel": "通道",
+        "module": "模块",
+        "size": "大小",
+        "downloads": "下载量"
+      }
+    },
+    "comments": {
+      "title": "评论区",
+      "readonlyHint": "当前网页端仅展示评论内容，暂不支持直接发表评论。",
+      "count": "共展示 {count} 条",
+      "empty": "还没有评论，欢迎先来看看截图和版本信息。",
+      "versionLabel": "版本：{version}",
+      "likes": "点赞",
+      "dislikes": "点踩"
+    }
   }
 }

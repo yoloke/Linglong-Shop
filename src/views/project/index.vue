@@ -43,12 +43,15 @@ import RightContent from "./components/RightContent.vue";
 import RightSidebar from "./components/RightSidebar.vue";
 // import { getLogin, getCategories, getTop, getApp } from "@/api/modules/project";
 import { getLogin, getCategories, getApp } from "@/api/modules/project";
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, nextTick, onActivated, onMounted, watch } from "vue";
 import { i18n } from "@/utils/i18n";
 import { useI18n } from "vue-i18n";
 import { getArchitecture } from "@/utils/common";
+import { useRoute, useRouter } from "vue-router";
 
 const { t } = useI18n();
+const route = useRoute();
+const router = useRouter();
 const categories = ref<Category[]>([]);
 const categoriesDict = ref<Map<string, string>>(new Map());
 const rankings = ref<Rankings[]>([]);
@@ -60,7 +63,8 @@ const loading = ref(false); // 加载状态
 const total = ref<number>(2); // 初始值为 null 以处理未知总数
 const noMore = computed(() => apps.value.length >= total.value);
 const disabled = computed(() => loading.value || noMore.value); // 是否禁用滚动加载
-const selectedCategory = ref<Category>({ categoryId: undefined, categoryName: t("appSearchBar.all") });
+const createAllCategory = () => ({ categoryId: undefined, categoryName: t("appSearchBar.all") });
+const selectedCategory = ref<Category>(createAllCategory());
 
 !localStorage.getItem("currentSort") && localStorage.setItem("currentSort", "createTime");
 !localStorage.getItem("currentArch") && localStorage.setItem("currentArch", getArchitecture());
@@ -68,6 +72,7 @@ const selectedCategory = ref<Category>({ categoryId: undefined, categoryName: t(
 const currentSort = ref(localStorage.getItem("currentSort") || "createTime"); // 当前排序方式
 const currentArch = ref(localStorage.getItem("currentArch") || getArchitecture()); // 当前架构
 const currentFilter = ref(localStorage.getItem("currentFilter") || "0"); // 当前筛选条件
+const searchQuery = ref(typeof route.query.search === "string" ? route.query.search : "");
 
 const getApps = async (params: ReqPageParams) => {
   loading.value = true;
@@ -100,7 +105,37 @@ const getApps = async (params: ReqPageParams) => {
 const load = async () => {
   getApps({}); // 传递空对象以获取所有应用
 };
-const searchQuery = ref("");
+
+const syncSearchQueryToRoute = async (query: string) => {
+  const normalizedQuery = query.trim();
+  const currentQuery = typeof route.query.search === "string" ? route.query.search : "";
+
+  if (currentQuery === normalizedQuery) {
+    return;
+  }
+
+  await router.replace({
+    path: "/",
+    query: normalizedQuery ? { search: normalizedQuery } : undefined
+  });
+};
+
+const applySearch = async (query: string, syncRoute = false) => {
+  const normalizedQuery = query.trim();
+
+  searchQuery.value = normalizedQuery;
+  if (syncRoute) {
+    await syncSearchQueryToRoute(normalizedQuery);
+  }
+
+  currentPage.value = 1;
+  apps.value = [];
+  selectedCategory.value = createAllCategory();
+  getApps({
+    name: normalizedQuery
+  });
+};
+
 onMounted(async () => {
   // 输出版本信息
   const osVersion = navigator.userAgent || navigator.appVersion;
@@ -116,15 +151,38 @@ onMounted(async () => {
 
   // 获取登录IP
   let clientIp = "";
-  let clientRepo = await axios.get("https://ipwhois.app/json/");
-  if (clientRepo.status == 200) {
-    clientIp = clientRepo.data.ip ? clientRepo.data.ip : "";
+  try {
+    const clientRepo = await axios.get("https://ipwhois.app/json/");
+
+    if (clientRepo.status === 200) {
+      clientIp = clientRepo.data.ip ? clientRepo.data.ip : "";
+    }
+  } catch (error) {
+    console.warn("获取客户端 IP 失败，将继续使用空 IP 上报", error);
   }
   // 存入session中
   sessionStorage.setItem("clientIp", clientIp);
   // 传递 osVersion
   getLogin({ clientIp, osVersion });
 });
+
+onActivated(async () => {
+  await nextTick();
+  window.dispatchEvent(new Event("resize"));
+});
+
+watch(
+  () => route.query.search,
+  query => {
+    const nextSearch = typeof query === "string" ? query : "";
+
+    if (nextSearch === searchQuery.value) {
+      return;
+    }
+
+    applySearch(nextSearch);
+  }
+);
 
 const getCategory = async () => {
   const { data: categoryData } = await getCategories({ lang: i18n.global.locale });
@@ -155,22 +213,8 @@ const fetchAppsByCategory = async (category: Category) => {
 };
 
 const handleSearch = async (query: string) => {
-  searchQuery.value = query;
-  currentPage.value = 1; // 重置页码
-  apps.value = []; // 清空应用列表
-  selectedCategory.value = { categoryId: undefined, categoryName: t("appSearchBar.all") }; // 设置选中的分类
-  getApps({
-    name: query // 传递搜索条件
-  });
+  applySearch(query, true);
 };
-
-onMounted(() => {
-  window.eventBus.on("search", handleSearch);
-});
-
-onUnmounted(() => {
-  window.eventBus.off("search", handleSearch);
-});
 
 const sortChange = async (sort: string) => {
   currentSort.value = sort;

@@ -43,9 +43,10 @@
 </template>
 <script setup lang="ts">
 import { i18n } from "@/utils/i18n";
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import onInstall from "@/utils/downloadClient";
 import { openUrl } from "@/utils/common";
+import { useRoute, useRouter } from "vue-router";
 
 // ########## 组件头部 ########## //
 // 标题
@@ -54,9 +55,28 @@ import linyapsLogo from "@/assets/images/linyaps_logo.svg?component";
 // 搜索框
 import searchIcon from "@/assets/icons/search.svg?component";
 const searchInput = ref<string>("");
+const route = useRoute();
+const router = useRouter();
 
-const handleSearch = () => {
-  window.eventBus.emit("search", searchInput.value);
+const currentSearchQuery = computed(() => (typeof route.query.search === "string" ? route.query.search : ""));
+
+watch(
+  currentSearchQuery,
+  value => {
+    searchInput.value = value;
+  },
+  { immediate: true }
+);
+
+const handleSearch = async () => {
+  const nextSearch = searchInput.value.trim();
+
+  if (route.path !== "/" || currentSearchQuery.value !== nextSearch) {
+    await router.push({
+      path: "/",
+      query: nextSearch ? { search: nextSearch } : undefined
+    });
+  }
 };
 
 // 其他 Icon

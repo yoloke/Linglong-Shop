@@ -61,7 +61,7 @@ const createActionFunction = (actionType: string, actionUrl?: string) => {
       if (actionUrl === "onInstall") {
         return onInstall;
       }
-      return () => {};
+      return () => undefined;
     default:
       return () => {
         if (actionUrl) {

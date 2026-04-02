@@ -1,6 +1,13 @@
 <template>
   <div :class="['header-container', 'flx-align-center', { scrolled: true }]">
-    <div class="header-logo-area select-user-none">
+    <div
+      class="header-logo-area select-user-none"
+      role="link"
+      tabindex="0"
+      @click="handleGoHome"
+      @keydown.enter="handleGoHome"
+      @keydown.space.prevent="handleGoHome"
+    >
       <linyapsLogo class="header-logo" />
       <div class="header-logo-title">
         <span :class="`title ${i18n.global.locale === 'zh' ? 'zh' : ''}`">{{ $t("title.title") }}</span>
@@ -79,6 +86,16 @@ const handleSearch = async () => {
   }
 };
 
+const handleGoHome = async () => {
+  if (route.path === "/" && !currentSearchQuery.value) {
+    return;
+  }
+
+  await router.push({
+    path: "/"
+  });
+};
+
 // 其他 Icon
 import DownloadClientIcon from "@/assets/icons/download_client.svg?component";
 // import ArrowBottomIcon from "@/assets/icons/arrow_bottom.svg?component";
@@ -107,6 +124,14 @@ const changeLanguage = (lang: "zh" | "en") => {
     gap: 16px;
     align-items: center;
     margin-right: auto;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid #1890ff;
+      outline-offset: 4px;
+      border-radius: 8px;
+    }
+
     .header-logo {
       height: 42px;
       width: 42px;

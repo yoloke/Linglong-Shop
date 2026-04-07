@@ -85,6 +85,8 @@ export default defineConfig(() => {
         }
       }
     },    server: {
+      host: true, // 允许局域网访问（监听 0.0.0.0）
+      port: 5173, // 可选：指定端口
       proxy: {
         "/api": {
           target: "https://storeapi.linyaps.org.cn", // 目标服务器

@@ -4,6 +4,7 @@
   },
   "title": {
     "title": "如意玲珑应用商店",
+    "communityEditionTitle": "如意玲珑商代社区版",
     "subtitle1": "Linux 应用宝库",
     "search": "搜索您需要的应用",
     "downloadClient": "客户端下载",
@@ -108,6 +109,7 @@
       "noSummary": "暂无摘要信息。",
       "noDescription": "暂无详细介绍。"
     },
+    "pageTitleFallback": "应用详情",
     "share": {
       "message": "来看看「{name}」这个应用",
       "shared": "分享面板已打开",

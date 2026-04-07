@@ -31,33 +31,37 @@
 <script setup lang="ts">
 import { App, Recommend, ResultData } from "@/api/interface";
 import { getRecommendApp } from "@/api/modules/project";
-import { ref, onMounted } from "vue";
-import { i18n } from "@/utils/i18n";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { buildAppDetailLocation, getPreferredAppArch, installLinglongApp, resolveSvgIconDataUrl } from "@/utils/app";
 import DefaultIcon from "@/assets/images/default.svg?component";
-const { t } = useI18n();
+const props = defineProps<{
+  currentArch?: string;
+}>();
+
+const { t, locale } = useI18n();
 const router = useRouter();
 
 const recommendApps = ref<Recommend[]>([]);
-const resolveCurrentArch = () => getPreferredAppArch(localStorage.getItem("currentArch") || undefined);
+const resolvedCurrentArch = computed(() => getPreferredAppArch(props.currentArch || localStorage.getItem("currentArch") || undefined));
 
 const getApps = async () => {
-  getRecommendApp({ arch: resolveCurrentArch(), repoName: "stable", lan: i18n.global.locale }).then((res: ResultData) => {
+  getRecommendApp({ arch: resolvedCurrentArch.value, repoName: "stable", lan: locale.value }).then((res: ResultData) => {
     recommendApps.value = res.data as Recommend[];
   });
 };
-onMounted(() => {
+
+watch([resolvedCurrentArch, locale], () => {
   getApps();
-});
+}, { immediate: true });
 
 const onInstall = async (app: App) => {
   await installLinglongApp(app, t);
 };
 
 const handleOpenDetail = (app: App) => {
-  router.push(buildAppDetailLocation(app.appId, app.arch || resolveCurrentArch()));
+  router.push(buildAppDetailLocation(app.appId, app.arch || resolvedCurrentArch.value));
 };
 
 const updateRecommendIcon = (index: number, icon?: string) => {

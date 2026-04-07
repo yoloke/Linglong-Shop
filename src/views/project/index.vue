@@ -27,7 +27,7 @@
       @filter-change="filterChange"
       @arch-change="archChange"
     />
-    <RightSidebar />
+    <RightSidebar :current-arch="currentArch" />
   </div>
   <el-backtop :right="100" :bottom="100" />
   <PublicRight />

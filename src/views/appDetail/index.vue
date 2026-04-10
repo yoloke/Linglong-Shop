@@ -245,7 +245,7 @@
 
 <script setup lang="ts">
 import dayjs from "dayjs";
-import { computed, ref, watch } from "vue";
+import { computed, onActivated, onBeforeUnmount, onDeactivated, ref, watch } from "vue";
 import { ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -260,6 +260,7 @@ import { copyText } from "@/utils/common";
 import { getAppDetailLanguage, getPreferredAppArch, installLinglongApp, resolveSvgIconDataUrl } from "@/utils/app";
 
 const COMMENT_PAGE_SIZE = 20;
+const DEFAULT_DOCUMENT_TITLE = document.title;
 
 const route = useRoute();
 const router = useRouter();
@@ -273,6 +274,7 @@ const versionHistory = ref<AppDetail[]>([]);
 const comments = ref<AppComment[]>([]);
 const activeRequestId = ref(0);
 const showAllVersions = ref(false);
+const shouldSyncDocumentTitle = ref(false);
 
 const appId = computed(() => {
   const routeAppId = route.params.appId;
@@ -306,6 +308,11 @@ const descriptionText = computed(
   () => appDetail.value?.descInfo || appDetail.value?.description || t("appDetail.states.noDescription")
 );
 const shareLink = computed(() => `${window.location.origin}${route.fullPath}`);
+const browserTitle = computed(() => {
+  const currentTitle = appDetail.value ? displayName.value : appId.value || t("appDetail.pageTitleFallback");
+
+  return `${currentTitle}-${t("title.communityEditionTitle")}`;
+});
 
 const ARCH_LABEL_MAP: Record<string, string> = {
   x86_64: "x86_64",
@@ -478,6 +485,18 @@ const handleCurrentIconError = async () => {
   };
 };
 
+const syncDocumentTitle = () => {
+  if (!shouldSyncDocumentTitle.value) {
+    return;
+  }
+
+  document.title = browserTitle.value;
+};
+
+const resetDocumentTitle = () => {
+  document.title = DEFAULT_DOCUMENT_TITLE;
+};
+
 watch(
   [appId, currentArch, detailLanguage],
   () => {
@@ -485,6 +504,25 @@ watch(
   },
   { immediate: true }
 );
+
+watch(browserTitle, () => {
+  syncDocumentTitle();
+});
+
+onActivated(() => {
+  shouldSyncDocumentTitle.value = true;
+  syncDocumentTitle();
+});
+
+onDeactivated(() => {
+  shouldSyncDocumentTitle.value = false;
+  resetDocumentTitle();
+});
+
+onBeforeUnmount(() => {
+  shouldSyncDocumentTitle.value = false;
+  resetDocumentTitle();
+});
 </script>
 
 <style scoped lang="scss">
@@ -582,6 +620,8 @@ watch(
   margin: 0;
   font-size: 32px;
   line-height: 1.2;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   color: #111827;
 }
 
@@ -589,6 +629,7 @@ watch(
   margin: 0;
   line-height: 1.75;
   white-space: pre-line;
+  word-break: break-word;
   color: #4b5563;
 }
 
@@ -923,6 +964,18 @@ watch(
     padding: 102px 16px 48px;
   }
 
+  .detail-toolbar {
+    margin-bottom: -4px;
+  }
+
+  .back-button {
+    font-size: 13px;
+  }
+
+  .hero-card {
+    gap: 20px;
+  }
+
   .screenshot-card {
     min-height: 180px;
     height: 180px;
@@ -937,11 +990,44 @@ watch(
 
   .hero-card,
   .detail-section {
-    padding: 22px 18px;
+    padding: 20px 16px;
+  }
+
+  .hero-icon,
+  .hero-skeleton__icon {
+    width: 104px;
+    height: 104px;
+  }
+
+  .hero-icon--fallback {
+    padding: 18px;
+  }
+
+  .hero-body {
+    gap: 20px;
   }
 
   .hero-title-row h1 {
-    font-size: 26px;
+    font-size: 22px;
+    line-height: 1.35;
+  }
+
+  .hero-summary,
+  .description-content,
+  .comment-card__content {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions :deep(.el-button) {
+    margin-left: 0;
+    width: 100%;
   }
 
   .hero-meta-grid,
@@ -949,8 +1035,90 @@ watch(
     grid-template-columns: 1fr;
   }
 
+  .meta-item {
+    padding: 14px 16px;
+  }
+
+  .meta-item dd {
+    font-size: 14px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 18px;
+  }
+
+  .section-actions {
+    justify-content: space-between;
+  }
+
+  .section-count {
+    white-space: normal;
+  }
+
+  .version-card,
+  .comment-card {
+    padding: 16px;
+  }
+
+  .version-card__header,
+  .comment-card__header {
+    align-items: flex-start;
+  }
+
+  .version-card__meta {
+    grid-template-columns: 1fr;
+    margin-top: 12px;
+  }
+
   .screenshot-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (width <= 480px) {
+  .app-detail-page {
+    padding: 96px 12px 40px;
+  }
+
+  .hero-card,
+  .detail-section {
+    padding: 18px 14px;
+  }
+
+  .hero-icon,
+  .hero-skeleton__icon {
+    width: 88px;
+    height: 88px;
+  }
+
+  .hero-icon--fallback {
+    padding: 14px;
+  }
+
+  .hero-title-row h1 {
+    font-size: 20px;
+  }
+
+  .hero-title-row {
+    gap: 8px;
+  }
+
+  .hero-title-group {
+    gap: 12px;
+  }
+
+  .screenshot-card {
+    min-height: 160px;
+    height: 160px;
+    max-height: 160px;
+  }
+
+  .screenshot-card :deep(.el-image__wrapper),
+  .screenshot-card :deep(.el-image__inner) {
+    min-height: 160px;
+    max-height: 160px;
   }
 }
 </style>

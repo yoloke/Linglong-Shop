@@ -4,6 +4,7 @@
   },
   "title": {
     "title": "Linyaps App Store",
+    "communityEditionTitle": "如意玲珑商代社区版",
     "subtitle1": "Linux Application Repository",
     "search": "Search for apps",
     "downloadClient": "Client",
@@ -108,6 +109,7 @@
       "noSummary": "No summary available.",
       "noDescription": "No detailed description available."
     },
+    "pageTitleFallback": "App Details",
     "share": {
       "message": "Take a look at \"{name}\"",
       "shared": "The share panel is now open",
